@@ -39,7 +39,7 @@ shot({
     const hot = W.lin(C.ice, W.kl(4.5) * 1.15), hotB = W.lin(C.card, 0.25);
     const heat = (m, MAX, h) => {
       const per = Math.ceil(MAX / 4) + 1, e0 = W.CARD.edge(1.3), b0 = W.CARD.body(1.1);
-      m.cols.forEach((c, ci) => { for (let k = 0; k < per; k++) { const age = h - (MAX - k * 4); if (age < 0 || age > 70) continue; const f = Math.exp(-age / 22);
+      m.cols.forEach((c, ci) => { for (let k = 0; k < per; k++) { const age = h - (MAX - k * 4); if (age < 0 || age > 160) continue; const f = Math.exp(-age / 55);
         m.I.color(ci * per + k, [lerp(e0[0], hot[0], f), lerp(e0[1], hot[1], f), lerp(e0[2], hot[2], f)], [lerp(b0[0], hotB[0], f), lerp(b0[1], hotB[1], f), lerp(b0[2], hotB[2], f)]); } });
       m.I.commit();
     };

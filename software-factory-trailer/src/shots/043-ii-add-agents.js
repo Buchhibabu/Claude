@@ -42,13 +42,13 @@ shot({
     
     const scrL = new THREE.PointLight(0xbcd4e8, 1.4, 3.5, 1.6); scrL.position.set(0, 0, 0.5); dev.add(scrL);
     // behind him: the tower as soft out-of-focus light (a cold wash) + bokeh pins and swarm glints
-    const wash = B.glowCard({ w: 30, h: 26, color: 0x9ab8d0, k: 0.09, falloff: 1.7 }); wash.position.set(0, 9, 2); scene.add(wash);
+    const wash = B.glowCard({ w: 9, h: 3.4, color: 0x9ab8d0, k: 0.12, falloff: 1.8 }); wash.position.set(-0.6, 0.9, 6.5); wash.rotation.x = -0.35; scene.add(wash);
     const BK = [];
     const br = rand(4302);
     for (let i = 0; i < 30; i++) {
       const red = i < 11;
       const s = bokeh({ color: red ? C.red : C.ice, k: red ? 0.9 : 0.35, size: red ? 0.35 + br() * 0.3 : 0.25 + br() * 0.45 });
-      s.position.set(-3 + br() * 10, 0.6 + br() * 4.2, 3 + br() * 4.5);
+      s.position.set(-3.6 + br() * 6, 0.25 + br() * 1.6, 3.5 + br() * 5);
       s.userData.red = red; s.userData.ph = br(); scene.add(s); BK.push(s);
     }
     const lowL = new THREE.PointLight(C.ice, 6, 9, 1.5); lowL.position.set(1.0, 3.2, 10.2); scene.add(lowL);   // the top-light pool behind him, rimming the shoulder

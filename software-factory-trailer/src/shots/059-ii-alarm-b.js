@@ -15,7 +15,7 @@ shot({
     const FL = [0, 1, 0.3, 1, 1, 1, 1, 1];
     // banks 3-4's alarm beams, drawn hotter than the library's subtle alarm shaft so they visibly cut down onto DESIGN / CODE
     const shafts = [2, 3].map((i) => { const m = W.shaft({ rTop: 5.5, rBot: 9.5, h: 58, color: W.C.red, k: 1.4, opacity: 0, top: 1.0, bottom: 0.5, apexFade: 0.04 }); m.position.set(W.BANK_X[i], 30.6, 0); scene.add(m); return m; });
-    const g = B.grade2({ vignette: 0.6, exposure: 0.68 });
+    const g = B.grade2({ vignette: 0.6, exposure: 0.6 });
     return {
       scene, camera, ...g,
       update(lt) {

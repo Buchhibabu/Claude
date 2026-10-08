@@ -27,7 +27,7 @@ shot({
         const t = ctx.shot.start + lt;
         for (let i = 0; i < 420; i++) motes.positions[i * 3 + 1] = motes.base[i * 3 + 1] + 0.25 * Math.sin(t * 0.7 + i) - 0.4 * lt;
         motes.geometry.attributes.position.needsUpdate = true;
-        S.update(lt, { t, review: 300, test: 165, red: 1, pinDiv: 1, rimK: 3.4, poolK: 1, sky: 3 });
+        S.update(lt, { t, review: 300, test: 165, red: 1, pinDiv: 1, rimK: 3.4, poolK: 1, sky: 3, k: 1.75, body: 0.45 });
         camFX(camera, t, B.camHumanUnderTowerC(camera, lt, { dur: ctx.T, t, handheld: 0.3 }));
       },
     };

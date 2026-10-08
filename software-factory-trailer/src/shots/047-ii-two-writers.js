@@ -33,9 +33,9 @@ shot({
     const halves = W.boxes({ count: 2, size: [CW / 2, CH, CD], color: 0x17181c, metal: 0.25, rough: 0.5, edgeW: 1.4, crowd: 0.4 }); piv.add(halves.mesh);
     const rj = rand(4701), fr = [];
     for (let k = 0; k <= 10; k++) fr.push([(rj() - 0.5) * 0.07 * (k % 2 ? 1 : -1) + (k === 0 || k === 10 ? 0 : (rj() - 0.5) * 0.04), CH / 2 + 0.004, lerp(CD / 2, -CD / 2, k / 10)]);
-    const crack = W.fat(fr, { color: C.red, k: 6, width: 2.6 }); piv.add(crack);
-    const crack2 = W.fat([[0, CH / 2, CD / 2 + 0.004], [0.02, 0, CD / 2 + 0.004], [-0.015, -CH / 2, CD / 2 + 0.004]], { color: C.red, k: 6, width: 2.6 }); piv.add(crack2);
-    const bleed = B.glowCard({ w: 0.5, h: CD * 1.3, color: C.red, k: 0, falloff: 3.2 }); bleed.rotation.x = -Math.PI / 2; bleed.position.set(0, CH / 2 + 0.01, 0); piv.add(bleed);
+    const crack = W.fat(fr, { color: C.red, k: 2.2, width: 4 }); piv.add(crack);
+    const crack2 = W.fat([[0, CH / 2, CD / 2 + 0.004], [0.02, 0, CD / 2 + 0.004], [-0.015, -CH / 2, CD / 2 + 0.004]], { color: C.red, k: 2.2, width: 4 }); piv.add(crack2);
+    const bleed = B.glowCard({ w: 0.7, h: CD * 1.4, color: C.red, k: 0, falloff: 2.6 }); bleed.rotation.x = -Math.PI / 2; bleed.position.set(0, CH / 2 + 0.01, 0); piv.add(bleed);
     // writers + their entry streaks
     const WR = W.orbs({ count: 2, r: 0.11, seg: 20 }); scene.add(WR.mesh);
     const WS = B.streaks(2, { color: C.ice, k: 2.0, width: 2.6 }); scene.add(WS.mesh);
@@ -62,7 +62,7 @@ shot({
         piv.updateMatrixWorld();
         for (let k = 0; k < 2; k++) {
           const sg = k === 0 ? -1 : 1;
-          const ek = lt >= 0.3 ? W.CARD.redEdge(lerp(4, 1.8, clamp((lt - 0.3) / 0.15))) : W.CARD.edge(1.5 + 0.8 * g);
+          const ek = lt >= 0.3 ? W.CARD.redEdge(lerp(2.4, 1.3, clamp((lt - 0.3) / 0.15))) : W.CARD.edge(1.5 + 0.8 * g);
           halves.set(k, { p: [sg * (CW / 4 + 0.002 + 0.16 * split), 0, 0], r: [0, sg * 0.12 * split, -sg * 0.16 * split], edge: ek, body: lt >= 0.3 ? W.lin(C.red, 0.02) : W.CARD.body(0.5) });
           // writer: rides the card's end
           if (lt < 0.15) { WR.hide(k); WS.hide(k); wrFl[k].userData.set(0); continue; }
@@ -74,11 +74,11 @@ shot({
         }
         halves.commit(); WR.commit(); WS.commit();
         crack.visible = crack2.visible = lt >= 0.3;
-        if (lt >= 0.3) { const rv = clamp((lt - 0.3) / 0.05); crack.userData.reveal(rv); crack2.userData.reveal(rv); const ck = 3.2 * (1 + 0.6 * Math.exp(-(lt - 0.3) / 0.06)); crack.userData.set(ck); crack2.userData.set(ck); }
+        if (lt >= 0.3) { const rv = clamp((lt - 0.3) / 0.05); crack.userData.reveal(rv); crack2.userData.reveal(rv); const ck = 2.0 * (1 + 0.5 * Math.exp(-(lt - 0.3) / 0.06)); crack.userData.set(ck); crack2.userData.set(ck); }
         bleed.userData.set(lt >= 0.3 ? 0.7 * Math.exp(-(lt - 0.3) / 0.1) + 0.22 : 0, C.red);
         v.set(0, CH, 0.4).applyMatrix4(piv.matrixWorld);
         redL.position.copy(v); redL.intensity = lt >= 0.3 ? 6 * Math.exp(-(lt - 0.3) / 0.1) + 1 : 0;
-        iceL.position.set(CARD[0], CARD[1] + 0.8, 1.2); iceL.intensity = 1.2 * g * (1 - split);
+        iceL.position.set(CARD[0], CARD[1] + 0.8, 1.2); iceL.intensity = 0.4 * g * (1 - split);
         v.set(0, CH / 2, 0).applyMatrix4(piv.matrixWorld);
         SP.update([{ t0: 0.3, p: [v.x, v.y, v.z], n: 160, speed: 4, life: 0.24, seed: 471, g: 5, dir: [0, 1.5, 2] }, { t0: 0.315, p: [v.x, v.y - 0.05, v.z + 0.1], n: 120, speed: 3, life: 0.2, seed: 472, g: 5, dir: [0, 0.5, 2.5] }], lt);
         BK.forEach((s) => { const on = s.userData.red ? W.blink(t, { div: 2, origin: s.userData.ph > 0.5 ? 0.25 : 0 }) : 1; s.userData.set((s.userData.red ? 0.55 : 0.2) * (0.2 + 0.8 * on), s.userData.red ? C.red : C.ice); });

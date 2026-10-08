@@ -60,6 +60,9 @@ SECTIONS = {  # default layers + energy per section
     'peak': dict(layers=['pulse', 'ostinato', 'drums', 'strings', 'drone'], energy=1.0, div=16),
     'end': dict(layers=['pad'], energy=0.35),
 }
+SECTION_DB = {  # loudness arc: each act must beat the previous one (Act II < Act III < peak)
+    'cold': 0, 'act1': -1, 'act2': -5, 'turn': 0, 'act3': 1, 'peak': 3, 'end': 0,
+}
 LAYER_DB = {  # static balance of the music layers before energy scaling
     'drone': -13, 'pad': -12, 'pulse': -10, 'ostinato': -13, 'kick': -7, 'drums': -6,
     'strings': -15, 'piano': -9, 'hats': -20, 'heart': -8, 'ticks': -22, 'choir': -14,
@@ -211,11 +214,11 @@ def grid(dur, bpm, steps_per_beat):
     return [i * step for i in range(int(round(dur / step)))]
 
 
-def render_shot_layers(bus, t0, dur, bpm, chord, layers, div, energy, seg_t0, shot_i):
+def render_shot_layers(bus, t0, dur, bpm, chord, layers, div, energy, seg_t0, shot_i, sec='act1'):
     """Render each music layer for one shot span [t0, t0+dur) into the per-layer stems in `bus`."""
     beat = 60 / bpm
     root, up = CHORDS[chord]
-    g = lambda name: LAYER_DB.get(name, -12) + 20 * np.log10(max(energy, 0.05))  # noqa: E731
+    g = lambda name: LAYER_DB.get(name, -12) + 20 * np.log10(max(energy, 0.05)) + SECTION_DB.get(sec, 0)  # noqa: E731
     # phase: beats counted from the segment start (segments start on a beat)
     off = (t0 - seg_t0) % beat
 
@@ -282,7 +285,7 @@ def render_shot_layers(bus, t0, dur, bpm, chord, layers, div, energy, seg_t0, sh
             elif k % spb == 0:
                 snd.append(kick()); gains.append(-2)
             else:  # subdivision fill: toms/snare ghosting louder as div rises
-                snd.append(snare() if div >= 16 else kick()); gains.append(-9 + 2 * np.log2(spb))
+                snd.append(snare() if div >= 16 else kick()); gains.append(-10 + 1.5 * np.log2(spb) - (3 if spb >= 8 else 0))
             times.append(rel)
         hits('drums', lambda k: snd[k], times, gains)
     if 'hats' in layers:
@@ -431,7 +434,7 @@ def arrange(cues, stems_dir=None):
         if prev is None or (sec, bpm) != prev[:2]:
             seg_t0 = s['start']
         layers = list(m['layers']) if 'layers' in m else list(sdef['layers'])
-        layers = [l for l in layers + m.get('add', []) if l not in m.get('drop', [])]
+        layers = [l for l in dict.fromkeys(layers + m.get('add', [])) if l not in m.get('drop', [])]
         chord = m.get('chord', prev[2] if prev else 'Dm')
         energy = m.get('energy', sdef['energy'])
         div = m.get('div', sdef.get('div', 8))
@@ -439,7 +442,7 @@ def arrange(cues, stems_dir=None):
         prev = (sec, bpm, chord)
     for i, (s, sec, bpm, chord, layers, div, energy, st0) in enumerate(plan):
         if layers:
-            render_shot_layers(bus, s['start'], s['dur'], bpm, chord, layers, div, energy, st0, i)
+            render_shot_layers(bus, s['start'], s['dur'], bpm, chord, layers, div, energy, st0, i, sec)
         print(f"  {s['start']:7.2f}s {s['id']:<22} {sec:<5} {bpm:>3} {chord:<5} div{div:<2} e{energy:.2f} {'+'.join(layers)}")
 
     music = sum(v for k, v in bus.items() if k != '_')
@@ -489,7 +492,8 @@ def arrange(cues, stems_dir=None):
             snd[:, -f:] *= np.linspace(1, 0, f)
         snd = gate_after(snd, start)
         T.place(sfx, snd, start, base_db + e.get('gain', 0))
-        if k in ('impact', 'braam', 'sting') and e.get('predip', True):  # pre-hit dip: music -8 dB over the last 1/8 note
+        big = e.get('gain', 0) >= -3
+        if k in ('impact', 'braam', 'sting') and big and e.get('predip', True):  # pre-hit dip: music -8 dB over the last 1/8 note
             i = int(e['t'] * SR)
             L = int(0.25 * SR)
             a = max(0, i - L)
@@ -497,8 +501,8 @@ def arrange(cues, stems_dir=None):
         if k in ('impact', 'braam', 'sting', 'boom', 'sub_drop'):  # sidechain duck of the music bed
             i = int(e['t'] * SR)
             L = int(0.6 * SR)
-            depth = {'braam': 0.45, 'impact': 0.55, 'sting': 0.3, 'boom': 0.75, 'sub_drop': 0.7}[k]
-            env = 1 - (1 - depth) * np.exp(-np.arange(L) / (0.18 * SR))
+            depth_db = {'braam': -7, 'impact': -5, 'sting': -9, 'boom': -2.5, 'sub_drop': -2}[k] * T.db(min(0, e.get('gain', 0)))
+            env = 1 - (1 - T.db(depth_db)) * np.exp(-np.arange(L) / (0.18 * SR))
             j = min(n, i + L)
             duck[i:j] = np.minimum(duck[i:j], env[:j - i])
 

@@ -1,0 +1,10 @@
+node_modules/
+__pycache__/
+dist/.segments/
+dist/stills/
+dist/review/
+dist/test.mp4
+dist/video_silent.mp4
+dist/*.wav
+dist/cues.real.json
+dist/*.log

@@ -1,0 +1,196 @@
+{
+  "duration": 415,
+  "cues": [
+    {
+      "id": "title",
+      "chapter": null,
+      "start": 0,
+      "duration": 11,
+      "mood": "dark",
+      "hits": [
+        1.6
+      ]
+    },
+    {
+      "id": "bluf",
+      "chapter": null,
+      "start": 11,
+      "duration": 25,
+      "mood": "calm",
+      "hits": []
+    },
+    {
+      "id": "ladder",
+      "chapter": {
+        "n": "01",
+        "title": "The last wave",
+        "short": "Coding"
+      },
+      "start": 36,
+      "duration": 52,
+      "mood": "warm",
+      "hits": [
+        43.2,
+        82.3
+      ]
+    },
+    {
+      "id": "evidence",
+      "chapter": {
+        "n": "01",
+        "title": "The last wave",
+        "short": "Coding"
+      },
+      "start": 88,
+      "duration": 28,
+      "mood": "warm",
+      "hits": []
+    },
+    {
+      "id": "bridge",
+      "chapter": {
+        "n": "01",
+        "title": "The last wave",
+        "short": "Coding"
+      },
+      "start": 116,
+      "duration": 13,
+      "mood": "calm",
+      "hits": []
+    },
+    {
+      "id": "history",
+      "chapter": {
+        "n": "02",
+        "title": "The software factory",
+        "short": "Factory"
+      },
+      "start": 129,
+      "duration": 26,
+      "mood": "calm",
+      "hits": [
+        150
+      ]
+    },
+    {
+      "id": "factory-line",
+      "chapter": {
+        "n": "02",
+        "title": "The software factory",
+        "short": "Factory"
+      },
+      "start": 155,
+      "duration": 32,
+      "mood": "warm",
+      "hits": []
+    },
+    {
+      "id": "arch",
+      "chapter": {
+        "n": "03",
+        "title": "The architecture",
+        "short": "Architecture"
+      },
+      "start": 187,
+      "duration": 35,
+      "mood": "cool",
+      "hits": [
+        200
+      ]
+    },
+    {
+      "id": "synthesis",
+      "chapter": {
+        "n": "03",
+        "title": "The architecture",
+        "short": "Architecture"
+      },
+      "start": 222,
+      "duration": 24,
+      "mood": "cool",
+      "hits": []
+    },
+    {
+      "id": "interfaces",
+      "chapter": {
+        "n": "04",
+        "title": "The interfaces",
+        "short": "Interfaces"
+      },
+      "start": 246,
+      "duration": 19,
+      "mood": "green",
+      "hits": []
+    },
+    {
+      "id": "computer-use",
+      "chapter": {
+        "n": "04",
+        "title": "The interfaces",
+        "short": "Interfaces"
+      },
+      "start": 265,
+      "duration": 23,
+      "mood": "green",
+      "hits": [
+        277.2
+      ]
+    },
+    {
+      "id": "opus55",
+      "chapter": {
+        "n": "05",
+        "title": "The model",
+        "short": "Opus 5.5"
+      },
+      "start": 288,
+      "duration": 32,
+      "mood": "bright",
+      "hits": [
+        289
+      ]
+    },
+    {
+      "id": "ladder2",
+      "chapter": {
+        "n": "06",
+        "title": "The next wave",
+        "short": "Next wave"
+      },
+      "start": 320,
+      "duration": 38,
+      "mood": "warm",
+      "hits": [
+        344.9
+      ]
+    },
+    {
+      "id": "moves",
+      "chapter": {
+        "n": "06",
+        "title": "The next wave",
+        "short": "Next wave"
+      },
+      "start": 358,
+      "duration": 26,
+      "mood": "calm",
+      "hits": []
+    },
+    {
+      "id": "close",
+      "chapter": null,
+      "start": 384,
+      "duration": 18,
+      "mood": "bright",
+      "hits": []
+    },
+    {
+      "id": "coda",
+      "chapter": null,
+      "start": 402,
+      "duration": 13,
+      "mood": "calm",
+      "hits": []
+    }
+  ]
+}

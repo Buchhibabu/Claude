@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Software Factory Moment</title>
+<link rel="stylesheet" href="styles.css">
+<script src="../node_modules/gsap/dist/gsap.min.js"></script>
+<script src="../node_modules/gsap/dist/DrawSVGPlugin.min.js"></script>
+<script src="../node_modules/gsap/dist/MotionPathPlugin.min.js"></script>
+<script src="engine.js"></script>
+<script src="chrome.js"></script>
+<script src="lib.js"></script>
+<script src="lib-factory.js"></script>
+<script src="lib-ladder.js"></script>
+<script src="scenes/manifest.js"></script>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="scenes"></div>
+  <div id="chrome"></div>
+  <div id="grain"></div>
+  <div id="vignette"></div>
+</div>
+<script>
+  // Load scene files in manifest order, then build the master timeline.
+  (async () => {
+    // ?only=a.js,b.js renders just those scenes (lets several builders work in parallel).
+    const only = new URLSearchParams(location.search).get('only');
+    if (only) window.SCENE_FILES = only.split(',');
+    for (const f of window.SCENE_FILES) {
+      await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'scenes/' + f; s.onload = res; s.onerror = () => rej(new Error('load ' + f)); document.body.appendChild(s); });
+    }
+    await document.fonts.load('400 20px "Inter"');
+    await document.fonts.load('600 20px "Inter"');
+    await document.fonts.load('400 64px "Instrument Serif"');
+    await document.fonts.load('italic 400 64px "Instrument Serif"');
+    await document.fonts.load('500 20px "JetBrains Mono"');
+    await document.fonts.load('400 20px "JetBrains Mono"');
+    await document.fonts.load('600 20px "JetBrains Mono"');
+    await document.fonts.ready;
+    SF.build();
+    window.READY = true;
+  })().catch((e) => { console.error(e); document.title = 'ERROR ' + e.message; });
+</script>
+</body>
+</html>

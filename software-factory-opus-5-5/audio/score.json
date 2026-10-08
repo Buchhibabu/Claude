@@ -1,0 +1,18 @@
+{
+  "title": {"chords": ["Bm9", "Gmaj7"], "energy": 0.08, "bright": 0.25, "keys": true, "chord_len": 6.0, "bass": 0.7, "level": 0.5},
+  "bluf": {"chords": ["Bm9", "Gmaj7", "Dadd9", "Asus"], "energy": 0.22, "bright": 0.35, "keys": true, "chord_len": 6.6, "swell": true, "level": 0.62},
+  "ladder": {"chords": ["D", "A/C#", "Bm", "G", "D/F#", "Gmaj7", "Em7", "Asus"], "energy": 0.4, "bright": 0.45, "keys": true, "chord_len": 6.6, "swell": true, "level": 0.8},
+  "evidence": {"chords": ["Em9", "G", "D", "Asus"], "energy": 0.45, "bright": 0.45, "keys": true, "pulse": true, "pulse_gain": 0.55, "chord_len": 6.6, "swell": true, "level": 0.82},
+  "bridge": {"chords": ["Bm7", "Gmaj7"], "energy": 0.2, "bright": 0.3, "keys": true, "chord_len": 6.0, "swell": true, "level": 0.6},
+  "history": {"chords": ["Gmaj7", "Dmaj9", "Em9", "Asus"], "energy": 0.3, "bright": 0.35, "keys": true, "chord_len": 6.6, "swell": true, "level": 0.7},
+  "factory-line": {"chords": ["D", "Bm", "G", "A"], "energy": 0.55, "bright": 0.5, "keys": true, "pulse": true, "pulse_gain": 0.9, "chord_len": 6.6, "swell": true, "level": 0.92},
+  "arch": {"chords": ["Em9", "Gmaj7", "Bm9", "Asus"], "energy": 0.45, "bright": 0.4, "keys": true, "pulse": true, "pulse_gain": 0.7, "chord_len": 6.6, "swell": true, "level": 0.85},
+  "synthesis": {"chords": ["G", "A", "F#m7", "Bm"], "energy": 0.5, "bright": 0.5, "keys": true, "pulse": true, "pulse_gain": 0.6, "chord_len": 5.5, "swell": true, "level": 0.9},
+  "interfaces": {"chords": ["Dadd9", "Gmaj9", "Bm9", "A"], "energy": 0.5, "bright": 0.55, "keys": true, "keys_up": true, "chord_len": 5.0, "swell": true, "level": 0.88},
+  "computer-use": {"chords": ["Em7", "G", "D/F#", "Asus"], "energy": 0.55, "bright": 0.5, "keys": true, "pulse": true, "pulse_gain": 0.5, "chord_len": 6.0, "swell": true, "level": 0.9},
+  "opus55": {"chords": ["D", "A", "Bm", "G"], "energy": 0.7, "bright": 0.7, "keys": true, "keys_up": true, "chord_len": 6.6, "swell": true, "level": 1.0},
+  "ladder2": {"chords": ["Bm", "G", "D", "A", "Bm", "G", "Em7", "Asus"], "energy": 0.5, "bright": 0.5, "keys": true, "chord_len": 6.0, "swell": true, "level": 0.9},
+  "moves": {"chords": ["Gmaj7", "Dadd9", "Em9", "Asus"], "energy": 0.4, "bright": 0.45, "keys": true, "chord_len": 7.0, "swell": true, "level": 0.72},
+  "close": {"chords": ["G", "A", "Bm", "Dmaj9"], "energy": 0.35, "bright": 0.6, "keys": true, "keys_up": true, "chord_len": 5.5, "swell": true, "level": 0.66},
+  "coda": {"chords": ["Gmaj9", "Dmaj9"], "energy": 0.25, "bright": 0.55, "keys": true, "keys_up": true, "chord_len": 9.5, "swell": true, "level": 0.55}
+}

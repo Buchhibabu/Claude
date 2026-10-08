@@ -1,0 +1,25 @@
+<!doctype html><html><head><style>html,body{margin:0;background:#000;width:1920px;height:1080px;overflow:hidden}</style>
+<script type="importmap">{"imports":{"three":"../node_modules/three/build/three.module.js","three/addons/":"../node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setSize(1920, 1080); r.setPixelRatio(1); document.body.appendChild(r.domElement);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x05060a, 0.02);
+const cam = new THREE.PerspectiveCamera(40, 16/9, 0.1, 500);
+const N = 6000, g = new THREE.BufferGeometry(), p = new Float32Array(N*3);
+for (let i=0;i<N;i++){ p[i*3]=(Math.random()-.5)*120; p[i*3+1]=(Math.random()-.5)*60; p[i*3+2]=(Math.random()-.5)*120; }
+g.setAttribute('position', new THREE.BufferAttribute(p,3));
+scene.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0xe17b57, size: 0.25 })));
+const grid = new THREE.GridHelper(200, 80, 0x333333, 0x1a1a1a); grid.position.y=-5; scene.add(grid);
+for (let i=0;i<40;i++){ const m=new THREE.Mesh(new THREE.BoxGeometry(2,1.2,2), new THREE.MeshStandardMaterial({color:0x151515, emissive:0xe17b57, emissiveIntensity: i%5?0.05:1.5})); m.position.set((i-20)*3,-4,0); scene.add(m); }
+scene.add(new THREE.AmbientLight(0xffffff,0.3)); const dl=new THREE.DirectionalLight(0xffffff,1); dl.position.set(5,10,5); scene.add(dl);
+const comp = new EffectComposer(r); comp.addPass(new RenderPass(scene, cam));
+comp.addPass(new UnrealBloomPass(new THREE.Vector2(1920,1080), 1.1, 0.6, 0.15)); comp.addPass(new OutputPass());
+window.seek = (t) => { cam.position.set(Math.sin(t*0.3)*30, 6+Math.sin(t)*3, 30-t*2); cam.lookAt(0,-2,0); comp.render(); };
+window.READY = true; window.GL = r.getContext().getParameter(r.getContext().RENDERER);
+</script></body></html>

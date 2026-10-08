@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+dist/.segments/
+dist/stills/
+dist/review*/
+dist/*_silent.mp4
+dist/draft*.mp4
+dist/*.wav
+dist/*.log

@@ -1,0 +1,535 @@
+"""Trailer score arranger.
+
+Reads the cue sheet exported by the engine (dist/cues.json: shots with a `music` field + timed sfx cues)
+and renders a beat-locked score: music beds per section (drone / pad / pulse bass / string ostinato /
+trailer drums with a subdivision ladder), one-shot trailer SFX, true-silence air pockets, music-bus
+tricks (tape stop, stutter), sidechain ducking under impacts, and a mastered stereo mix at -14 LUFS / -1 dBTP.
+
+    python3 audio/score.py dist/cues.json dist/score.wav [--stems]
+
+Shot `music` field (every key optional):
+    {section: 'cold'|'act1'|'act2'|'turn'|'act3'|'peak'|'end',
+     bpm: 120, chord: 'Dm', energy: 0..1,
+     layers: [...] (replace the section's layers) | add: [...] | drop: [...],
+     div: 4|8|16|32 (drum subdivision for this shot; the ladder)}
+Consecutive shots with the same section/bpm form one segment; layers are rendered per shot so they can
+change on any cut (music cuts are hard, like the picture).
+"""
+import json
+import sys
+from functools import lru_cache
+
+import numpy as np
+
+sys.path.insert(0, __file__.rsplit('/', 1)[0])
+import trailer_sfx as T  # noqa: E402
+
+SR = T.SR
+
+# ------------------------------------------------------------------ harmony (D minor world, D major at the end)
+CHORDS = {  # bass root (midi) + upper voicing (midi)
+    'Dm': (38, (50, 57, 62, 65, 69)),
+    'Bb': (34, (46, 53, 58, 62, 65)),
+    'Gm': (31, (43, 50, 55, 58, 62)),
+    'F': (41, (53, 57, 60, 65, 69)),
+    'C': (36, (48, 55, 60, 64, 67)),
+    'A': (33, (45, 52, 57, 61, 64)),
+    'Am': (33, (45, 52, 57, 60, 64)),
+    'Dsus': (38, (50, 57, 62, 67, 69)),
+    'D': (38, (50, 57, 62, 66, 69)),
+    'Bbmaj': (34, (46, 53, 58, 62, 69)),
+}
+NOTE = {'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11}
+
+
+def midi_of(name):  # 'D1', 'A#1', 'Bb0'
+    n = NOTE[name[0].upper()]
+    rest = name[1:]
+    if rest[:1] in ('#', 'b'):
+        n += 1 if rest[0] == '#' else -1
+        rest = rest[1:]
+    return n + 12 * (int(rest) + 1)
+
+
+SECTIONS = {  # default layers + energy per section
+    'cold': dict(layers=['drone'], energy=0.35),
+    'act1': dict(layers=['drone', 'pulse', 'kick'], energy=0.55, div=4),
+    'act2': dict(layers=['drone', 'pulse', 'ostinato', 'drums'], energy=0.72, div=8),
+    'turn': dict(layers=['pad', 'piano'], energy=0.35),
+    'act3': dict(layers=['pulse', 'ostinato', 'drums', 'strings'], energy=0.9, div=8),
+    'peak': dict(layers=['pulse', 'ostinato', 'drums', 'strings', 'drone'], energy=1.0, div=16),
+    'end': dict(layers=['pad'], energy=0.35),
+}
+LAYER_DB = {  # static balance of the music layers before energy scaling
+    'drone': -13, 'pad': -12, 'pulse': -10, 'ostinato': -13, 'kick': -7, 'drums': -6,
+    'strings': -15, 'piano': -9, 'hats': -20, 'heart': -8, 'ticks': -22, 'choir': -14,
+}
+
+
+# ------------------------------------------------------------------ cached one-shots
+def _env(n, a=0.002, d=0.1):
+    t = np.arange(n) / SR
+    return np.clip(t / a, 0, 1) * np.exp(-t / d)
+
+
+@lru_cache(None)
+def kick(seed=1):
+    t = T.tt(0.7)
+    f = 42 + 110 * np.exp(-t / 0.03)
+    body = T.sat(T.sine(f) * np.exp(-t / 0.28), 2.2)
+    click = T.filt(np.random.default_rng(seed).standard_normal(len(t)), 'high', 3000) * np.exp(-t / 0.003) * 0.5
+    return T.norm(T.st(body + click), -1)
+
+
+@lru_cache(None)
+def taiko(seed=2):
+    """Big low drum: tom body + skin noise + hall. The 'epic trailer' downbeat."""
+    rng = np.random.default_rng(seed)
+    t = T.tt(2.2)
+    f = 58 + 70 * np.exp(-t / 0.05)
+    body = T.sat(T.sine(f) * np.exp(-t / 0.35), 2.5)
+    skin = T.filt(rng.standard_normal(len(t)), 'band', [120, 900]) * np.exp(-t / 0.05) * 0.8
+    knock = T.filt(rng.standard_normal(len(t)), 'band', [900, 3000]) * np.exp(-t / 0.01) * 0.35
+    y = T.reverb(body + skin + knock, rt60=2.4, wet_db=-6, dark=1400)[:, :len(t)]
+    return T.norm(y, -1)
+
+
+@lru_cache(None)
+def snare(seed=3):
+    rng = np.random.default_rng(seed)
+    t = T.tt(1.2)
+    noise = T.filt(rng.standard_normal(len(t)), 'band', [400, 7000]) * np.exp(-t / 0.09)
+    body = T.sine(185 + 60 * np.exp(-t / 0.01)) * np.exp(-t / 0.07) * 0.8
+    y = T.reverb(T.sat(noise + body, 1.8), rt60=1.6, wet_db=-8, dark=3000)[:, :len(t)]
+    return T.norm(y, -1)
+
+
+@lru_cache(None)
+def hat(seed=4):
+    rng = np.random.default_rng(seed)
+    t = T.tt(0.09)
+    y = T.filt(rng.standard_normal(len(t)), 'high', 7000) * np.exp(-t / 0.015)
+    return T.norm(T.st(y), -1)
+
+
+@lru_cache(None)
+def pulse_note(midi, accent=False, seed=9):
+    """One 16th of the synth-bass ostinato (same voice as trailer_sfx.pulse_bass)."""
+    rng = np.random.default_rng(seed + midi)
+    d = T.tt(0.35)
+    f = T.note_hz(midi)
+    x = sum(T.polyblep_saw(np.full(len(d), f * 2 ** (c / 1200)), rng.random()) for c in (-7, 7)) / 2
+    x += 0.6 * np.sign(T.sine(np.full(len(d), f / 2)))
+    fc = 260 + (2600 if accent else 1500) * np.exp(-d / 0.05)
+    x = T.tv_filter(x, fc, 'low', 1.4)
+    x = T.sat(x * np.clip(d / 0.002, 0, 1) * np.exp(-d / 0.09), 2.0)
+    return T.norm(T.st(x), -1)
+
+
+@lru_cache(None)
+def spiccato(midi, seed=21):
+    """Short bowed-string note (ensemble of 4 detuned saws, fast filter envelope)."""
+    rng = np.random.default_rng(seed + midi)
+    d = T.tt(0.22)
+    f = T.note_hz(midi)
+    x = np.zeros((2, len(d)))
+    for v in range(4):
+        s = T.polyblep_saw(np.full(len(d), f * 2 ** (rng.uniform(-9, 9) / 1200)), rng.random())
+        x += T.pan(s, rng.uniform(-0.7, 0.7)) / 4
+    fc = 900 + 4200 * np.exp(-d / 0.035)
+    x = np.vstack([T.tv_filter(x[c], fc, 'low', 0.9) for c in range(2)])
+    x *= np.clip(d / 0.004, 0, 1) * np.exp(-d / 0.07)
+    return T.norm(x, -1)
+
+
+@lru_cache(None)
+def braam_c(root='D1', dur=4.0):
+    return T.braam(T.note_hz(midi_of(root)), dur=dur)
+
+
+@lru_cache(None)
+def impact_c(seed=2):
+    return T.impact(seed=seed)
+
+
+@lru_cache(None)
+def whoosh_c(dur=0.8, seed=8):
+    return T.whoosh(dur=dur, seed=seed)
+
+
+@lru_cache(None)
+def ping_c(midi=86):
+    return T.piano_ping(midi)
+
+
+@lru_cache(None)
+def tick_c(tock=False):
+    return T.tick(tock)
+
+
+# ------------------------------------------------------------------ beds (rendered per shot span)
+def drone(chord, dur, bright=600, seed=31):
+    """Low saw stack + sub, gently moving filter (static sos, LFO via crossfaded two-band mix)."""
+    rng = np.random.default_rng(seed)
+    root, up = CHORDS[chord]
+    t = T.tt(dur)
+    x = np.zeros((2, len(t)))
+    for m in (root, root + 12, up[1] - 12 if up[1] - 12 > root else up[1]):
+        for v in range(3):
+            s = T.polyblep_saw(np.full(len(t), T.note_hz(m) * 2 ** (rng.uniform(-12, 12) / 1200)), rng.random())
+            x += T.pan(s, rng.uniform(-0.8, 0.8)) / 3
+    lo = T.filt(x, 'low', bright * 0.6)
+    hi = T.filt(x, 'low', bright * 1.6)
+    lfo = 0.5 + 0.5 * np.sin(2 * np.pi * 0.11 * t + rng.uniform(0, 6))
+    y = lo * (1 - lfo) + hi * lfo
+    y += 0.5 * T.st(T.sat(T.sine(np.full(len(t), T.note_hz(root))), 1.4))
+    return y
+
+
+def pad(chord, dur, seed=41, bright=2400):
+    rng = np.random.default_rng(seed)
+    root, up = CHORDS[chord]
+    t = T.tt(dur)
+    x = np.zeros((2, len(t)))
+    for m in up:
+        for v in range(3):
+            s = T.polyblep_saw(np.full(len(t), T.note_hz(m) * 2 ** (rng.uniform(-10, 10) / 1200)), rng.random())
+            x += T.pan(s, rng.uniform(-0.9, 0.9)) / 3
+    x = T.filt(x, 'low', bright)
+    x += 0.4 * T.st(T.sine(np.full(len(t), T.note_hz(root + 12))))
+    return T.reverb(x, rt60=4.0, wet_db=-6)[:, :len(t)]
+
+
+def strings_sustain(chord, dur, seed=51):
+    """Sustained high strings (crescendo inside the span: they swell into the next cut)."""
+    _, up = CHORDS[chord]
+    return T.string_swell(tuple(m + 12 for m in up[1:]), dur=dur, voices=5, seed=seed)
+
+
+def grid(dur, bpm, steps_per_beat):
+    step = 60 / bpm / steps_per_beat
+    return [i * step for i in range(int(round(dur / step)))]
+
+
+def render_shot_layers(bus, t0, dur, bpm, chord, layers, div, energy, seg_t0, shot_i):
+    """Render each music layer for one shot span [t0, t0+dur) into the per-layer stems in `bus`."""
+    beat = 60 / bpm
+    root, up = CHORDS[chord]
+    g = lambda name: LAYER_DB.get(name, -12) + 20 * np.log10(max(energy, 0.05))  # noqa: E731
+    # phase: beats counted from the segment start (segments start on a beat)
+    off = (t0 - seg_t0) % beat
+
+    def at(rel):  # absolute time for a grid position relative to the shot start
+        return t0 + rel - off if rel - off >= -1e-6 else None
+
+    fade = int(0.012 * SR)
+
+    def bed(name, x):
+        x = x[:, :int(dur * SR)].copy()
+        x[:, :fade] *= np.linspace(0, 1, fade)
+        x[:, -fade:] *= np.linspace(1, 0, fade)
+        T.place(bus.setdefault(name, np.zeros_like(bus['_'])), x, t0, g(name))
+
+    def hits(name, snd, times, gains=None):
+        b = bus.setdefault(name, np.zeros_like(bus['_']))
+        for k, tt_ in enumerate(times):
+            if tt_ is None or tt_ >= dur - 1e-6:
+                continue
+            T.place(b, snd if not callable(snd) else snd(k), t0 + tt_, g(name) + (gains[k] if gains else 0))
+
+    if 'drone' in layers:
+        bed('drone', drone(chord, dur + 0.05, bright=500 + 700 * energy, seed=31 + shot_i))
+    if 'pad' in layers:
+        bed('pad', pad(chord, dur + 0.05, seed=41 + shot_i))
+    if 'strings' in layers:
+        bed('strings', strings_sustain(chord, dur + 0.05, seed=51 + shot_i))
+    if 'pulse' in layers:  # 16ths, accented downbeats, root/octave alternation
+        pat = 'x.xxx.xxx.xxx.xx' if energy > 0.8 else 'x..x..x.x..x..x.'
+        ts = grid(dur + beat, bpm, 4)
+        times, snds = [], []
+        for k, tt_ in enumerate(ts):
+            if pat[k % 16] == 'x':
+                times.append(tt_ - off if tt_ - off >= 0 else None)
+                snds.append(pulse_note(root + (12 if (k % 8 == 6 and energy > 0.7) else 0), k % 4 == 0))
+        hits('pulse', lambda k: snds[k], times)
+    if 'ostinato' in layers:  # spiccato strings: chord tones in a rolling 16th figure
+        fig = [up[1], up[2], up[3], up[2], up[1], up[2], up[4], up[2]]
+        ts = grid(dur + beat, bpm, 4)
+        times = [tt_ - off if tt_ - off >= 0 else None for tt_ in ts]
+        hits('ostinato', lambda k: spiccato(fig[(k + int(round((t0 - seg_t0) / (beat / 4)))) % 8] + 12),
+             times, [(-2 if k % 4 else 1) for k in range(len(ts))])
+    if 'piano' in layers:  # one ping per bar, falling minor line
+        line = [86, 84, 81, 77]
+        ts = grid(dur + beat, bpm, 0.25)
+        hits('piano', lambda k: ping_c(line[k % 4]), [x - off if x - off >= 0 else None for x in ts])
+    if 'kick' in layers:  # four on the floor-ish: beats 1 and 3 + taiko on bar downbeats
+        ts = grid(dur + beat, bpm, 1)
+        hits('kick', lambda k: taiko() if (k % 4 == 0) else kick(), [x - off if x - off >= 0 else None for x in ts],
+             [0 if k % 4 == 0 else -3 for k in range(len(ts))])
+    if 'drums' in layers:  # trailer drum kit with the subdivision ladder (div = notes per bar: 4/8/16/32)
+        spb = max(1, div // 4)
+        ts = grid(dur + beat, bpm, spb)
+        times, snd, gains = [], [], []
+        for k, tt_ in enumerate(ts):
+            rel = tt_ - off
+            if rel < 0:
+                continue
+            pos = k % (4 * spb)  # position in bar
+            if pos == 0:
+                snd.append(taiko()); gains.append(2)
+            elif pos == 2 * spb:
+                snd.append(snare()); gains.append(0)
+            elif k % spb == 0:
+                snd.append(kick()); gains.append(-2)
+            else:  # subdivision fill: toms/snare ghosting louder as div rises
+                snd.append(snare() if div >= 16 else kick()); gains.append(-9 + 2 * np.log2(spb))
+            times.append(rel)
+        hits('drums', lambda k: snd[k], times, gains)
+    if 'hats' in layers:
+        ts = grid(dur + beat, bpm, 4)
+        hits('hats', hat(), [x - off if x - off >= 0 else None for x in ts])
+    if 'heart' in layers:
+        hb = T.heartbeat(bpm=bpm / 2, beats=max(1, int(dur / (120 / bpm))))
+        hits('heart', hb, [0.0])
+    if 'ticks' in layers:
+        ts = grid(dur + beat, bpm, 1)
+        hits('ticks', lambda k: tick_c(k % 2 == 1), [x - off if x - off >= 0 else None for x in ts])
+
+
+# ------------------------------------------------------------------ SFX one-shots
+def sfx_sound(e, bus_music):
+    k = e['kind']
+    if k == 'impact':
+        return impact_c(e.get('seed', 2)), 0.0, -4
+    if k == 'braam':
+        return braam_c(e.get('root', 'D1'), e.get('dur', 4.0)), 0.0, -3
+    if k == 'sub_drop':
+        return T.sub_drop(e.get('dur', 2.5)), 0.0, -5
+    if k == 'boom':
+        return taiko(), 0.0, -2
+    if k == 'whoosh':
+        d = e.get('dur', 0.8)
+        return whoosh_c(d, e.get('seed', 8)), -0.62 * d, -10  # peak lands on the cue time
+    if k == 'tick':
+        return tick_c(e.get('tock', False)), 0.0, -14
+    if k == 'bell':
+        return ping_c(e.get('midi', 86)), 0.0, -8
+    if k == 'heartbeat':
+        return T.heartbeat(e.get('bpm', 70), e.get('beats', 4)), 0.0, -6
+    if k == 'chirps':
+        return T.data_chirps(e.get('n', 12), seed=e.get('seed', 12)), 0.0, -16
+    if k == 'shimmer':
+        return T.logo_shimmer(dur=e.get('dur', 6.0)), 0.0, -8
+    if k == 'glitch':
+        src = T.data_chirps(16, step_s=0.03125, seed=e.get('seed', 5))
+        y = T.bitcrush(T.glitch_roll(src, 0.0, bpm=150, steps=(16, 32, 64), per=1), bits=5, hold=8)
+        d = int(e.get('dur', 0.35) * SR)
+        y = y[:, :d] * np.linspace(1, 0.3, min(d, y.shape[1]))
+        return T.norm(y, -1), 0.0, -14
+    if k == 'riser':  # noise riser + shepard + string swell, all ENDING at at+dur (hard cut)
+        d = e['dur']
+        r = T.noise_riser(d, bpm=e.get('bpm', 120)) * T.db(-2)
+        sh = T.shepard(d + 1.0, rate=0.35)[:, -int(d * SR):] * T.db(-8)
+        sw = T.string_swell(dur=d) * T.db(-6)
+        y = r + sh + sw
+        return T.norm(y, -1), 0.0, -6 + e.get('gain', 0)
+    if k == 'reverse_swell':
+        d = e['dur']
+        return T.reverse_swell(impact_c(), length=d), 0.0, -8
+    if k == 'roll':  # drum roll crescendo ending at at+dur, accelerating 8ths -> 32nds
+        d = e['dur']
+        bpm = e.get('bpm', 120)
+        y = np.zeros((2, int((d + 1.5) * SR)))
+        t, step = 0.0, 60 / bpm / 2
+        while t < d - 1e-6:
+            p = t / d
+            T.place(y, snare() if p > 0.3 else taiko(), t, -18 + 18 * p ** 1.3)
+            step = 60 / bpm / (2 if p < 0.4 else 4 if p < 0.7 else 8)
+            t += step
+        return T.norm(y, -1), 0.0, -6
+    if k == 'sting':  # final logo sting: impact + braam + major shimmer
+        y = impact_c(7).copy()
+        b = braam_c(e.get('root', 'D1'), 3.0)
+        y = np.pad(y, ((0, 0), (0, max(0, b.shape[1] - y.shape[1]))))
+        y[:, :b.shape[1]] += 0.8 * b
+        s = T.logo_shimmer(dur=6.0)
+        y = np.pad(y, ((0, 0), (0, max(0, s.shape[1] - y.shape[1]))))
+        y[:, :s.shape[1]] += 0.7 * s
+        return T.norm(y, -1), 0.0, -2
+    return None, 0.0, 0
+
+
+# ------------------------------------------------------------------ loudness (ITU-R BS.1770-4)
+def lufs(x):
+    from scipy.signal import lfilter
+    b1, a1 = [1.53512485958697, -2.69169618940638, 1.19839281085285], [1.0, -1.69065929318241, 0.73248077421585]
+    b2, a2 = [1.0, -2.0, 1.0], [1.0, -1.99004745483398, 0.99007225036621]
+    y = lfilter(b2, a2, lfilter(b1, a1, x, axis=1), axis=1)
+    blk, hop = int(0.4 * SR), int(0.1 * SR)
+    n = (y.shape[1] - blk) // hop + 1
+    if n <= 0:
+        return -70.0
+    cs = np.cumsum(np.pad(y ** 2, ((0, 0), (1, 0))), axis=1)
+    z = (cs[:, blk::hop][:, :n] - cs[:, 0:-blk:hop][:, :n]) / blk
+    zs = z.sum(axis=0)
+    lb = -0.691 + 10 * np.log10(zs + 1e-15)
+    g = zs[lb > -70]
+    if not len(g):
+        return -70.0
+    rel = -0.691 + 10 * np.log10(g.mean()) - 10
+    g2 = zs[(lb > -70) & (lb > rel)]
+    return -0.691 + 10 * np.log10(g2.mean())
+
+
+def short_term(x, win=3.0):
+    """Short-term loudness every second (for the energy-curve report)."""
+    out = []
+    for s in np.arange(0, x.shape[1] / SR, 1.0):
+        seg = x[:, int(s * SR):int((s + win) * SR)]
+        out.append(lufs(seg) if seg.shape[1] > 0.5 * SR else -70)
+    return out
+
+
+def true_peak_db(x):
+    from scipy.signal import resample_poly
+    return 20 * np.log10(np.max(np.abs(resample_poly(x, 4, 1, axis=1))) + 1e-12)
+
+
+def master(mix, target=-14.0, ceiling=-1.0):
+    y = T.filt(mix, 'high', 28, 4)
+    lo, hi = -12.0, 24.0
+    for _ in range(14):  # bisection on pre-gain: soft clip + true-peak limiter, measure integrated loudness
+        g = (lo + hi) / 2
+        z = np.tanh(y * T.db(g) * 1.2) / 1.2
+        z = T.limiter(z, ceiling - 0.2, look_ms=5, rel_ms=150)
+        L = lufs(z)
+        if L < target:
+            lo = g
+        else:
+            hi = g
+        if abs(L - target) < 0.1:
+            break
+    return z, L, g
+
+
+# ------------------------------------------------------------------ arrange
+def arrange(cues, stems_dir=None):
+    dur = cues['duration'] + 0.5
+    n = int(dur * SR)
+    bus = {'_': np.zeros((2, n))}
+    shots = cues['shots']
+    default_bpm = cues.get('bpm', 120)
+
+    # segments: runs of shots with identical section+bpm (beat phase resets at each segment start)
+    seg_t0, prev = 0.0, None
+    plan = []
+    for i, s in enumerate(shots):
+        m = s.get('music') or {}
+        sec = m.get('section', prev[0] if prev else 'cold')
+        sdef = SECTIONS.get(sec, SECTIONS['act1'])
+        bpm = m.get('bpm', prev[1] if prev and prev[0] == sec else default_bpm)
+        if prev is None or (sec, bpm) != prev[:2]:
+            seg_t0 = s['start']
+        layers = list(m['layers']) if 'layers' in m else list(sdef['layers'])
+        layers = [l for l in layers + m.get('add', []) if l not in m.get('drop', [])]
+        chord = m.get('chord', prev[2] if prev else 'Dm')
+        energy = m.get('energy', sdef['energy'])
+        div = m.get('div', sdef.get('div', 8))
+        plan.append((s, sec, bpm, chord, layers, div, energy, seg_t0))
+        prev = (sec, bpm, chord)
+    for i, (s, sec, bpm, chord, layers, div, energy, st0) in enumerate(plan):
+        if layers:
+            render_shot_layers(bus, s['start'], s['dur'], bpm, chord, layers, div, energy, st0, i)
+        print(f"  {s['start']:7.2f}s {s['id']:<22} {sec:<5} {bpm:>3} {chord:<5} div{div:<2} e{energy:.2f} {'+'.join(layers)}")
+
+    music = sum(v for k, v in bus.items() if k != '_')
+    sfx = np.zeros((2, n))
+    events = sorted(cues['sfx'], key=lambda e: e['t'])
+    silences = [(e['t'], e['t'] + e['dur']) for e in events if e['kind'] == 'silence']
+    duck = np.ones(n)
+
+    def gate_after(x, start):
+        """Zero samples of a sound (placed at `start`) inside any silence window that begins after it."""
+        for a, b in silences:
+            if a >= start - 1e-6:
+                i, j = int((a - start) * SR), int((b - start) * SR)
+                if i < x.shape[1]:
+                    f = min(int(0.004 * SR), x.shape[1] - i)
+                    x[:, i:i + f] *= np.linspace(1, 0, f)
+                    x[:, i + f:j] = 0
+        return x
+
+    for e in events:
+        k = e['kind']
+        if k == 'silence':
+            continue
+        if k == 'tape_stop':  # music bus winds down over dur, then nothing until the next music
+            a, d = int(e['t'] * SR), int(e.get('dur', 0.6) * SR)
+            seg = music[:, a:a + 2 * d].copy()
+            music[:, a:a + d] = T.tape_stop(seg, e.get('dur', 0.6))[:, :min(d, n - a)]
+            continue
+        if k == 'stutter':  # music bus buffer-repeat roll (1/8 -> 1/64) over dur
+            a, d = int(e['t'] * SR), int(e.get('dur', 1.0) * SR)
+            r = T.glitch_roll(music[:, a:a + SR], 0.0, bpm=e.get('bpm', 120))[:, :d]
+            music[:, a:a + r.shape[1]] = r
+            continue
+        snd, shift, base_db = sfx_sound(e, music)
+        if snd is None:
+            print('  ! unknown sfx kind', k)
+            continue
+        snd = snd.copy()
+        if k in ('riser', 'reverse_swell', 'roll'):
+            start = e['t'] + e['dur'] - snd.shape[1] / SR if k != 'roll' else e['t']
+            if k == 'roll':
+                snd = snd[:, :int(e['dur'] * SR)]
+        else:
+            start = e['t'] + shift
+        if k in ('riser', 'reverse_swell', 'roll'):  # hard end, 3 ms declick
+            f = int(0.003 * SR)
+            snd[:, -f:] *= np.linspace(1, 0, f)
+        snd = gate_after(snd, start)
+        T.place(sfx, snd, start, base_db + e.get('gain', 0))
+        if k in ('impact', 'braam', 'sting') and e.get('predip', True):  # pre-hit dip: music -8 dB over the last 1/8 note
+            i = int(e['t'] * SR)
+            L = int(0.25 * SR)
+            a = max(0, i - L)
+            duck[a:i] = np.minimum(duck[a:i], np.linspace(1, T.db(-8), i - a))
+        if k in ('impact', 'braam', 'sting', 'boom', 'sub_drop'):  # sidechain duck of the music bed
+            i = int(e['t'] * SR)
+            L = int(0.6 * SR)
+            depth = {'braam': 0.45, 'impact': 0.55, 'sting': 0.3, 'boom': 0.75, 'sub_drop': 0.7}[k]
+            env = 1 - (1 - depth) * np.exp(-np.arange(L) / (0.18 * SR))
+            j = min(n, i + L)
+            duck[i:j] = np.minimum(duck[i:j], env[:j - i])
+
+    music *= duck
+    for a, b in silences:  # true silence: the music bus is hard-muted (4 ms fades)
+        i, j = int(a * SR), int(b * SR)
+        f = int(0.004 * SR)
+        music[:, i:i + f] *= np.linspace(1, 0, f)
+        music[:, i + f:j] = 0
+        if j + f < n:
+            music[:, j:j + f] *= np.linspace(0, 1, f)
+    mix = music * T.db(-3) + sfx
+    if stems_dir:
+        T.write_wav(f'{stems_dir}/stem_music.wav', T.norm(music, -3))
+        T.write_wav(f'{stems_dir}/stem_sfx.wav', T.norm(sfx, -3))
+    return mix
+
+
+def main():
+    cues_path, out = sys.argv[1], sys.argv[2]
+    cues = json.load(open(cues_path))
+    print(f"arranging {len(cues['shots'])} shots, {len(cues['sfx'])} cues, {cues['duration']:.2f}s")
+    import os
+    mix = arrange(cues, os.path.dirname(os.path.abspath(out)) if '--stems' in sys.argv else None)
+    y, L, g = master(mix)
+    y = y[:, :int(cues['duration'] * SR)]
+    T.write_wav(out, y)
+    st = short_term(y)
+    print(f"master: {L:.2f} LUFS integrated, true peak {true_peak_db(y):.2f} dBTP, pre-gain {g:+.1f} dB")
+    print('short-term LUFS per second:', ' '.join(f'{v:.0f}' for v in st))
+
+
+if __name__ == '__main__':
+    main()

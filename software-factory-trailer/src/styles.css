@@ -1,0 +1,57 @@
+@font-face { font-family: 'Inter Tight'; font-weight: 100 900; font-style: normal; src: url('../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Inter Tight'; font-weight: 100 900; font-style: italic; src: url('../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Anton'; font-weight: 400; src: url('../node_modules/@fontsource/anton/files/anton-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Bebas Neue'; font-weight: 400; src: url('../node_modules/@fontsource/bebas-neue/files/bebas-neue-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Space Grotesk'; font-weight: 300 700; src: url('../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; src: url('../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; src: url('../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 500; src: url('../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2') format('woff2'); }
+
+:root {
+  --ink: #040406;
+  --paper: #f4f1ea;
+  --muted: #8d8a83;
+  --clay: #ff7a4d;        /* hot accent (Claude-adjacent, pushed hotter for the trailer) */
+  --ember: #ff4d2e;
+  --gold: #ffc35a;
+  --ice: #8fd3ff;
+  --danger: #ff3b5c;
+  --display: 'Inter Tight', 'Inter', sans-serif;
+  --cond: 'Anton', 'Bebas Neue', sans-serif;
+  --serif: 'Instrument Serif', serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1920px; height: 1080px; background: #000; overflow: hidden; }
+body { font-family: var(--display); color: var(--paper); -webkit-font-smoothing: antialiased; }
+#frame { position: absolute; inset: 0; overflow: hidden; background: var(--ink); }
+#world { position: absolute; inset: 0; transform-origin: 50% 50%; }
+#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+#ui { position: absolute; inset: 0; }
+.shot { position: absolute; inset: 0; }
+#fx > div { position: absolute; inset: 0; pointer-events: none; }
+#flash { opacity: 0; background: #fff; mix-blend-mode: normal; }
+#black { opacity: 0; background: #000; }
+#grain { background: url('grain.png'); opacity: 0.06; mix-blend-mode: overlay; }
+#vignette { background: radial-gradient(ellipse 78% 72% at 50% 50%, transparent 60%, rgba(0,0,0,0.6) 100%); }
+#bars .bar { position: absolute; left: 0; right: 0; height: 0; background: #000; }
+#bars .top { top: 0; } #bars .bot { bottom: 0; }
+
+/* Type */
+.tx { line-height: 1; will-change: transform, opacity, filter; transform-origin: 50% 50%; }
+.slam { font-family: var(--display); font-weight: 800; font-size: 150px; letter-spacing: -0.035em; line-height: 0.92; }
+.mega { font-family: var(--display); font-weight: 900; font-size: 300px; letter-spacing: -0.05em; line-height: 0.85; }
+.cond { font-family: var(--cond); font-size: 220px; letter-spacing: 0.01em; line-height: 0.9; text-transform: uppercase; }
+.title { font-family: var(--display); font-weight: 300; font-size: 64px; letter-spacing: 0.5em; text-transform: uppercase; }
+.kicker { font-family: var(--display); font-weight: 600; font-size: 26px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--clay); }
+.line { font-family: var(--display); font-weight: 500; font-size: 56px; letter-spacing: -0.015em; line-height: 1.1; }
+.serif { font-family: var(--serif); font-style: italic; font-weight: 400; }
+.mono { font-family: var(--mono); font-weight: 500; }
+.dim { color: var(--muted); }
+.hot { color: var(--clay); }
+.gold { color: var(--gold); }
+.ice { color: var(--ice); }
+.danger { color: var(--danger); }
+.src { position: absolute; right: 64px; bottom: 44px; font-family: var(--display); font-size: 17px; letter-spacing: 0.04em; color: rgba(244,241,234,0.45); text-align: right; }
+.ln { display: block; } .lni { display: inline-block; }
+.ch { display: inline-block; }

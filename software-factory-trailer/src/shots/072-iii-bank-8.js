@@ -13,7 +13,7 @@ shot({
     const { scene, camera } = B.cascadeStage(8);
     const H = W.hall(scene, { state: 'dark', parts: { towers: { review: 300, test: 320 } } });
     const grade = W.bankGrade(8);
-    return { scene, camera, ...grade, update(lt) {
+    return { scene, camera, ...grade, get exposure() { return grade.exposure; }, get bloom() { return grade.bloom; }, get vignette() { return grade.vignette; }, get sat() { return grade.sat; }, get tint() { return grade.tint; }, get lift() { return grade.lift; }, get ca() { return grade.ca; }, update(lt) {
       const t = B.T(ctx, lt);
       const on = B.cascade(H, 8, lt, t, { beam: 0.8 });
       H.towers.update(lt, { review: 300, test: 320, lit: 1, t, flow: 6 });

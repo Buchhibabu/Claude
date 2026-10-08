@@ -21,7 +21,7 @@ shot({
     const H = W.hall(scene, { state: 'lit', parts: { towers: { review: 1200, test: 640 }, cursor: true } });
     H.foreman.group.visible = false;   // not framed here; keep the plant count exact
     const grade = W.grade('III');
-    return { scene, camera, ...grade, update(lt) {
+    return { scene, camera, ...grade, get exposure() { return grade.exposure; }, get bloom() { return grade.bloom; }, get vignette() { return grade.vignette; }, get sat() { return grade.sat; }, get tint() { return grade.tint; }, get lift() { return grade.lift; }, get ca() { return grade.ca; }, update(lt) {
       const t = B.T(ctx, lt);
       H.banks.update(lt, { on: 1, t });
       H.line.update(lt, { lit: 1, strips: 1 });

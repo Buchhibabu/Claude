@@ -29,7 +29,7 @@ shot({
     grade.bloom = { strength: 0.95, radius: 0.4, threshold: 0.84 }; grade.exposure = 0.9; grade.vignette = 0.6;
     // slam on the beat, chatter on twos: closed, bounce, closed, small bounce, closed
     const chatter = (lt) => [1, 0.55, 1, 0.82, 1, 1][Math.min(5, Math.floor(lt * 15))];
-    return { scene, camera, ...grade, update(lt) {
+    return { scene, camera, ...grade, get exposure() { return grade.exposure; }, get bloom() { return grade.bloom; }, get vignette() { return grade.vignette; }, get sat() { return grade.sat; }, get tint() { return grade.tint; }, get lift() { return grade.lift; }, get ca() { return grade.ca; }, update(lt) {
       const t = B.T(ctx, lt);
       const on = B.bankOn(3, lt);
       H.banks.update(lt, { on, t, dust: 0.4 });

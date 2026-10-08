@@ -17,7 +17,7 @@ shot({
     const motes = B.beamMotes({ x: 50, count: 2600, size: 0.06, seed: 71 }); scene.add(motes.points);
     const grade = W.bankGrade(7);
     grade.bloom = { strength: 1.0, radius: 0.4, threshold: 0.82 };
-    return { scene, camera, ...grade, update(lt) {
+    return { scene, camera, ...grade, get exposure() { return grade.exposure; }, get bloom() { return grade.bloom; }, get vignette() { return grade.vignette; }, get sat() { return grade.sat; }, get tint() { return grade.tint; }, get lift() { return grade.lift; }, get ca() { return grade.ca; }, update(lt) {
       const t = B.T(ctx, lt);
       const on = B.cascade(H, 7, lt, t, { beam: 0.6 });
       const o = on[6];

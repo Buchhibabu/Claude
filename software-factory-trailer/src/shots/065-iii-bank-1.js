@@ -23,7 +23,7 @@ shot({
     const P0 = [-90, 0.5, 0];
     const up = Math.atan2(59.6 - 0.5, 20), down = Math.atan2(19.5, 150);
     const grade = W.bankGrade(1);
-    return { scene, camera, ...grade, update(lt) {
+    return { scene, camera, ...grade, get exposure() { return grade.exposure; }, get bloom() { return grade.bloom; }, get vignette() { return grade.vignette; }, get sat() { return grade.sat; }, get tint() { return grade.tint; }, get lift() { return grade.lift; }, get ca() { return grade.ca; }, update(lt) {
       const t = B.T(ctx, lt);
       const on = B.cascade(H, 1, lt, t);
       pl.intensity = 700 * on[0];

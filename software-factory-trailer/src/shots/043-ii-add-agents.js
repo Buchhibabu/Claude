@@ -47,7 +47,7 @@ shot({
     const br = rand(4302);
     for (let i = 0; i < 30; i++) {
       const red = i < 11;
-      const s = bokeh({ color: red ? C.red : C.ice, k: red ? 0.9 : 0.35, size: red ? 0.35 + br() * 0.3 : 0.25 + br() * 0.45 });
+      const s = bokeh({ color: red ? C.red : C.ice, k: red ? 0.9 : 0.35, size: red ? 0.22 + br() * 0.22 : 0.2 + br() * 0.35 });
       s.position.set(-3.6 + br() * 6, 0.25 + br() * 1.6, 3.5 + br() * 5);
       s.userData.red = red; s.userData.ph = br(); scene.add(s); BK.push(s);
     }
@@ -58,8 +58,8 @@ shot({
       scene, camera, ...W.grade('II', { vignette: 0.62, bloom: { strength: 0.85, radius: 0.45, threshold: 0.82 } }),
       update(lt) {
         const t = ctx.shot.start + lt;
-        human.update(lt, { rimK: 1.6 });
-        BK.forEach((s) => { const on = s.userData.red ? W.blink(t, { div: 1, origin: s.userData.ph > 0.5 ? 0 : 0.25 }) : 1; s.userData.set((s.userData.red ? 1.1 : 0.3) * (0.1 + 0.9 * on), s.userData.red ? C.red : C.ice); });
+        human.update(lt, { rimK: 1.1 });
+        BK.forEach((s) => { const on = s.userData.red ? W.blink(t, { div: 1, origin: s.userData.ph > 0.5 ? 0 : 0.25 }) : 1; s.userData.set((s.userData.red ? 0.8 : 0.26) * (0.1 + 0.9 * on), s.userData.red ? C.red : C.ice); });
         H.extra.length = 0;
         H.extra.push({ p: [B.HUMAN_C[0], 9, B.HUMAN_C[2] - 0.6], c: C.ice, k: 3, pool: 3.8, poolK: 1.6, refl: 1.0, size: 0.9 });
         H.update(lt, { sky: 1.5 });

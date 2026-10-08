@@ -63,7 +63,7 @@ shot({
         for (let k = 0; k < 2; k++) {
           const sg = k === 0 ? -1 : 1;
           const ek = lt >= 0.3 ? W.CARD.redEdge(lerp(2.4, 1.3, clamp((lt - 0.3) / 0.15))) : W.CARD.edge(1.5 + 0.8 * g);
-          halves.set(k, { p: [sg * (CW / 4 + 0.002 + 0.16 * split), 0, 0], r: [0, sg * 0.12 * split, -sg * 0.16 * split], edge: ek, body: lt >= 0.3 ? W.lin(C.red, 0.02) : W.CARD.body(0.5) });
+          halves.set(k, { p: [sg * (CW / 4 + 0.002 + 0.13 * split), 0, 0], r: [0, sg * 0.05 * split, -sg * 0.09 * split], edge: ek, body: lt >= 0.3 ? W.lin(C.red, 0.02) : W.CARD.body(0.5) });
           // writer: rides the card's end
           if (lt < 0.15) { WR.hide(k); WS.hide(k); wrFl[k].userData.set(0); continue; }
           v.set(sg * (CW / 2 - 0.12 + 0.16 * split), CH / 2 + 0.1, 0.1).applyMatrix4(piv.matrixWorld);

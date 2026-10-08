@@ -21,7 +21,7 @@ shot({
     // warm haze behind the foreman so both stepped silhouettes read as cut-outs (same rig as iii-still)
     const halo = W.flare({ color: W.C.amberRail, k: 3.2, size: 520, fog: false, ref: 4 }); halo.position.set(0, 80, -520); scene.add(halo);
     const halo2 = W.flare({ color: W.C.ember, k: 1.4, size: 900, fog: false, ref: 4 }); halo2.position.set(0, 20, -700); scene.add(halo2);
-    const motes = B.beamMotes({ x: 0, count: 900, r0: 30, h: 46, size: 0.1, seed: 781 }); scene.add(motes.points);
+    const motes = B.beamMotes({ x: 0, count: 600, r0: 30, h: 46, size: 0.1, seed: 781 }); scene.add(motes.points);
     const SNAPS = [0.0, 0.4, 0.8];
     const g = W.grade('III', { bloom: { strength: 1.1, radius: 0.45, threshold: 0.75 }, ca: 0.0006, exposure: 0.95 });
     return {

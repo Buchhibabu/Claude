@@ -421,12 +421,13 @@ export function stamp3D(text, { height = 1.4, color = C.red, k = 2.4, glow = 0.3
 }
 
 // ----------------------------------------------------------------------------------------- MASTER C, monumental variant (ii-line-waits-2)
-/** MASTER C camera as built: 14mm worm's-eye from (1.4, 0.3, z0) creeping `push` toward the mass, pitched so the floor horizon sits at
- *  ~y 925 px (the tiny human stands on it, under the refrain card). Returns the fov for camFX. */
-export function camHumanUnderTowerC(camera, lt, { dur = 2, z0 = 58, push = 0.04, pitch = 26.9, t = lt, handheld: hh = 0, roll = 0 } = {}) {
+/** MASTER C camera as built: 14mm worm's-eye from (x, 0.3, z0) creeping `push` toward the mass, pitched so the floor horizon sits at
+ *  ~y 930 px. ii-line-waits-2 uses x -1.7 / z0 52 so the tiny human (at HUMAN_C) stands in the word gap of the refrain card
+ *  (between LINE and WAITS., ~x 1028 px). Returns the fov for camFX. */
+export function camHumanUnderTowerC(camera, lt, { dur = 2, z0 = 58, x = 1.4, push = 0.04, pitch = 26.9, t = lt, handheld: hh = 0, roll = 0 } = {}) {
   const z = z0 * (1 - push * ease.out(clamp(lt / dur)));
   const ty = 0.3 + z * Math.tan(THREE.MathUtils.degToRad(pitch));
-  W.camLook(camera, [1.4, 0.3, z], [1.4, ty, 0], W.FOV[14], { roll });
+  W.camLook(camera, [x, 0.3, z], [x, ty, 0], W.FOV[14], { roll });
   W.handheld(camera, t, hh, 7);
   return W.FOV[14];
 }
@@ -449,7 +450,7 @@ export function humanUnderSetC(scene, { reviewMax = 300, testMax = 170, state = 
   W.aimShaft(shaft, [HUMAN_C[0], 46, HUMAN_C[2] - 1.5], [HUMAN_C[0], 0, HUMAN_C[2]]);
   scene.add(shaft);
   const topL = new THREE.PointLight(C.ice, 0, 14, 1.4); topL.position.set(HUMAN_C[0], 1.9, HUMAN_C[2] - 2.2); scene.add(topL);
-  const behind = glowCard({ w: 9, h: 3.2, color: 0xa9c6de, k: 0.1, falloff: 2.4 }); behind.position.set(HUMAN_C[0], 1.15, HUMAN_C[2] - 2.6); scene.add(behind);
+  const behind = glowCard({ w: 9, h: 3.2, color: 0xa9c6de, k: 0.1, falloff: 2.2 }); behind.position.set(HUMAN_C[0], 1.15, HUMAN_C[2] - 2.6); scene.add(behind);
   const sky = glowCard({ w: 150, h: 230, color: 0x8fb0c8, k: 0.11, falloff: 2.0 }); sky.position.set(4, 95, -70); scene.add(sky);
   const api = {
     H, rev, test, scree, human, shaft, topL, behind,
@@ -460,8 +461,8 @@ export function humanUnderSetC(scene, { reviewMax = 300, testMax = 170, state = 
       human.update(lt, { rim: p.rim ?? C.ice, rimK: p.rimK ?? 3.2 });
       const pk = p.poolK ?? 1;
       shaft.userData.set(0.8 * pk, 0.13 * pk);
-      topL.intensity = 16 * pk;
-      behind.userData.set(0.22 * pk, 0xa9c6de);
+      topL.intensity = 12 * pk;
+      behind.userData.set(0.17 * pk, 0xa9c6de);
       H.extra.length = 0;
       H.extra.push({ p: [HUMAN_C[0], 9, HUMAN_C[2] - 0.6], c: p.rim ?? C.ice, k: 3.2 * pk, pool: 3.8, poolK: 1.6, refl: 1.0, size: 0.9 });
       H.extra.push(...rev.sources(), ...test.sources());

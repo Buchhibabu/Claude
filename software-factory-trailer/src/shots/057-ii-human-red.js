@@ -17,6 +17,8 @@ shot({
     ctx.sfx(0, 'boom', { gain: -6 });
     const U = M.humanUnderSet(scene, { state: 'dark', reviewMax: 600, testMax: 340 });
     const HC = M.HUMAN_C;
+    // seen from 50 deg above, the default fresnel (pow 2.2) lights the whole body: tighten it to a thin rim so it stays a silhouette
+    U.human.human.traverse((o) => { if (o.isMesh && o.material.uniforms && o.material.uniforms.uPow) o.material.uniforms.uPow.value = 4.5; });
     // seen from above, the scree's big top faces read as grey slabs: darken their bodies (edges carry the read)
     for (let i = 0; i < U.spillI.count; i++) U.spillI.color(i, W.CARD.edge(1.0), W.CARD.body(0.12));
     U.spillI.commit();
@@ -38,7 +40,7 @@ shot({
         const lw = B.frameTab(lt, LAMP), rw = B.frameTab(lt, RIM);
         mix.copy(ice).lerp(red, rw);
         const rimHex = mix.getHex();
-        U.update(lt, { t, review: 600, test: 320, red: 1, rim: rimHex, rimK: lerp(3, 4.2, rw), poolK: lerp(1, 0.55, rw), sky: 2.4, pinDiv: 2 });
+        U.update(lt, { t, review: 600, test: 320, red: 1, rim: rimHex, rimK: lerp(3.6, 5.5, rw), poolK: lerp(1, 0.55, rw), sky: 2.4, pinDiv: 2 });
         // red is the rim + a tight pool only: tame the set's floor pool and the human's back light (it washed the scree)
         const pool = U.H.extra[0]; pool.k = lerp(2.4, 3.2, rw); pool.pool = 1.7; pool.poolK = 1.1; pool.refl = 0.9;
         if (U.human.light) U.human.light.intensity *= 0.16;

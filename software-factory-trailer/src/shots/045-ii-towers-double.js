@@ -36,7 +36,7 @@ shot({
     const STEP = 1 / 16;
     const grow = (lt, from, to) => { const s = Math.floor(lt / STEP), w = lt - s * STEP; const a = from + (to - from) * Math.min(16, s) / 16, b = from + (to - from) * Math.min(16, s + 1) / 16; return lerp(a, b, ease.expoOut(clamp(w / 0.05))); };
     // fresh courses: the slice rammed in most recently glows hot ice and cools as it rises
-    const hot = W.lin(C.ice, W.kl(4.5) * 1.15), hotB = W.lin(C.card, 0.25);
+    const hot = W.lin(C.ice, W.kl(3.4) * 1.15), hotB = W.lin(C.card, 0.18);
     const heat = (m, MAX, h) => {
       const per = Math.ceil(MAX / 4) + 1, e0 = W.CARD.edge(1.3), b0 = W.CARD.body(1.1);
       m.cols.forEach((c, ci) => { for (let k = 0; k < per; k++) { const age = h - (MAX - k * 4); if (age < 0 || age > 160) continue; const f = Math.exp(-age / 55);

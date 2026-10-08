@@ -1,0 +1,6712 @@
+{
+ "title": "LIGHTS ON: Claude Opus 5.5 launch trailer (locked cut)",
+ "logline": "In a cathedral-sized dark hall, one clay cursor learns to code and wave one goes from capability to budget in about 5 months. Then the camera pulls back: code was one lit box on a dark delivery line, 16% of developer time. Work arriving at agent speed piles into towers at human-speed stations, and the reflex to add more agents makes the errors worse. In silence someone asks who runs the line. The lights come on bank by bank, graph, hierarchy and swarm lock into place, and the dark mass at the back of the hall, which we took for architecture, lights from its core: the foreman, Claude Opus 5.5. The clock restarts at MONTH 1.",
+ "world": "ONE PLACE, ONE PROTAGONIST LIGHT, ONE COLOR PLOT (cold to warm). Units are scene units (u); 1.8u = one human. y is up; work flows along +x (left to right on screen in every flow shot).\n\nPALETTE PER ACT (hex):\n- COLD OPEN (flash-forward, degraded): void #050506, amber rail light #FFB070, clay #D97757 (max 10% of frame), brass #F3D9B1 -> #B88A5A -> #4A3626. Fog color #0B0907, density x2, exposure -1 stop, sat 0.9. The rewind drains to steel #5B7A93.\n- ACT I: void #050506, slate #141413, graphite #262624, steel #5B7A93, ice #CFE3F2. Clay #D97757 is the ONLY warm hue (the cursor and the code-station orbs): 2% of frame, rising to about 5% when the code tower blazes. sat 0.8, tint [0.96,1.0,1.06].\n- MIDPOINT: near-black, ice hairlines #5B7A93 at 8% brightness, exactly one clay segment.\n- ACT II: cold desaturated (sat 0.75), ice whites #CFE3F2, card ivory #E8E6DF, alert red #FF453A as pinpoints only (1% of frame or less; never a full-field red), clay protagonist dimmed to 30%.\n- DROP: pure black, ivory #FAF9F5 mono type.\n- ACT III: warm. Clay #D97757 / ember #FF8A5C are reserved for CLAUDE (the foreman core, its 12 threads, its sub-leads, the 100-agent team, the Stripe session). Neutral structure (the graph, hierarchy and swarm diagrams and the Google-study coordinator) is ivory #FAF9F5, ice #CFE3F2 and brass #E8B47A, never clay. Lit-hall amber #FFD2A0. sat 1.05, tint [1.04,1.0,0.95]. Clay 5-10% of frame, rising to 20% on the foreman.\n- TITLE: black ground, clay -> ivory light line, brass sweep; clay at most 20%.\n- BUTTON / END: void + one clay cursor, then a warm radial ignition; end card black + ivory mono.\n\nMATERIALS: no glass, no transmission, no MeshPhysicalMaterial, no DOF pass. BRASS = a MeshStandard body #4A3626 (metalness 0.9, roughness 0.35) whose read comes from EMISSIVE SEAMS: glowBox edges:true or 0.4u-thick glowBox strips in #E8B47A (k 0 unlit, k 3 Act I gates, k 6 lit foreman). OBSIDIAN = MeshStandard #0B0B0C (roughness 0.6, metalness 0.3). CARDS = glowBox 3 x 0.5 x 2, #E8E6DF, emissive k 1.2, edges on. AGENTS = orb (clay k 10 / ice k 4 / ivory k 6). FLOOR = MeshStandard #0A0A0B (roughness 0.35, metalness 0.2) + grid({y:0.01, cell:2, color:'#1A2430', fade:true}).\n\nLIGHT: HDR emissives k 2-20 carry the image; bloom threshold 0.75 (0.9 on type shots), strength 0.9 (1.6 on hits). The stage() key light is dimmed to 0.15 in Acts I-II so the frame stays 70-85% black. The human is always rim-lit from behind (point light, 2u behind, intensity 2, distance 12: ice #CFE3F2 in Acts I-II, amber #FFD2A0 in Act III). Light banks are beam() shafts through fog. Dust motes: particles(1,500, size 1.5px, #CFE3F2 or #FFD2A0) drifting 0.6u/s, visible only inside beams.\n\nFOG and DEPTH: FogExp2, color #07090B. Hall density 0.005 (an object 200u away keeps about 37% contrast). Plant shots use 0.006 so the foreman at 260u keeps about 20% (reads as dark architecture). Macro shots use 0.02. Depth of field is FAKED by fog, scale and 3-4 geometry layers; never rack focus.\n\nTHE HALL (one set, reused by every 3D shot): floor x -300..300, z -290..90. No visible ceiling: 40 PILLARS (glowBox 2 x 120 x 2, slate #141413, edge lines ice #5B7A93 k 0.3 in Acts I-II, brass #E8B47A k 1.5 in Act III) in two rows at z = +30 and z = -30, x = -285 + 30i (i = 0..19); their tops dissolve into fog. THE LINE runs along z = 0 from x = -70 to x = +70 (140u): a 0.15u conveyor hairline (fatLine, ivory k 2) at y = 1.2 with 7 STATIONS. THE FOREMAN stands behind the line at (0, 0, -200), facing +z, 196u tall. The MONTH GATES stand on the approach rail at x = -250, -210, -180, -155, -135 (z = 0). Eight LIGHT BANKS hang at y = 60 over the line.\n\nRECURRING SET PIECES (exact construction in \"shared\"): lineStations, codeTower, cardTowers, monthGates, lightBanks, ledgerRow, railNetwork, foremanZiggurat, foremanThreads, humanAnchor, cursorBlock, agentOrbs.\n\nMOTIF RULES:\n- The clay cursor/spark blinks on the music tick every time it appears: quarter notes = human speed; 8ths (double time) from OPUS 4.5 SHIPS; it stays ON in the final frame.\n- Clay means Claude. Anything Claude did is clay; anything Claude did not do (Google's study, Cursor's lock jam, the human-speed review cursor) is ice or ivory.\n- The foreman is planted three times as unlit architecture (shots i-human-plant, i-tower-plant, ii-plant-3), always telephoto-compressed and fogged, and is never framed as an object until it lights radially from its core in iii-foreman-hero.\n- Every Act II problem composition returns in Act III through the SAME camera function (see shared cam* entries).\n- Red is a pinpoint, never a field. Errors at x4.4 keep exactly 4 residual red tendrils.\n\nTYPE RULES (≤7 words per card; ≤140 words total including source tags; held ≥ chars/15 + 0.5 s once fully on):\n- cond: Anton caps 220px, ivory #FAF9F5; refrain slot = lower-centre y 820 (on the 2.39 frame), fixed for THE LINE WAITS. x2 and THE LINE RUNS.\n- mega: Inter Tight 900, 300px, tabular figures, for numbers (≈5 MONTHS., x17.2, x4.4).\n- slam: Inter Tight 800, 150px, for stamped station words and proof lines; the stamped station words REVIEW./TEST./DEPLOY. are textPlanes in world space (danger red #FF453A in Act II).\n- title: Inter Tight 300 caps, wide-tracked (+0.45em -> +0.08em settle), for THE NEXT ONE? and the title lockup.\n- mono (V1, the human voice): JetBrains Mono 500, lowercase sentence case, 48px, typed 1 char per frame with a cursor blinking on the tick. ONLY: they just don't work. / just add more agents. / who runs the line?\n- kicker / whisper: JetBrains Mono 500 caps 24px, +0.18em tracking, ice #CFE3F2 at 80%, decode-scramble entrance; used for source tags (KARPATHY, OCT 2025 / ATLASSIAN / GOOGLE RESEARCH / SAME STUDY / SYSTEM CARD / STRIPE / PROJECTION) and the NOV 2025 date. Minimum 22px, minimum 0.8 s on screen.\n- Colors: claims ivory; clay ('hot') only on Claude tokens (OPUS 4.5, RUNS, 5.5, the title); danger red only for Act II station stamps and x17.2; x4.4 is ice, never clay.\n- Readable type sits on a background darkened -0.8 stop; camera at 3 deg/s or less while a card is being read.\n\nANGLE GRAMMAR: WORM'S-EYE = threat in Act II (towers), awe in Act III (the foreman). TOP-DOWN = understanding (midpoint, funnel, error map, factory, foreman thread map); approach pitch -89.5 deg and never flip camera.up mid-move (for a static top-down set camera.up (0,0,-1) before lookAt). MACRO = mechanism and intimacy (cursor, two writers, one writer). FPV = speed (gates, launch). TELEPHOTO 135-200mm = compression (the foreman plants, the card wall). Acts I-II: handheld 0.3 deg and Dutch 6-12 deg. From the Act III turn frame on: zero handheld, level horizon, symmetry, L->R flow.",
+ "motifs": [
+  "M1 THE CLAY SPARK. A clay cursor block blinks on the tick at the one station (Act I), ignites and breaks the tick into double time when Opus 4.5 ships, multiplies into the code tower, is lost and dimmed to 30% inside the cold flat swarm (Act II), returns transformed as the foreman's core with 12 threads (Act III), and in the final frame stops blinking and stays ON.",
+  "M2 THE LINE + REFRAIN. Midpoint: one lit box (CODE, sized 16% of the line) on a dark 7-station line. Act II: the same stations jam into towers, with THE LINE WAITS. shown twice in the same slot. Turn: the 8 banks switch on one per beat and the refrain flips to THE LINE RUNS. on the mirror frame. The REVIEW / TEST / DEPLOY / human-under-tower / error-map compositions all return lit.",
+  "M3 THE CLOCK. The tick on every beat under Act I becomes accelerating Risset ticks through the five brass MONTH gates (lintel pips light 1..5), survives every music stop (midpoint, drop), and returns alone at 120 BPM in the button, where the counter rolls MONTH 0 -> 1.",
+  "M4 THE PLANT. The dark stepped mass at the back of the hall: seen as an unexplained colossus in the cold open, as architecture in three telephoto plants, and as the foreman when it lights radially from its core.",
+  "M5 THE HUMAN (1.8u scale anchor). At the one station (I), dwarfed under the red 300u tower (II), at the foreman's foot handing up one light-card brief (III), and recalled under the lit tower at the peak. It pays off FROM ONE HUMAN BRIEF."
+ ],
+ "music_plan": "Key D minor over a D pedal; 5-note motif D-F-A-G-F. 120 BPM (beat 0.5 s) from 0:00 to the Act III bank cascade, 150 BPM (beat 0.4 s, 8th 0.2 s) from the first bank through the title, back to 120 BPM for the button and end so the clock tick returns at its Act I rate. Per-shot music uses only the arranger vocabulary (section / chord / div / energy / add / drop).\n\nCOLD 0:00-0:08 (cold): f0 impact + sub_drop + tick; 8th preview pulse; riser 0.5->2.0; reverse swell ending 2.0; BRAAM #1 (D1) + impact + sub_drop at 2.0; boom + bell ping at 4.0; reverse swell into 6.0; low impact + tape_stop rewind at 6.0; single tick at 7.5.\n\nACT I 0:08-0:36 (act1): 8-14 drone + tick on every beat only (energy 0.2). MOOD CHANGE #1 at 14.0 (OPUS 4.5 SHIPS): pulse + ostinato + kick enter in 8ths 'x..x..x.x..x..x.' (Dm | Bb | C | Dm, 2 bars each) - the music starts moving with the product. 16.0-28.0: div 16, Risset ticks accelerate under the MONTH gates (whoosh peaks at the gate passes 16.75 / 20.5 / 23.5 / 26.0 / 27.75). 28.0: 2 s riser into 30.0 impact A + sub (CAPABILITY -> BUDGET). 30-34 groove with hits every 2 beats; 35.5 suckback into SILENCE #1.\n\nSILENCE #1 36.0-36.5. MIDPOINT 36.0-42.5 (turn): the tick alone over a D drone; boom + ping at 40.5 (16%); 1 s riser into 42.5.\n\nACT II 42.5-72.5 (act2): MOOD CHANGE #2 on the 42.5 boom: pulse ostinato in 8ths, Dm-Bb-C-Dm, hit on every bar. Tricolon 48.5 tom / 49.5 tom+metal / 50.5 tom+metal+sub. Heartbeat from 52.5 (refrain #2). 54.5 the pulse goes to 16ths (3+3+2) as the reflex is typed. Glitch bursts 59.3 / 60.0 / 63.0 / 72.0 (4 in total). 64.0 tape_stop slice on the topple. 66.5-72.5 accelerando: 6 s noise riser + Shepard bed, kick on every cut (1.0 -> 0.5 -> 0.25 s), stutter on the last bar; riser hard-ends at 72.5.\n\nSILENCE #2 72.5-73.5 (the drop): digital zero. 73.5 one tick; typing clicks; sub thumps 74.75 / 75.25; 0.75 s suckback ends 76.5.\n\nTEMPO LIFT 76.5 (150 BPM): 8 bank clunks, one per beat (76.5 ... 79.3), each lower and bigger, over a 3.2 s riser + string swell; pre-hit dip on the last 8th.\n\nMOOD CHANGE #3 at 79.7 (act3): BRAAM #2 (D1) + impact + sub_drop; climax theme with the Bb -> D major lift, 16th ostinato, hits on beats 1 and 3. Structure tricolon on GRAPH / HIERARCHY / SWARM adds a layer each (boom -> boom+impact -> boom+impact+sub). x4.4 lands on an impact with counter clicks and NO healing chime (errors are reduced, not gone). 94.9 dip to pad only (stillness). 95.3 light with NO sound. 95.7 BRAAM #3 (A1, short) + tier-S impact + sub_drop on the 5.5 engraving (the delayed boom); motif statement #2 on full brass pad; 96.9 boom as the foreman lights. Proofs: impact on each card (101.7 / 105.3), metal 310 / 370 Hz.\n\nPEAK 109.7-114.9 (peak): hit on every beat, the wordless tricolon at 112.1 / 112.5 / 112.9, 8ths through the recall flurry; 4 s noise riser + snare roll; tape_stop on the last 8th; reverse swell ends at 114.9.\n\nSILENCE #3 114.9-115.7 (false stop). 115.7 TITLE: BRAAM #4, a D1+A1 power chord with no third (Dsus) + impact 0 dB + sub_drop + logo shimmer; tail left unresolved.\n\nBUTTON (120 BPM) from 120.5: the tick returns alone at -26 dB on every beat; motif statement #3 on a single high piano line; bell on the MONTH 1 roll (121.5); micro-sting (chirps + impact -12 + bell) on BUDGETS IN EARLY 2027. (124.0); final sting when the cursor stops blinking (128.0) and the tick stops with it; pad tail decays below -60 dBFS by 133.5.\n\nBUDGET: braams 4 (2.0, 79.7, 95.7, 115.7); silences 3 (0.5 s, 1.0 s, 0.8 s); every riser and reverse swell ends exactly on a hit or a silence. Loudness: Act I about -22 -> Act II -16 -> Act III -11 LUFS-S -> title momentary max -7; master -14 LUFS-I, at most -1 dBTP.",
+ "acts": [
+  {
+   "name": "COLD OPEN: flash-forward + rewind",
+   "code": "COLD",
+   "start": 0.0,
+   "end": 8.0,
+   "purpose": "Show the lit factory first, degraded and too fast to spend. Land the thesis number on BRAAM #1 (WAVE ONE / ≈5 MONTHS.), ask THE NEXT ONE? (asked, never claimed), then rewind every light to darkness and collapse to one clay cursor.",
+   "grade": "Warm but withheld: fog x2, exposure -1 stop, sat 0.9, clay at most 10%. The rewind drains to cold steel.",
+   "letterbox": "2.39:1 (138 px)"
+  },
+  {
+   "name": "ACT I: ONE STATION (wave one)",
+   "code": "I",
+   "start": 8.0,
+   "end": 36.0,
+   "purpose": "A single cursor in a vast dark hall. Agents don't work; then Opus 4.5 ships and the music starts moving (ostinato at 14.0). MONTH 1->5 gates accelerate (4 / 3 / 2.5 / 2 s) to a budget ledger: capability becomes budget. The foreman is planted twice as architecture.",
+   "grade": "Cold: void #050506, steel #5B7A93, ice #CFE3F2; sat 0.8. Clay is the only warm hue (2% -> 5%). Handheld 0.3 deg, Dutch 6-10 deg.",
+   "letterbox": "2.39:1"
+  },
+  {
+   "name": "MIDPOINT: code was one station",
+   "code": "MID",
+   "start": 36.0,
+   "end": 42.5,
+   "purpose": "The re-read. One 4 s pull-back to top-down: the blazing station is one lit box on a dark 7-station line. The CODE segment lights IN PLACE at exactly 16% of the line length: writing code is 16% of developer time.",
+   "grade": "Near-black, cold; one clay segment.",
+   "letterbox": "2.39:1"
+  },
+  {
+   "name": "ACT II: THE JAMMED LINE (30 s)",
+   "code": "II",
+   "start": 42.5,
+   "end": 72.5,
+   "purpose": "Every shot adds new information: agent-speed output -> slam into human-speed review -> funnel -> THE LINE WAITS. -> REVIEW. TEST. DEPLOY. -> the whole line jammed (plant 3) -> the human under the tower -> 'just add more agents.' -> towers double -> two writers crack one card -> x17.2 -> lock jam -> wildfire -> topple -> backpressure climbs the line station by station -> alarm banks -> everything at maximum.",
+   "grade": "Cold desaturated (sat 0.75), ice whites, alert red #FF453A only as pinpoints (1% or less), clay dimmed to 30%. Dutch 8-12 deg, handheld.",
+   "letterbox": "2.39:1"
+  },
+  {
+   "name": "THE DROP: who runs the line?",
+   "code": "DROP",
+   "start": 72.5,
+   "end": 76.5,
+   "purpose": "Valence low point: black, 1 s of true silence, then one typed question.",
+   "grade": "Pure black, ivory mono type.",
+   "letterbox": "2.39:1 (bars invisible on black)"
+  },
+  {
+   "name": "ACT III: LIGHTS ON (the software factory + the foreman), 150 BPM",
+   "code": "III",
+   "start": 76.5,
+   "end": 114.9,
+   "purpose": "Banks ignite one per beat -> the 79.7 turn frame (mirror + refrain flip + Dutch righting + letterbox snap + BRAAM #2) -> THE SOFTWARE FACTORY. as a Powers-of-Ten zoom -> graph / hierarchy / swarm -> x17.2 -> x4.4 (same study, neutral node, residual red) -> mirror tour -> stillness -> light before sound -> 5.5 -> the foreman lights radially from its core and the human's brief rides a thread into it -> 2 sourced proofs (structure, one session -> a dozen) -> peak with bookends and a wordless tricolon -> suckback.",
+   "grade": "Warm: clay / ember / brass / ivory / amber, sat 1.05. Zero handheld, level horizons, symmetry, L->R flow.",
+   "letterbox": "Snaps open from 2.39 to full frame (0 px) on the 79.7 braam frame; full frame after that."
+  },
+  {
+   "name": "FALSE STOP + TITLE",
+   "code": "TITLE",
+   "start": 114.9,
+   "end": 120.5,
+   "purpose": "0.8 s black silence, then BRAAM #4 lands the title CLAUDE OPUS 5.5, held 4.8 s.",
+   "grade": "Black ground, clay -> ivory light line, brass sweep; clay at most 20%.",
+   "letterbox": "full frame"
+  },
+  {
+   "name": "BUTTON: MONTH 1",
+   "code": "BUTTON",
+   "start": 120.5,
+   "end": 130.5,
+   "purpose": "The Act I hall composition returns at the same framing with the tick back. MONTH 0 -> 1, the labelled projection lands while the hall ignites radially, then the lone cursor blinks three times and stops blinking: it stays ON.",
+   "grade": "Void + clay, then a warm radial ignition; the final frame is one clay cursor and a flare.",
+   "letterbox": "full frame"
+  },
+  {
+   "name": "END CARD: the true credit",
+   "code": "END",
+   "start": 130.5,
+   "end": 133.5,
+   "purpose": "A true credit that proves the thesis: the film was made with Claude Opus 5.5 agents from one human brief. The only fade in the film (last 15 f).",
+   "grade": "Black, ivory whisper mono.",
+   "letterbox": "full frame"
+  }
+ ],
+ "shared": [
+  {
+   "name": "hallSet",
+   "spec": "src/shared/hall.js buildHall(scene, state) where state is 'cold'|'dark'|'alarm'|'lit'. Floor plane x -300..300, z -290..90, MeshStandard #0A0A0B roughness 0.35 metalness 0.2, plus grid({y:0.01, cell:2, color:'#1A2430', fade:true}). 40 pillars glowBox(2,120,2) slate #141413 at z=+30 and z=-30, x=-285+30i (i=0..19), edges ice #5B7A93 k0.3 (dark/alarm) or brass #E8B47A k1.5 (lit). Fog FogExp2 #07090B, default density 0.005 (override per shot). Calls lineStations, lightBanks and foremanZiggurat with the same state, so every shot that shows the hall gets identical geometry."
+  },
+  {
+   "name": "lineStations",
+   "spec": "7 station boxes on z=0, glowBox(w=segment-1.2, h=3, d=10) at y=1.5, slate #141413 body, edges ice #5B7A93 k0.4 when dark, amber #FFD2A0 k3 when lit. Segments along x (line length 140u, x -70..70): PLAN [-70,-50.4] c-60.2 | DESIGN [-50.4,-30.8] c-40.6 | CODE [-30.8,-8.4] c-19.6 (22.4u = EXACTLY 16.0% of the line) | REVIEW [-8.4,11.2] c1.4 | TEST [11.2,30.8] c21.0 | DEPLOY [30.8,50.4] c40.6 | OPERATE [50.4,70] c60.2 (the six non-code segments are 19.6u = 14.0% each). Conveyor hairline fatLine (-70,1.2,0)->(70,1.2,0), ivory k2, width 2px. The CODE segment's top face carries a separate emissive strip glowBox(22.4, 0.2, 10) at y=3.1 that is the ONLY thing lit in the midpoint (clay #D97757, k 0 -> 8, drawn from its own left edge x=-30.8 to its right edge x=-8.4; never starts at the line origin)."
+  },
+  {
+   "name": "codeTower",
+   "spec": "Instanced orbs (sphere r0.35, basic:true) on the CODE station top centred at (-19.6, 3, 0): tiers of 10x10 on a 1.6u grid, tier spacing 3u. Counts by state: 10 (one row) -> 100 (one tier) -> 1,000 (10 tiers, 30u tall). Color clay #D97757, k 10 (k 3 for the 30% 'dimmed' state). Crest: ring({r:9, tube:0.25, color:'#D97757', k:8}) at y=34 when 1,000. Each orb pulses k +-20% on 8ths with a per-orb phase rand(i)."
+  },
+  {
+   "name": "cardTowers",
+   "spec": "Work cards = instanced glowBox(3,0.5,2) #E8E6DF k1.2 edges on, stacked with rotation jitter +-0.15 rad (seeded) and x/z jitter +-0.3u. REVIEW tower base (1.4, 3, 0); TEST tower base (21.0, 3, 0); DEPLOY maze = 400 cards gridlocked on 14 branching conveyor strips (glowBox 0.4 x 0.1 x 8-18, ice k0.6) over the DEPLOY footprint. Heights by shot: ii-line-waits-1 REVIEW 160 cards (80u); ii-test-tower TEST 320 (160u); ii-plant-3 REVIEW 400 (200u) + TEST 320 + DEPLOY 240 (120u); ii-line-waits-2 REVIEW 600 (300u); ii-towers-double REVIEW 600->1,200 and TEST 320->640 in one second (1,840 instances, under the 2,000 cap). Red pinpoints: orb r0.25 #FF453A k8 every 12u of tower height on alternating faces, blinking on 8ths (odd/even sets), never more than 1% of frame area. Act III lit state: same instances re-colored amber #FFD2A0 k2.5 and translating +x at 6u/s (flow, not a pile), pinpoints replaced by green #6EE7A0 k4 check lamps."
+  },
+  {
+   "name": "monthGates",
+   "spec": "5 brass gates on the approach rail (fatLine brass #B88A5A k1.5 along z=0, y=0.05, x -300..-70) at x = -250, -210, -180, -155, -135 (spacing 40/30/25/20u so the passes accelerate). Gate = two posts glowBox(1.2,14,1.2) at z=+-6 + lintel glowBox(13.2,1.2,1.2) at y=14; body #4A3626, edges brass #F3D9B1 k3. Lintel pips: 5 orbs r0.35 along the lintel front (z -4,-2,0,2,4; y 14, x+0.7); gate n lights n pips (#F3D9B1 k8), the rest k0. Counter: textPlane in the opening at (x, 7, 0) facing -x, 3u tall, ivory emissive 1.2, ONLY on gate 1 ('MONTH 1') and gate 5 ('MONTH 5'). FPV camera (camGateFPV): 14mm (fov 70.2), y=1.0, z=0, moving +x, speed multiplier 1 / 1.3 / 1.7 / 2.2 / 3 x 16u/s, passing the gate planes at shot-local 0.75 (gate 1), 0.5 (gates 2-4) and 0.25 (gate 5), i.e. at 16.75 / 20.5 / 23.5 / 26.0 / 27.75 s. The CODE station's clay glow is visible ahead through every gate."
+  },
+  {
+   "name": "lightBanks",
+   "spec": "8 overhead banks over the line at x = -70+20i (i=0..7), y=60, z=0: panel glowBox(16, 0.8, 12) facing down + beam({top:6, bottom:10, height:58, opacity:0.18}) to the floor + 1,500 dust motes inside the beams. States: OFF = panel slate edges ice k0.2, beam hidden. ALARM (Act II accelerando) = panel #FF453A k3, beam opacity 0.06, slow pulse 0.6<->1.0 on quarter notes, never full-field. ON (Act III) = panel #FFE2C0 k12, beam #FFD2A0 opacity 0.18, ignition 0 -> 1.3 in 2 f then settle to 1.0 over 6 f; under each bank the station below flips to its lit state in the same frame. Bank order = i (PLAN end first, L->R)."
+  },
+  {
+   "name": "ledgerRow",
+   "spec": "The diegetic BUDGET object (no text): a horizontal brass ledger glowBox(40, 1.2, 3) body #4A3626 edges #F3D9B1 k3, divided into 12 cells by 0.2u ivory hairlines, hanging at y=36 in front of the code tower at (-19.6, 36, 14). On the stamp frame one cell (cell 7) fills clay #D97757 k 0 -> 10 in 2 f and a dust burst fires (particles 1,500, ivory, radial 6u over 0.8 s, drag)."
+  },
+  {
+   "name": "railNetwork",
+   "spec": "Cold-open and factory floor network: 1,000 instanced glowBox(L, 0.08, 0.25) rails (L 6-24u seeded) on a 4u grid over x -200..200, z -160..60, 70% along x and 30% along z, forming a circuit-board pattern that converges on the line. Emissive amber #FFB070. Cascade: rail i lights (k 0 -> 6, 2 f) when t > dist(rail_i, (-19.6,0,0)) / 160 u/s (radial outward from CODE). Rewind = the same cascade run backwards. Lamp posts for the FPV: instanced glowBox(0.3,4,0.3) along z=41.5 every 10u, tip k6."
+  },
+  {
+   "name": "foremanZiggurat",
+   "spec": "THE FOREMAN (#1 hero). Origin (0,0,-200), faces +z. Seven stacked glowBox tiers, obsidian body #0B0B0C: T1 120x18x120 (y0-18), T2 96x18x96 (18-36), T3 74x18x74 (36-54), T4 54x20x54 (54-74) = the ziggurat; T5 30x60x30 (74-134), T6 22x40x22 (134-174) = the obelisk shaft; T7 pyramidion 14x20x14 tapering to 2x2 (174-194); crest ring({r:5, tube:0.3}) at y=196. T6 is built from 4 slabs leaving a 3u-wide vertical slot on its +z face (y 136-172) through which the CORE shows: orb r4 at (0,150,-195), clay #D97757 k20 (ember #FF8A5C bloom). BRASS SEAMS: 0.4u glowBox strips on every tier's top perimeter (28 strips) + 4 vertical corner strips on each of T5-T7 (12 strips), #E8B47A. Engraving: textPlane '5.5' brass, emissive 1.2, 8u tall, on T4's front face at (0, 64, -172.8). Beams: 4 beam() shafts from the crest down onto the tops of T1-T4 (warm ivory, opacity 0.12). UNLIT (cold open rewind, Acts I-II, Act III before the reveal): seams #3A2E22 k0, core k0, beams hidden; it reads only by rim and by red/clay light reflected from the hall. LIT: seam segment s turns on (k 0 -> 6, 2 f) when t > |centre_s - core| / 120 u/s, so light spreads radially from the core outward and downward (whole structure lit in about 1.6 s); core k 0 -> 20 with 1.3x overshoot first."
+  },
+  {
+   "name": "foremanThreads",
+   "spec": "ONE session -> A DOZEN: exactly 12 primary threads = 12 fatLines (width 3px, gradient clay #D97757 at the core -> amber #FFB070) from the core (0,150,-195) through control point (0.5*x_j, 110, -100) to 12 SUB-LEAD nodes, orb r1.6 clay k10, at (x_j, 40, -12) with x_j = -66 + 12j (j=0..11). Sub-threads are NOT lines: flow({curves: 84 splines (7 per sub-lead) from each sub-lead down to points on the station tops (y3, z0) under it, count 6,000, speed 0.5, size 1.6, color '#FFB070'}). Never more than 12 fatLines in frame. Pulses ride the primary threads core -> sub-lead at 60u/s (bright 2u segments, k14)."
+  },
+  {
+   "name": "humanAnchor",
+   "spec": "human({h:1.8, pose:'stand'}) black silhouette, always rim-lit from behind (point light 2u behind at shoulder height, intensity 2, distance 12; ice #CFE3F2 in Acts I-II, amber #FFD2A0 in Act III). Positions: Act I at the CODE station (-19.6, 0, 6); Act II under the REVIEW tower (1.4, 0, 6); Act III at the foreman's foot (0, 0, -134) holding the brief = glowBox(0.3,0.2,0.02) ivory k8 at (0.25, 1.55, -133.8). Scale ratio checks: 1:166 under the 300u tower, 1:109 at the 196u foreman."
+  },
+  {
+   "name": "cursorBlock",
+   "spec": "The protagonist: glowBox(0.6 w, 1.0 h, 0.15 d) upright, clay #D97757 k10, on the CODE station screen (canvasPlane 6 x 3.4 at (-19.6, 2.5, 5.2) facing +z, drawCode with bg #050506). Blink: ON for the first half of every beat at the current tempo (human speed); after OPUS 4.5 SHIPS it blinks on 8ths (double time). In the button it blinks 3 times on quarter notes, then stays ON at k14 with a localized flare (sprite r 3u, clay, 4 f decay). The rewind (c-rewind) ends on this exact block at frame centre, which match-cuts to the far station in i-hall-wide and to the cursor in d-who-runs."
+  },
+  {
+   "name": "agentOrbs",
+   "spec": "Agents are orb() / instanced spheres (r0.35). Up to 1,000 per shot as instances; any crowd above 2,000 is particles() with size 3px (square sprites) - never instances. Colors: clay #D97757 k10 = Claude (Act I code orbs, Act III sub-leads, the 100-agent team, the Stripe session); ice #CFE3F2 k4 = the flat swarm (Act II); ivory #FAF9F5 k6 = neutral workers and the Google-study coordinator. Error = a red spark #FF453A k12 jumping orb to orb plus fatLine tendrils (max 17)."
+  },
+  {
+   "name": "coldOpenCams",
+   "spec": "Bookend camera functions reused frame-identically at the peak (p-bookend-*): camColdRail(lt) = 85mm macro, pos (-60 + 24*lt, 0.38, 20.8) -> target (-58 + 24*lt, 0.08, 20), linear, rail = fatLine brass at z=20, clay orb k12 riding it at 30u/s from x -60; camColdCascade(lt) = 35mm top-down, pos (-19.6, 40 * (3 ** u), -0.7) [40 -> 120, expo.in], looking at (-19.6, 0, 0), pitch -89.5 deg, up never flipped; camColdFPV(lt) = 14mm, pos (-150 + 40*lt, 0.5, 40), roll 0 -> 90 deg over 0.5 s; camForemanWorm(lt) = 14mm, pos (0, 0.5, -128 - 2*lt), target (0, 42, -200) (pitch +30 deg), specular sweep = a glowBox strip (0.6u, clay -> ivory k12) climbing the T1-T4 front-left corner seam at 140u/s."
+  },
+  {
+   "name": "camHallWide",
+   "spec": "Act I master (i-hall-wide), reused at the peak (p-hall-mirror) and in the button (b-month-one): 18mm (fov 57.3), pos (-180, 1.0, 6) creeping to (-175, 1.0, 6) linear over the shot, target (-19.6, 29, 0) (pitch +10 deg), the CODE station centred at about 160u; handheld 0.3 deg only in Act I. Pillars recede on both sides; floor reflects the cursor."
+  },
+  {
+   "name": "camReviewWorm",
+   "spec": "MASTER A (ii-line-waits-1) -> MIRROR iii-line-runs and the recall 'REVIEW tower lit': 18mm (fov 57.3), pos (-6, 0.5, 18) creep-pushing 5% toward target (1.4, 14.1, 0) (pitch +35 deg); roll -8 deg (Dutch). In the mirror the roll rights -8 -> 0 over 12 f (power3.out) from local 0; everything else identical. The refrain card sits in refrainSlot in both."
+  },
+  {
+   "name": "camHumanUnderTower",
+   "spec": "MASTER C (ii-line-waits-2) -> ii-max-push (stutter variant) -> MIRROR p-human-lit: 14mm (fov 70.2), pos (1.4, 0.3, 72) creep-pushing to (1.4, 0.3, 69.1) (4%), target (1.4, 36, 0) (pitch +26.5 deg). Human at (1.4, 0, 6) sits bottom-centre at about 3% of frame height; the REVIEW tower rises out of frame top and loses 70% contrast in fog (density 0.008). TEST tower visible right of frame."
+  },
+  {
+   "name": "camReviewSide",
+   "spec": "ii-review-slam / ii-review-stamp -> MIRROR iii-review-mirror: 135mm (fov 8.3), pos (x, 3, 90) looking at (x, 3, 0), frame width about 23u. Act II tracks R->L (x -4 -> -8 over the shot, constant velocity); the mirror tracks L->R (x -8 -> -4)."
+  },
+  {
+   "name": "camTestWorm",
+   "spec": "ii-test-tower -> MIRROR iii-test-mirror: 14mm, pos (16, 0.5, 14), target (21, 30, 0), Dutch +10 deg in Act II, 0 deg in the mirror."
+  },
+  {
+   "name": "camDeployTop",
+   "spec": "ii-deploy-maze -> MIRROR iii-deploy-mirror: 50mm top-down, pos (40.6, 70, 0), look at (40.6, 0, 0), camera.up (0,0,-1) set before lookAt (static), yaw 6 deg/s about y."
+  },
+  {
+   "name": "camErrorTop",
+   "spec": "MASTER E (ii-errors-172) -> MIRROR iii-coord-44: 85mm (fov 13.2), static top-down, pos (1.4, 160, 0), camera.up (0,0,-1), look at (1.4, 0, 0); frame width about 66u (CODE end to TEST). Same 300 orbs at the same seeded positions in both; the stat slam sits in statSlam in both."
+  },
+  {
+   "name": "camWriterMacro",
+   "spec": "MASTER D (ii-two-writers) -> MIRROR iii-one-writer: 85mm, pos (-9, 3.2, 6), target (-9, 2.6, 0); one card centred on the conveyor at (-9, 2.6, 0); writer orbs enter from frame left and right at 0.15 s. Identical framing, light rig and card in both; only the outcome differs (cracks red vs stamps green)."
+  },
+  {
+   "name": "camLineTop",
+   "spec": "m-sixteen and the recall 'the 16% line fully lit': 135mm straight down, pos (0, 545, 0) descending 2% linear, camera.up (0,0,-1), the 140u line fills the frame width."
+  },
+  {
+   "name": "foremanPlant",
+   "spec": "Recipe for the three plants (i-human-plant, i-tower-plant, ii-plant-3): telephoto 135-200mm looking -z across the hall so the unlit foreman is compressed into the upper half of frame as a dark stepped wall behind the foreground subject. Fog density = 1.27 / (distance camera->foreman), giving the foreman about 20% contrast (fog factor 0.8): it must read as architecture, never as an object. Seams k0; only the hall's own light (clay in Act I, red pinpoints in Act II) rims its tier edges. No camera move toward it, no light on it, no sound cue for it."
+  },
+  {
+   "name": "refrainSlot",
+   "spec": "Type slot for THE LINE WAITS. (x2) and THE LINE RUNS.: cond (Anton 220px) centred at x 960, y 820 inside the 2.39 frame (and the same absolute pixel position after the bars open), ice #CFE3F2 in Act II, ivory with RUNS in clay in Act III; entrance K.slam 1.12 -> 1.0 in 5 f; background under it darkened -0.8 stop."
+  },
+  {
+   "name": "statSlam",
+   "spec": "Layout for x17.2 and x4.4: number in mega 300px centred at (960, 470); label slam 90px at (960, 650); source kicker 24px at (960, 720). x17.2 in danger red #FF453A, rolled with K.roll 1.0 -> 17.2 over 15 f; x4.4 in ice #CFE3F2 rolled 17.2 -> 4.4 over 15 f. Same pixel positions in both."
+  },
+  {
+   "name": "recallFlurry",
+   "spec": "Six 0.2 s centred recalls (p-recall-1..6): single subject centred on near-black, mean luminance matched within +-8% (target 0.12), no white frames, no red fields; each is re-rendered from its source shot's camera function: cursorBlock / monthGates (gate with 5 pips, no numerals) / codeTower at 1,000 / camLineTop with every segment lit / camReviewWorm lit / the graph node."
+  }
+ ],
+ "shots": [
+  {
+   "n": 1,
+   "id": "c-rail-streak",
+   "act": "COLD",
+   "start": 0.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "MACRO 85mm (fov 13.2), camColdRail: 0.3u above the brass rail, tracking L->R at 24u/s from frame 0 (linear, no ease-in)",
+   "visual": "Void. A single clay light (orb r0.5, #D97757 k12) streaks along a brass rail (fatLine #B88A5A k1.5 at z=20) through fog 0.02 (x2 cold-open fog), overtaking the camera at 30u/s; 2-subframe motion blur smears it into a 4u streak and 300 dust motes flare amber in its wake. Subject 30% of frame height, 75% of frame black. Frame 0 is a composed, high-contrast still (thumbnail).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -3
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -6
+    },
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.7,
+    "add": [
+     "pulse",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5",
+   "motif": "M1 spark (flash-forward)",
+   "shared": [
+    "coldOpenCams",
+    "railNetwork"
+   ],
+   "transition": "cut in motion"
+  },
+  {
+   "n": 2,
+   "id": "c-rail-cascade",
+   "act": "COLD",
+   "start": 0.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "TOP-DOWN 35mm (fov 31.4), camColdCascade: crane up y 40 -> 120, expo.in, pitch -89.5 deg (camera.up never flipped)",
+   "visual": "railNetwork: the 1,000 instanced amber rails (#FFB070) light in a radial cascade outward from the CODE point at 160u/s across the dark floor grid; through x2 fog it reads as a circuit board waking up. No station or foreman in frame.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "riser",
+     "dur": 1.5,
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.72,
+    "add": [
+     "pulse",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5",
+   "motif": "M2 line (flash-forward)",
+   "shared": [
+    "coldOpenCams",
+    "railNetwork"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 3,
+   "id": "c-fpv-skim",
+   "act": "COLD",
+   "start": 1.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "FPV 14mm (fov 70.2), camColdFPV: 0.5u over the rails at 40u/s, roll 0 -> 90 deg over 15 f",
+   "visual": "Low skim over glowing rails; lamp posts (glowBox 0.3x4x0.3, tip k6) whip past the lens every 7.5 f; warm streaks smear horizontally.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.25,
+     "kind": "whoosh",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.75,
+    "add": [
+     "pulse",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5",
+   "motif": "speed",
+   "shared": [
+    "coldOpenCams",
+    "railNetwork"
+   ],
+   "transition": "hard cut on peak velocity"
+  },
+  {
+   "n": 4,
+   "id": "c-foreman-worm",
+   "act": "COLD",
+   "start": 1.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "WORM'S-EYE 14mm (fov 70.2), camForemanWorm: y 0.5 at the foreman's base, pitch +30 deg, creep push 2u",
+   "visual": "The foremanZiggurat, UNEXPLAINED: a colossal stepped silhouette (T1-T4 readable, T5 and up dissolving into fog) black against the fog; a clay -> ivory specular sweep strip (k12) climbs its front-left corner seam at 140u/s. Nothing else on it is lit.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "reverse_swell",
+     "dur": 0.5,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.8,
+    "add": [
+     "pulse",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5",
+   "motif": "M4 plant (unexplained colossus)",
+   "shared": [
+    "coldOpenCams",
+    "foremanZiggurat"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 5,
+   "id": "c-wave-one",
+   "act": "COLD",
+   "start": 2.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "LOW frontal 24mm (fov 44.6), pos (-19.6, 2, 34) looking at (-19.6, 18, 0), push-in 8% linear; slows under 3 deg/s while the card reads",
+   "visual": "Wave one, flash-forward: the code tower (codeTower at 1,000 clay orbs k10, crest ring) blazing alone in x2 fog. 2 f white flash on the braam frame, then the tower glows behind the fog; background darkened -0.8 stop under the card.",
+   "text": "WAVE ONE / ≈5 MONTHS.",
+   "type": "kicker 'WAVE ONE' (JetBrains Mono 26px, +0.18em, ice) decodes in 6 f at local 0.0 at (960, 380); mega '≈5 MONTHS.' (Inter Tight 900, 300px, ivory, '≈5' in clay) K.slam 1.6 -> 1.0 in 4 f at local 0.0, centred (960, 540); both K.cutOut at 1.9",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "S"
+    },
+    {
+     "at": 0,
+     "kind": "flash",
+     "d": 0.067
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "braam",
+     "root": "D1",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.9,
+    "add": [
+     "pulse",
+     "strings"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5; bloom 1.6 on the hit decaying to 1.0 over 20 f",
+   "motif": "M1 (wave one) + M3 (5 months)",
+   "shared": [
+    "codeTower"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 6,
+   "id": "c-next-one",
+   "act": "COLD",
+   "start": 4.0,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "TOP-DOWN 135mm (fov 8.3), pos (0, 600, 0) looking straight down at the line, camera.up (0,0,-1), yaw 6 deg/s",
+   "visual": "The tease of the next wave: the whole LINE lit (all 7 stations amber #FFD2A0, rails flowing L->R), flattened by the telephoto, still fogged and half revealed (fog x2, exposure -1 stop). Nothing is labelled.",
+   "text": "THE NEXT ONE?",
+   "type": "title (Inter Tight 300 caps 110px, ivory), blur 28px -> 0 and tracking +0.45em -> +0.08em over 24 f from local 0.05, centred (960, 540); K.cutOut at 1.45",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -3
+    },
+    {
+     "at": 0.05,
+     "kind": "bell",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.65,
+    "add": [
+     "pulse"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5",
+   "motif": "L1 opens (asked, never claimed)",
+   "shared": [
+    "lineStations",
+    "railNetwork"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 7,
+   "id": "c-core-tease",
+   "act": "COLD",
+   "start": 5.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "MACRO 50mm (fov 22.3), pos (2, 150, -170) looking at (0, 150, -195), lateral drift 1u",
+   "visual": "Half-seen: the foreman's clay core (k20) glowing through its 3u slot behind fog 0.03; one brass seam beside it ignites (k 0 -> 6) for 4 f and dies. Unexplained.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "reverse_swell",
+     "dur": 0.5,
+     "gain": -5
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.6,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 1.2 thr 0.7, sat 0.9, tint warm [1.05,1.0,0.94], exposure -1 stop, ca 0.0012, vignette 0.5",
+   "motif": "M4 (core tease)",
+   "shared": [
+    "foremanZiggurat"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 8,
+   "id": "c-rewind",
+   "act": "COLD",
+   "start": 6.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "24mm (fov 44.6), yank back and up: pos (-19.6, 30, 30) -> (-19.6, 120, 160), target locked on the cursor at (-19.6, 2.5, 5.3), expo.in over 1.4 s; locked for the last 0.6 s",
+   "visual": "REWIND: every light extinguishes in reverse cascade (railNetwork backwards from the edges inward, then the stations, then the code tower tier by tier, warm -> dark, grade draining to steel #5B7A93). At 1.25 s the frame is black except one clay cursor block at frame centre (cursorBlock); it blinks once on the 7.5 tick; the last 4 f are black.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -8
+    },
+    {
+     "at": 0,
+     "kind": "tape_stop",
+     "dur": 0.7,
+     "gain": 0
+    },
+    {
+     "at": 1.5,
+     "kind": "tick",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "cold",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.2,
+    "add": [],
+    "drop": [
+     "pulse",
+     "strings"
+    ]
+   },
+   "grade": "drains from cold-open warm to steel: sat 0.9 -> 0.6, tint -> [0.95,1.0,1.08] over 1.2 s",
+   "motif": "M1 (collapse to one cursor)",
+   "shared": [
+    "railNetwork",
+    "cursorBlock",
+    "hallSet"
+   ],
+   "transition": "hard cut, match on the cursor rectangle (same screen position as the far station cursor in i-hall-wide)"
+  },
+  {
+   "n": 9,
+   "id": "i-hall-wide",
+   "act": "I",
+   "start": 8.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "EXTREME WIDE near-worm's-eye 18mm (fov 57.3), camHallWide: pos (-180, 1.0, 6) -> (-175, 1.0, 6) linear, target (-19.6, 29, 0) (pitch +10 deg), handheld 0.3 deg",
+   "visual": "THE HALL, dark (hallSet 'dark'): 40 pillars recede into fog 0.005; the floor reflects; far down the aisle (160u) the CODE station is one tiny cold box and the clay cursor on its screen blinks on every tick (the only warm pixel, under 1% of frame). The rest of the line is invisible in the dark.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -9
+    },
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.2,
+    "add": [
+     "drone",
+     "ticks"
+    ],
+    "drop": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums"
+    ]
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1 (one cursor) / M3 tick",
+   "shared": [
+    "hallSet",
+    "camHallWide",
+    "cursorBlock"
+   ],
+   "transition": "hard cut (smash from black)"
+  },
+  {
+   "n": 10,
+   "id": "i-karpathy",
+   "act": "I",
+   "start": 10.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "MACRO 85mm (fov 13.2) on the CODE screen, pos (-19.2, 2.6, 9) -> target (-19.6, 2.5, 5.2), lateral drift 2%/s, handheld 0.3 deg",
+   "visual": "The station screen (drawCode, bg #050506, ice token bars at 40%): the clay cursor blinks on the tick, types the line, then after the full stop flickers and dims to 30% (k10 -> 3).",
+   "text": "they just don't work. / KARPATHY, OCT 2025",
+   "type": "mono V1 lowercase 48px ivory, K.typewriter 1 char/frame from local 0.1, diegetic in the screen, centred (960, 520); source kicker 24px ice decodes at local 0.5 at (960, 600); both hold to the cut",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    },
+    {
+     "at": 0.1,
+     "kind": "chirps",
+     "gain": -16
+    },
+    {
+     "at": 0.8,
+     "kind": "bell",
+     "gain": -14
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.22,
+    "add": [
+     "drone",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "V1 human voice; M1 dims",
+   "shared": [
+    "cursorBlock"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 11,
+   "id": "i-human-plant",
+   "act": "I",
+   "start": 12.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "TELEPHOTO 135mm (fov 8.3), pos (-19.6, 3, 200), target (-19.6, 20, -200), 2% push, handheld 0.3 deg; fog 1.27/400 = 0.0032 (foremanPlant)",
+   "visual": "PLANT 1. The tiny human (humanAnchor, 8% of frame height, ice rim) stands at the single CODE station in a pool of cold light; the agent orb beside the screen sputters out (k3 -> 0.3, three dying flickers on the tick). Behind them, compressed by the lens, the far end of the hall: the UNLIT foreman's T1-T3 tiers fill the upper half of frame as a dark stepped wall with dead-brass seams. It must read as architecture, not as an object.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    },
+    {
+     "at": 1.0,
+     "kind": "reverse_swell",
+     "dur": 1.0,
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.25,
+    "add": [
+     "drone",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M4 plant 1 / M5 human",
+   "shared": [
+    "hallSet",
+    "foremanZiggurat",
+    "humanAnchor",
+    "foremanPlant"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 12,
+   "id": "i-slab-rise",
+   "act": "I",
+   "start": 14.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "LOW ANGLE 18mm (fov 57.3), pos (-24, 0.5, 14), target (-19.6, 6, 4), locked; the slab animates on twos",
+   "visual": "A brass monolith slab (glowBox 6 x 12 x 1, body #4A3626, edges #F3D9B1 k3) punches up through the floor in front of the CODE station (0 -> 12u in 4 f, 3% overshoot); floor grid shards flicker; a light crest (k10) rides its top edge as a horizontal light line.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.5,
+    "add": [
+     "drone",
+     "ticks",
+     "pulse",
+     "ostinato",
+     "kick"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "MOOD CHANGE #1: the music starts moving",
+   "shared": [],
+   "transition": "hard cut; the slab's top light line matches the cursor's top edge"
+  },
+  {
+   "n": 13,
+   "id": "i-opus45",
+   "act": "I",
+   "start": 14.5,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "MACRO 85mm, pos (-19.6, 2.6, 8.5), target (-19.6, 2.5, 5.2), 4% push",
+   "visual": "The cursor IGNITES: k3 -> 10 in 2 f with 1.3x overshoot (local bloom only) and BREAKS THE TICK: from now on it blinks on 8ths (double time). Code-glyph bars stream out of it L->R (drawCode reveal 0 -> 1 over 1.2 s) and 6 test lamps under the screen tick green (#6EE7A0 k4) one per 8th.",
+   "text": "OPUS 4.5 SHIPS. / NOV 2025",
+   "type": "slam 150px ivory with 'OPUS 4.5' in clay, K.slam 1.12 -> 1.0 in 5 f at local 0.0, centred (960, 500); kicker 'NOV 2025' 24px ice decodes at local 0.15 at (960, 600); hold to the cut",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.1,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.5,
+    "add": [
+     "drone",
+     "ticks",
+     "pulse",
+     "ostinato",
+     "kick"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1 ignites; motif statement #1 (D-F-A-G-F)",
+   "shared": [
+    "cursorBlock"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 14,
+   "id": "i-gate-1",
+   "act": "I",
+   "start": 16.0,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "FPV camGateFPV 14mm (fov 70.2), y 1.0, speed 1x (16u/s), passes GATE 1 at local 0.75 on the beat",
+   "visual": "Fly through brass GATE 1 (one lintel pip lit); 'MONTH 1' hangs in the opening; beyond it the CODE station glows with 10 clay orbs.",
+   "text": "MONTH 1",
+   "type": "diegetic counter textPlane in the gate opening (monthGates), ivory emissive 1.2, 3u tall; legible from local 0.25 through the pass (on screen 0.25-1.25)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.75,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.5,
+     "kind": "whoosh",
+     "gain": -4
+    },
+    {
+     "at": 0.75,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.52,
+    "add": [
+     "ticks",
+     "pulse",
+     "ostinato",
+     "kick"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M3 clock (gate 1)",
+   "shared": [
+    "monthGates"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 15,
+   "id": "i-orbs-write",
+   "act": "I",
+   "start": 17.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "LATERAL TRACK L->R 85mm, pos (-26 + 3*lt, 3.5, 22) looking at (-23 + 3*lt, 3, 0), constant velocity",
+   "visual": "10 clay orbs (codeTower, one row) at the CODE station each write a work card: the card (glowBox 3x0.5x2 ivory k1.2) pops with a green edge (#6EE7A0 k4, 3 f) and slides right along the conveyor at 8u/s.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -12
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.52,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1 (10)",
+   "shared": [
+    "codeTower",
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 16,
+   "id": "i-tier-two",
+   "act": "I",
+   "start": 18.5,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "LOW ANGLE 24mm, pos (-32, 1, 16), target (-19.6, 8, 0), 3% push, Dutch 6 deg",
+   "visual": "The code station grows a second lit tier: orbs 10 -> 100 (a 10x10 tier assembling row by row on 16ths). The human silhouette stands at frame-left third for scale, rim-lit ice.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -12
+    },
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.55,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1 (100) / M5 scale",
+   "shared": [
+    "codeTower",
+    "humanAnchor"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 17,
+   "id": "i-gate-2",
+   "act": "I",
+   "start": 20.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "FPV camGateFPV, speed 1.3x, passes GATE 2 at local 0.5",
+   "visual": "Gate 2 rushes at the lens; two lintel pips lit (no numerals: the pips are the counter); the clay glow ahead is brighter.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.25,
+     "kind": "whoosh",
+     "gain": -4
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.57,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M3 clock (gate 2)",
+   "shared": [
+    "monthGates"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 18,
+   "id": "i-top-100",
+   "act": "I",
+   "start": 21.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TOP-DOWN 50mm, pos (-19.6, 40, 0), camera.up (0,0,-1), yaw 5 deg/s",
+   "visual": "100 clay orbs in a 10x10 grid on the CODE station pulsing on 8ths: the only warm patch on a black floor; cards slide off the right edge on the conveyor.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.58,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1 (100), top angle",
+   "shared": [
+    "codeTower"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 19,
+   "id": "i-card-wall",
+   "act": "I",
+   "start": 22.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TELEPHOTO 200mm (fov 5.6), pos (-6, 6, 120), target (-6, 6, 0), slow push 2%/s",
+   "visual": "A compressed wall of finished work cards (400 instances, 20 x 20 on a vertical rack at x -6) stamping green one per 16th and sliding upward: depth collapses into a living wall.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.6,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "output at agent speed",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 20,
+   "id": "i-gate-3",
+   "act": "I",
+   "start": 23.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "FPV camGateFPV, speed 1.7x, passes GATE 3 at local 0.5",
+   "visual": "Gate 3: three pips lit; the gates are now visibly closer together (gate 4 already in frame behind it).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.25,
+     "kind": "whoosh",
+     "gain": -4
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": -9
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.62,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M3 clock (gate 3)",
+   "shared": [
+    "monthGates"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 21,
+   "id": "i-crane-1000",
+   "act": "I",
+   "start": 24.0,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "CRANE UP 35mm from (-19.6, 2, 30) to (-19.6, 24, 46), target (-19.6, 15, 0), power2.inOut",
+   "visual": "The code station is now a tower of 1,000 clay orbs (10 tiers; the crest ring ignites at local 1.2); the human (humanAnchor at (-19.6, 0, 6)) is a dot at its base.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -9
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.65,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1 (1,000) / M5",
+   "shared": [
+    "codeTower",
+    "humanAnchor"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 22,
+   "id": "i-gate-4",
+   "act": "I",
+   "start": 25.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "FPV camGateFPV, speed 2.2x, 270-degree shutter, passes GATE 4 at local 0.5",
+   "visual": "Gate 4: four pips lit; light streaks.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.25,
+     "kind": "whoosh",
+     "gain": -4
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.68,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M3 clock (gate 4)",
+   "shared": [
+    "monthGates"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 23,
+   "id": "i-cards-offscreen",
+   "act": "I",
+   "start": 26.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "LATERAL TRACK L->R 85mm overtaking at 1.5x card speed, pos (-10 + 18*lt, 3, 20), target (-10 + 18*lt, 3, 0)",
+   "visual": "Finished cards race along the conveyor past REVIEW's dark box and shoot off the right edge of frame into darkness (plant: where does the work go?). The stations they pass are unlit, unlabelled shapes.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.5,
+     "kind": "whoosh",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.7,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M2 plant (the dark line)",
+   "shared": [
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 24,
+   "id": "i-gate-5",
+   "act": "I",
+   "start": 27.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "FPV camGateFPV, 3x braking expo.out, passes GATE 5 at local 0.25; the gate's square opening closes onto the clay glow ahead (shape match into i-ledger-rise)",
+   "visual": "Last gate: all five pips lit; 'MONTH 5' locks with a click.",
+   "text": "MONTH 5",
+   "type": "diegetic counter textPlane in gate 5 (monthGates), locks at local 0.25; primed by MONTH 1 and the pips; on screen 0.0-0.5",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.25,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "whoosh",
+     "gain": -4
+    },
+    {
+     "at": 0.25,
+     "kind": "tick",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "A",
+    "div": 16,
+    "energy": 0.72,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M3 clock lock",
+   "shared": [
+    "monthGates"
+   ],
+   "transition": "shape match cut (gate opening -> ledger slot)"
+  },
+  {
+   "n": 25,
+   "id": "i-ledger-rise",
+   "act": "I",
+   "start": 28.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "Halloran ride, 35mm: the camera chases one clay orb rising from the tower crest (-19.6, 34, 0) to the ledger slot (-19.6, 36, 14) along a spline, staying 6u behind and 2u below it, power2.in, ending tight on the slot",
+   "visual": "One clay orb lifts off the top of the 1,000-orb tower and rises (light pips pass on the tower edge every 16th) toward a long horizontal brass ledger row (ledgerRow) hanging in the dark; at local 1.75 it slots into cell 7 and the ledger's edge seams flare end to end (k3 -> 10).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "riser",
+     "dur": 2.0,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "A",
+    "div": 16,
+    "energy": 0.75,
+    "add": [
+     "strings"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "capability -> budget (diegetic)",
+   "shared": [
+    "codeTower",
+    "ledgerRow"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 26,
+   "id": "i-capability",
+   "act": "I",
+   "start": 30.0,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "AERIAL HIGH -60 deg 35mm, pos (-19.6, 70, 40), target (-19.6, 10, 0), slow descend 5%",
+   "visual": "The ledger row lands in 3D in front of the blazing code tower: cell 7 stamps clay with a dust burst (ledgerRow). The tower is a column of light alone in the dark hall (clay about 5% of frame); localized exposure lift +0.4 stop on the hit.",
+   "text": "CAPABILITY → BUDGET.",
+   "type": "cond 220px ivory, the arrow drawn as a clay hairline (SVG stroke 0 -> 100% in 6 f); K.slam at local 0.0 at (960, 820); K.cutOut at 1.9",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -4
+    },
+    {
+     "at": 0.05,
+     "kind": "bell",
+     "gain": -12
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.75,
+    "add": [
+     "strings"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008; exposure +0.4 stop on the hit",
+   "motif": "M1 at its first peak",
+   "shared": [
+    "codeTower",
+    "ledgerRow"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 27,
+   "id": "i-tower-plant",
+   "act": "I",
+   "start": 32.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TELEPHOTO 200mm (fov 5.6), pos (-19.6, 15, 350), target (-19.6, 40, -200), lateral drift L->R 1u/s; fog 1.27/550 = 0.0023 (foremanPlant)",
+   "visual": "PLANT 2. The blazing code tower fills the lower-centre 45% of frame; behind it, compressed into the same plane, the UNLIT foreman's T2-T5 tiers stand as a dark stepped wall three times the tower's height, their dead-brass seams barely catching the clay light. It reads as the hall's end wall.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.72,
+    "add": [
+     "strings"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M4 plant 2",
+   "shared": [
+    "codeTower",
+    "foremanZiggurat",
+    "foremanPlant"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 28,
+   "id": "i-tower-worm",
+   "act": "I",
+   "start": 33.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "WORM'S-EYE 14mm, pos (-22, 0.5, 6), target (-19.6, 30, 0), Dutch -8 deg, creep push",
+   "visual": "The orb tower from below: clay light pours down; orbs pulse on twos; the crest ring halos at the top.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -9
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.74,
+    "add": [
+     "strings"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1",
+   "shared": [
+    "codeTower"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 29,
+   "id": "i-stamp-macro",
+   "act": "I",
+   "start": 34.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "MACRO 85mm, centred, pos (-19.6, 3.4, 5), target (-19.6, 3.1, 1)",
+   "visual": "One clay orb stamps a card: the card edge flares green (3 f) and it slides out right. Centred, simple.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.76,
+    "add": [],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 30,
+   "id": "i-dive-core",
+   "act": "I",
+   "start": 34.5,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "FPV 18mm push straight into the tower's brightest point, (-19.6, 15, 40) -> (-19.6, 16, 2), power2.in (accelerating)",
+   "visual": "The camera dives at the tower's core until clay-white fills the frame (exposure +1.2 stop over the last 6 f).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 1.0,
+     "kind": "reverse_swell",
+     "dur": 0.5,
+     "gain": -3
+    }
+   ],
+   "music": {
+    "section": "act1",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.78,
+    "add": [
+     "strings"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.8 thr 0.8, sat 0.8, tint cold [0.96,1.0,1.06], exposure 0.9, vignette 0.5, ca 0.0008",
+   "motif": "M1",
+   "shared": [
+    "codeTower"
+   ],
+   "transition": "hard cut on the music stop"
+  },
+  {
+   "n": 31,
+   "id": "m-pullback",
+   "act": "MID",
+   "start": 36.0,
+   "dur": 4.0,
+   "bpm": 120,
+   "camera": "ONE continuous move: dolly back + crane up from (-19.6, 6, 8) looking at (-19.6, 3, 0) to (0, 210, 0.4) looking at (0, 0, 0), ending at pitch -89.5 deg (camera.up NEVER flipped), 35mm -> 50mm (fov 31.4 -> 22.3, reverse dolly-zoom feel), power2.inOut, settles at local 3.4",
+   "visual": "Start tight on the blazing code tower (clay) and pull out: it shrinks to ONE lit box on a long line of 7 DARK stations (lineStations, ice hairline edges at 8%) on a black floor, the conveyor hairline running through them; no labels. Pillars slide out of frame; the foreman stays out of frame (z -200). The first 0.5 s moves in digital silence.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "silence",
+     "dur": 0.5,
+     "gain": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "tick",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.1,
+    "add": [
+     "drone",
+     "ticks"
+    ],
+    "drop": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "strings"
+    ]
+   },
+   "grade": "near-black: bloom 0.9 thr 0.85, sat 0.7, exposure 0.85, vignette 0.6; clay only on the CODE segment",
+   "motif": "M2 the re-read (one lit box on a dark line)",
+   "shared": [
+    "lineStations",
+    "codeTower",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 32,
+   "id": "m-sixteen",
+   "act": "MID",
+   "start": 40.0,
+   "dur": 2.5,
+   "bpm": 120,
+   "camera": "TOP-DOWN 135mm (fov 8.3), camLineTop: pos (0, 545, 0) straight down, camera.up (0,0,-1), 2% descent",
+   "visual": "The 7-station line fills the frame width, dark (ice hairlines at 8%). The CODE segment lights IN PLACE: the clay strip draws from its own left edge x -30.8 to its right edge x -8.4 over 0.4 s from local 0.1 - exactly 16% of the line's length, the third station from the left - while the other six segments (84%) stay dark. A hairline ivory rule under the whole line marks only its two ends (no numbers, no percentages on the stations).",
+   "text": "CODE: 16% OF DEV TIME. / ATLASSIAN",
+   "type": "cond 140px ivory caps with '16%' in clay, K.maskUp at local 0.5 at (960, 300) above the line; kicker 'ATLASSIAN' 24px ice decodes at local 0.7 at (960, 380); on screen 0.5-2.5",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.5,
+     "kind": "boom",
+     "gain": -6
+    },
+    {
+     "at": 0.5,
+     "kind": "bell",
+     "gain": -10
+    },
+    {
+     "at": 1.5,
+     "kind": "riser",
+     "dur": 1.0,
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.12,
+    "add": [
+     "drone",
+     "ticks"
+    ],
+    "drop": []
+   },
+   "grade": "near-black: bloom 0.9 thr 0.85, sat 0.7, exposure 0.85, vignette 0.6; clay only on the CODE segment",
+   "motif": "M2 (16% of time = 16% of length, lit in place); L2 opens",
+   "shared": [
+    "lineStations",
+    "camLineTop"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 33,
+   "id": "ii-fpv-launch",
+   "act": "II",
+   "start": 42.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "FPV 14mm (fov 70.2), 1u above the conveyor at z 0, launching +x from x -12 at 40u/s, linear (in motion from frame 0)",
+   "visual": "MOOD CHANGE #2. NEW: output at agent speed. Work cards (ivory instanced glowBox, 120 in flight) blast out of the lit CODE station and race L->R toward the dark REVIEW box ahead; the camera rides among them.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.6,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M2",
+   "shared": [
+    "lineStations",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 34,
+   "id": "ii-review-slam",
+   "act": "II",
+   "start": 43.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "SIDE TELEPHOTO 135mm, camReviewSide tracking R->L (x -4 -> -8), micro handheld",
+   "visual": "NEW: it stops at review. Cards slam into the dark REVIEW station's input wall at x -8.4 and stop dead; the queue concertinas into a wall (60 cards in 10 f). One red alarm pinpoint ignites on the REVIEW box.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    },
+    {
+     "at": 0.25,
+     "kind": "boom",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.6,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M2",
+   "shared": [
+    "camReviewSide",
+    "lineStations",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 35,
+   "id": "ii-funnel-top",
+   "act": "II",
+   "start": 44.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TOP-DOWN 50mm, pos (-6, 60, 0), camera.up (0,0,-1), static",
+   "visual": "NEW (top angle, same problem explained as geometry): a river of cards from CODE (flow() 4,000 ivory particles along 12 parallel splines at 30u/s) narrows into REVIEW's single-lane input gate; exactly one card passes per beat, on the tick, while the river piles up behind it into a widening delta.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -6
+    },
+    {
+     "at": 0.5,
+     "kind": "tick",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.62,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "speed mismatch (top angle)",
+   "shared": [
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 36,
+   "id": "ii-human-speed",
+   "act": "II",
+   "start": 45.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "MACRO 85mm, pos (-6.5, 3.2, 6), target (-7.5, 3.0, 2), 2% push, handheld 0.3 deg",
+   "visual": "NEW (bottom angle on the same mismatch): REVIEW's lectern screen (canvasPlane 2 x 1.2, ice drawCode) shows a steel-blue cursor (#CFE3F2 k3: human speed, NOT clay) blinking once every 2 beats, while ivory cards streak past behind it at agent speed (6u motion-blur streaks).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.62,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M3 tick as speed comparison",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 37,
+   "id": "ii-line-waits-1",
+   "act": "II",
+   "start": 46.5,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "WORM'S-EYE 18mm (fov 57.3), camReviewWorm: pos (-6, 0.5, 18) creep-pushing 5% toward (1.4, 14.1, 0), pitch +35 deg, Dutch -8 deg, converging verticals",
+   "visual": "MASTER A. NEW: the queue becomes a tower. The REVIEW queue stacks upward into fog (cardTowers: 160 cards, 80u); red pinpoints blink high above on 8ths. Background darkened -0.8 stop under the card.",
+   "text": "THE LINE WAITS.",
+   "type": "refrainSlot: cond 220px ice #CFE3F2 at (960, 820), K.slam 1.12 -> 1.0 in 5 f at local 0.1; K.cutOut at 1.6",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -6
+    },
+    {
+     "at": 0.1,
+     "kind": "bell",
+     "gain": -12
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 8,
+    "energy": 0.62,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M2 refrain #1",
+   "shared": [
+    "camReviewWorm",
+    "cardTowers",
+    "refrainSlot",
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 38,
+   "id": "ii-review-stamp",
+   "act": "II",
+   "start": 48.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "SIDE TELEPHOTO 135mm, camReviewSide tracking R->L (problem direction)",
+   "visual": "NEW: the station gets its name. A side-on wall of hundreds of stalled cards; the word stamps onto the REVIEW station's face in red.",
+   "text": "REVIEW.",
+   "type": "slam 150px danger red #FF453A as a world-space textPlane stamped on the REVIEW station's +z face, K.slam at local 0.0, to the cut",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 8,
+    "energy": 0.65,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "tricolon 1/3 (tom)",
+   "shared": [
+    "camReviewSide",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 39,
+   "id": "ii-test-tower",
+   "act": "II",
+   "start": 49.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "WORM'S-EYE 14mm, camTestWorm: pos (16, 0.5, 14), target (21, 30, 0), Dutch +10 deg",
+   "visual": "NEW: the next station is worse. The TEST tower (cardTowers: 320 cards, 160u), twice the REVIEW tower's height, red pinpoints climbing it on 8ths.",
+   "text": "TEST.",
+   "type": "slam 180px (+20%) danger red, world-space textPlane on the TEST station face, K.slam at local 0.0",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -1
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.68,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "tricolon 2/3 (tom + metal)",
+   "shared": [
+    "camTestWorm",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 40,
+   "id": "ii-deploy-maze",
+   "act": "II",
+   "start": 50.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TOP-DOWN 50mm, camDeployTop: pos (40.6, 70, 0), yaw 6 deg/s",
+   "visual": "MASTER B. NEW: and the next. The DEPLOY region: a maze of 14 jammed conveyor strips, red stop lamps blinking on 8ths, 240 cards gridlocked; the word lies flat on the floor in world space.",
+   "text": "DEPLOY.",
+   "type": "slam 210px (+40%) danger red, world-space textPlane laid flat on the floor beside the maze, K.slam at local 0.0",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 8,
+    "energy": 0.7,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "tricolon 3/3 (tom + metal + sub)",
+   "shared": [
+    "camDeployTop",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 41,
+   "id": "ii-plant-3",
+   "act": "II",
+   "start": 51.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TELEPHOTO 200mm (fov 5.6), pos (60, 25, 500), target (10, 60, -200), handheld 0.3 deg; fog 1.27/710 = 0.0018 (foremanPlant)",
+   "visual": "PLANT 3. NEW: the scope - the whole line is jammed. Three red-pinpointed card towers (REVIEW 200u, TEST 160u, DEPLOY 120u) compressed side by side in the lower half; behind them the UNLIT foreman's stepped mass rises out of frame top as a dark wall, the red pinpoints faintly catching its dead-brass seams.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.7,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M4 plant 3",
+   "shared": [
+    "cardTowers",
+    "foremanZiggurat",
+    "foremanPlant"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 42,
+   "id": "ii-line-waits-2",
+   "act": "II",
+   "start": 52.5,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "DESIGNATED HOLD. WORM'S-EYE 14mm (fov 70.2), camHumanUnderTower: pos (1.4, 0.3, 72) -> (1.4, 0.3, 69.1) (4% creep push ending on the cut), target (1.4, 36, 0)",
+   "visual": "MASTER C. NEW: the cost lands on a person. The tiny human (bottom centre, 3% of frame height, ice rim) beneath the 300u REVIEW tower (600 cards, ratio 1:166) vanishing into fog 0.008; red pinpoints blink on the tick far above; the TEST tower rises at frame right; the tower top loses 70% contrast.",
+   "text": "THE LINE WAITS.",
+   "type": "refrainSlot recall: identical font, size, color and pixel position as ii-line-waits-1; K.slam at local 0.25; K.cutOut at 1.75",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "heartbeat",
+     "gain": -8
+    },
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.55,
+    "add": [
+     "pulse",
+     "ostinato",
+     "drone",
+     "heart"
+    ],
+    "drop": [
+     "drums"
+    ]
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M2 refrain #2 / M5 human dwarfed",
+   "shared": [
+    "camHumanUnderTower",
+    "humanAnchor",
+    "cardTowers",
+    "refrainSlot"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 43,
+   "id": "ii-add-agents",
+   "act": "II",
+   "start": 54.5,
+   "dur": 2.0,
+   "bpm": 120,
+   "camera": "MACRO 85mm on the human's handheld terminal (canvasPlane 1.2 x 0.7 at (1.6, 1.3, 6.3)), 3% push, handheld 0.3 deg",
+   "visual": "NEW: the reflex. The human's terminal: the cold steel cursor blinks on the tick and types the line; the human's black shoulder edge frames left.",
+   "text": "just add more agents.",
+   "type": "mono V1 lowercase 48px ivory, K.typewriter 1 char/frame from local 0.1, diegetic in the terminal, centred (960, 540); hold to the cut",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.1,
+     "kind": "chirps",
+     "gain": -16
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.62,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "V1 human voice",
+   "shared": [
+    "humanAnchor"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 44,
+   "id": "ii-swarm-pour",
+   "act": "II",
+   "start": 56.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TOP-DOWN 35mm, pos (0, 90, 0), camera.up (0,0,-1), yaw 4 deg/s",
+   "visual": "NEW: more agents arrive. Ice-white orbs (agentOrbs) pour onto the line from every side with no structure: 10 -> 100 -> 1,000 instanced, plus 8,000 particles for the distant haze; the dimmed clay spark (k3) is lost among them near CODE.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.7,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M1 lost in the swarm",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 45,
+   "id": "ii-towers-double",
+   "act": "II",
+   "start": 57.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "LOW 24mm, pos (-20, 1, 60), target (10, 60, 0), Dutch +8 deg, slow push",
+   "visual": "NEW: the consequence. With the swarm writing, the REVIEW and TEST towers DOUBLE in one second (REVIEW 600 -> 1,200 cards, 300u -> 600u; TEST 320 -> 640), cards slamming on in 16ths; the red pinpoints multiply with them.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -4
+    },
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.72,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "more agents = taller towers",
+   "shared": [
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 46,
+   "id": "ii-swarm-flood",
+   "act": "II",
+   "start": 58.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "LOW 24mm at y 1, Dutch +10 deg, the swarm moving toward camera",
+   "visual": "NEW: collisions. The flat swarm floods past the lens; orbs collide and throw red sparks (40 per second).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "whoosh",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.74,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "flat swarm",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 47,
+   "id": "ii-two-writers",
+   "act": "II",
+   "start": 59.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "MACRO 85mm, camWriterMacro: pos (-9, 3.2, 6), target (-9, 2.6, 0), centred",
+   "visual": "MASTER D. NEW: the mechanism. Two ice orbs enter from left and right at local 0.15 and grab the same card at once (two writers, one change); at 0.3 the card cracks red down the middle (#FF453A k6 fracture line).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.3,
+     "kind": "glitch",
+     "d": 0.13
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.3,
+     "kind": "glitch",
+     "gain": -4
+    },
+    {
+     "at": 0.3,
+     "kind": "impact",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.76,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "two writers (mirror source)",
+   "shared": [
+    "camWriterMacro",
+    "agentOrbs"
+   ],
+   "transition": "glitch cut"
+  },
+  {
+   "n": 48,
+   "id": "ii-errors-172",
+   "act": "II",
+   "start": 59.5,
+   "dur": 2.75,
+   "bpm": 120,
+   "camera": "TOP-DOWN 85mm, camErrorTop: pos (1.4, 160, 0), locked",
+   "visual": "MASTER E. NEW: the number. One red error spark jumps orb to orb across 300 ice orbs, branching into exactly 17 red tendrils (fatLines #FF453A k6, 2px) that keep spreading on 8ths. The counter rolls and lands at local 0.5.",
+   "text": "INDEPENDENT AGENTS: ERRORS ×17.2 / GOOGLE RESEARCH",
+   "type": "statSlam: label 'INDEPENDENT AGENTS: ERRORS' slam 90px ivory K.maskUp at local 0.1; '×17.2' mega 300px danger red K.roll 1.0 -> 17.2 over 15 f landing at local 0.5; source kicker 'GOOGLE RESEARCH' 24px ice decodes at local 0.3; all hold to the cut",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "A"
+    },
+    {
+     "at": 0.5,
+     "kind": "glitch",
+     "d": 0.13
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "glitch",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.75,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "x17.2 (mirror source)",
+   "shared": [
+    "camErrorTop",
+    "statSlam",
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 49,
+   "id": "ii-lock-gate",
+   "act": "II",
+   "start": 62.25,
+   "dur": 0.75,
+   "bpm": 120,
+   "camera": "WORM'S-EYE 18mm, pos (-9.6, 0.5, 4), target (-8.4, 5, 0), push cut on the off-beat",
+   "visual": "NEW: locks don't save it (image only, no card). A narrow lock gate (glowBox frame 2u wide, ice edges) at REVIEW's input: 20 ice orbs crowd it, only 2-3 pass per beat, the rest jitter and pile.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.76,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "lock jam",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 50,
+   "id": "ii-wildfire",
+   "act": "II",
+   "start": 63.0,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TOP-DOWN 135mm, camLineTop height (0, 545, 0), camera.up (0,0,-1), yaw 3 deg/s",
+   "visual": "NEW: it spreads to the whole line. Red tendrils grow outward from REVIEW across all 7 stations at 40u/s like wildfire; one alarm beam sweeps across the frame.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "glitch",
+     "d": 0.1
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "glitch",
+     "gain": -6
+    },
+    {
+     "at": 0.5,
+     "kind": "whoosh",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.78,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "error spread",
+   "shared": [
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 51,
+   "id": "ii-topple",
+   "act": "II",
+   "start": 64.0,
+   "dur": 1.5,
+   "bpm": 120,
+   "camera": "LOW 35mm, pos (-4, 2, 40), target (1.4, 30, 0); speed ramp 1 -> 0.2x (0-0.3), hold 0.2x, -> 3x over the last 0.4 s",
+   "visual": "NEW: it breaks. PATTERN BREAK: the overloaded 600u REVIEW tower tips toward camera in slow motion, then snaps forward fast; cards rain at the lens.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 1.3,
+     "kind": "shake",
+     "px": 8,
+     "d": 0.2
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tape_stop",
+     "dur": 0.5,
+     "gain": -2
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": -2
+    },
+    {
+     "at": 1.2,
+     "kind": "whoosh",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.7,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "pattern break",
+   "shared": [
+    "cardTowers"
+   ],
+   "transition": "hard cut on peak velocity"
+  },
+  {
+   "n": 52,
+   "id": "ii-jam-deploy",
+   "act": "II",
+   "start": 65.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "ACCELERANDO tier 1: WORM'S-EYE 18mm, pos (36, 0.5, 14), target (40.6, 20, 0), push 10%",
+   "visual": "NEW: backpressure 1. DEPLOY's stop lamps lock red and its queue stretches back into the TEST lane.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.8,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "backpressure",
+   "shared": [
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 53,
+   "id": "ii-jam-test",
+   "act": "II",
+   "start": 66.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "TOP-DOWN 85mm, pos (16, 160, 0), camera.up (0,0,-1), static",
+   "visual": "NEW: backpressure 2. The TEST queue spills back over REVIEW; a red hairline overlay on the conveyor creeps leftward (-x at 20u/s), showing the jam travelling upstream.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -4
+    },
+    {
+     "at": 0,
+     "kind": "riser",
+     "dur": 6.0,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.82,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "backpressure",
+   "shared": [
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 54,
+   "id": "ii-jam-code",
+   "act": "II",
+   "start": 67.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "MACRO 50mm, centred on the code tower's top tier",
+   "visual": "NEW: backpressure 3 reaches CODE. The clay orbs stall mid-stamp, cards frozen half-out; the conveyor stops.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 32,
+    "energy": 0.85,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "backpressure",
+   "shared": [
+    "codeTower"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 55,
+   "id": "ii-jam-plan",
+   "act": "II",
+   "start": 68.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "LOW 24mm, centred on the PLAN station (-60.2, 1.5, 0)",
+   "visual": "NEW: backpressure 4. PLAN, the first station, goes red: the line is now stopped end to end.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Bb",
+    "div": 32,
+    "energy": 0.86,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "backpressure",
+   "shared": [
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 56,
+   "id": "ii-spark-dims",
+   "act": "II",
+   "start": 68.5,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "MACRO 85mm, centred on the clay spark inside the swarm",
+   "visual": "NEW: the protagonist overwhelmed. The clay spark, ringed by ice orbs, dims k10 -> 3 (30%) and its blink stutters off the tick.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 32,
+    "energy": 0.88,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M1 dimmed",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 57,
+   "id": "ii-human-red",
+   "act": "II",
+   "start": 69.0,
+   "dur": 0.5,
+   "bpm": 120,
+   "camera": "HIGH ANGLE -50 deg 24mm, centred on the human",
+   "visual": "NEW: the red reaches the person. The human's own station lamp turns red; the rim light shifts ice -> red #FF453A (rim only, not a field). Centred silhouette.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "heartbeat",
+     "gain": -4
+    },
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "C",
+    "div": 32,
+    "energy": 0.9,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M5",
+   "shared": [
+    "humanAnchor"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 58,
+   "id": "ii-alarm-a",
+   "act": "II",
+   "start": 69.5,
+   "dur": 0.25,
+   "bpm": 120,
+   "camera": "WORM'S-EYE 14mm down the aisle, pos (-90, 0.5, 0) looking +x, centred",
+   "visual": "NEW: the hall goes to alarm. Overhead banks 1-2 flick to RED ALARM (lightBanks ALARM state): red panels and thin red beams in the fog. Centred, luminance-matched to the next three shots (+-8%).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 32,
+    "energy": 0.92,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "banks (red; mirrored warm in Act III)",
+   "shared": [
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 59,
+   "id": "ii-alarm-b",
+   "act": "II",
+   "start": 69.75,
+   "dur": 0.25,
+   "bpm": 120,
+   "camera": "SIDE 24mm, pos (-20, 30, 80) looking at (-20, 40, 0), centred",
+   "visual": "Banks 3-4 flick to red alarm; their beams cut down onto CODE and DESIGN.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 32,
+    "energy": 0.93,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "banks (red)",
+   "shared": [
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 60,
+   "id": "ii-alarm-c",
+   "act": "II",
+   "start": 70.0,
+   "dur": 0.25,
+   "bpm": 120,
+   "camera": "MACRO 85mm on a bank relay (glowBox contacts) at (10, 60.6, 6), centred",
+   "visual": "Banks 5-6: a brass relay slams shut and its filament burns red.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 32,
+    "energy": 0.94,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "banks (red)",
+   "shared": [
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 61,
+   "id": "ii-alarm-d",
+   "act": "II",
+   "start": 70.25,
+   "dur": 0.25,
+   "bpm": 120,
+   "camera": "TOP-DOWN 50mm over banks 7-8, pos (60, 140, 0), camera.up (0,0,-1), centred",
+   "visual": "Banks 7-8 flick to red: all eight alarm panels now pulse over the jammed line.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 32,
+    "energy": 0.95,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "banks (red)",
+   "shared": [
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 62,
+   "id": "ii-hall-red-top",
+   "act": "II",
+   "start": 70.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "BREATH: very high top-down 50mm, pos (0, 700, -60), camera.up (0,0,-1), static drift 0.5%",
+   "visual": "NEW: totality. The whole hall from above: a city of red pinpoints and 8 red alarm banks over the jammed line, the swarm a cold haze, the human a single dot; at the frame's top edge the foreman's dark square footprint (unlit, unexplained).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 32,
+    "energy": 0.96,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M2 at its worst / M4",
+   "shared": [
+    "hallSet",
+    "lightBanks",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 63,
+   "id": "ii-max-push",
+   "act": "II",
+   "start": 71.5,
+   "dur": 1.0,
+   "bpm": 120,
+   "camera": "camHumanUnderTower variant: step-print on twos and zoom stutter +3% every 2 f, creep push 15%",
+   "visual": "Everything at maximum: the human motionless under the 600u tower, red pinpoints at their densest, alarm banks pulsing red overhead, the tower shuddering 0.2u.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "glitch",
+     "d": 0.25
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.5,
+     "kind": "stutter",
+     "dur": 0.5,
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act2",
+    "chord": "Dm",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "drone",
+     "heart"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 0.9 thr 0.8, sat 0.75, tint cold [0.95,1.0,1.07], exposure 0.95, vignette 0.55, ca 0.001; handheld 0.3 deg",
+   "motif": "M5 / peak of the problem",
+   "shared": [
+    "camHumanUnderTower",
+    "humanAnchor",
+    "cardTowers",
+    "lightBanks"
+   ],
+   "transition": "HARD CUT TO BLACK"
+  },
+  {
+   "n": 64,
+   "id": "d-who-runs",
+   "act": "DROP",
+   "start": 72.5,
+   "dur": 4.0,
+   "bpm": 120,
+   "camera": "Black (2D only)",
+   "visual": "Pure black. At local 1.0 a small ivory cursor block appears at frame centre (same screen position and aspect as the c-rewind cursor) and blinks on the tick; from 1.2 it types the question at 1 char per frame; the text holds; at 3.2 the text cuts out and only the cursor remains until the cut.",
+   "text": "who runs the line?",
+   "type": "mono V1 lowercase 48px ivory, centred (960, 540), K.typewriter 1 char/frame from local 1.2 with the cursor blinking on the tick; K.cutOut at 3.2",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "silence",
+     "dur": 1.0,
+     "gain": 0
+    },
+    {
+     "at": 1.0,
+     "kind": "tick",
+     "gain": -6
+    },
+    {
+     "at": 1.2,
+     "kind": "chirps",
+     "gain": -18
+    },
+    {
+     "at": 2.25,
+     "kind": "sub_drop",
+     "gain": -8
+    },
+    {
+     "at": 2.75,
+     "kind": "sub_drop",
+     "gain": -8
+    },
+    {
+     "at": 3.25,
+     "kind": "reverse_swell",
+     "dur": 0.75,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.05,
+    "add": [
+     "ticks"
+    ],
+    "drop": [
+     "drone",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "strings",
+     "heart"
+    ]
+   },
+   "grade": "pure black; type ivory, no bloom",
+   "motif": "V1 human voice; L3 opens",
+   "shared": [
+    "cursorBlock"
+   ],
+   "transition": "hard cut; the cursor block shape-matches the first light-bank panel at the same screen position in iii-bank-1"
+  },
+  {
+   "n": 65,
+   "id": "iii-bank-1",
+   "act": "III",
+   "start": 76.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "WORM'S-EYE 14mm, dead-centre one-point down the aisle, pos (-90, 0.5, 0) looking at (60, 20, 0), zero handheld",
+   "visual": "LIGHTS ON + TEMPO LIFT. Bank 1 (PLAN end) slams on (lightBanks ON: 0 -> 1.3 in 2 f, settle 6 f); its panel sits exactly where the drop's cursor sat on screen (shape match). The beam cuts the fog and the first pillars appear in its light; the alarm red is gone everywhere.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "riser",
+     "dur": 3.2,
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.61,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 66,
+   "id": "iii-bank-2",
+   "act": "III",
+   "start": 76.9,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN 50mm, pos (-50, 120, 0), camera.up (0,0,-1), static",
+   "visual": "Bank 2 ignites: a rectangular warm light pool lands on DESIGN; the station's edges trace amber as a wireframe-to-solid scan line rises (clipping plane y 0 -> 3 over 6 f).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.6399999999999999,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 67,
+   "id": "iii-bank-3",
+   "act": "III",
+   "start": 77.3,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO 85mm on the bank-3 relay (the ii-alarm-c rig, now warm), centred",
+   "visual": "Bank 3 (over CODE): the brass relay slams shut on twos and its filament flares warm white where it burned red.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -1
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.6699999999999999,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 68,
+   "id": "iii-bank-4",
+   "act": "III",
+   "start": 77.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "LOW 24mm, pos (-20, 1, 30), target (-10, 30, 0)",
+   "visual": "Bank 4 ignites over REVIEW: the beam lands on the stalled tower and the cards' edges flip from ice to amber.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -1
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.7,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 69,
+   "id": "iii-bank-5",
+   "act": "III",
+   "start": 78.1,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "SIDE 24mm, lateral track L->R at constant velocity, pos (10 + 10*lt, 20, 90), target (10 + 10*lt, 20, 0)",
+   "visual": "Bank 5 (TEST): ignition; the scan line builds the TEST station solid as the beam lands.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.73,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 70,
+   "id": "iii-bank-6",
+   "act": "III",
+   "start": 78.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN 135mm over the DEPLOY maze, pos (40.6, 300, 0), camera.up (0,0,-1)",
+   "visual": "Bank 6 (DEPLOY): the red stop lamps go dark one by one and the maze's conveyors light amber.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.76,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 71,
+   "id": "iii-bank-7",
+   "act": "III",
+   "start": 78.9,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "WORM'S-EYE 18mm looking straight up bank 7's beam from (50, 0.5, 2)",
+   "visual": "Bank 7 (OPERATE): the beam slams on through fog and the dust motes catch.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.7899999999999999,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 72,
+   "id": "iii-bank-8",
+   "act": "III",
+   "start": 79.3,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "SIDE 24mm, lateral track L->R, pos (40 + 20*lt, 25, 110), target (40 + 20*lt, 25, 0)",
+   "visual": "Bank 8 at the far end ignites; the cascade has run the length of the hall. Pre-hit dip on the last 8th.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    }
+   ],
+   "music": {
+    "section": "turn",
+    "chord": "Bb",
+    "div": 8,
+    "energy": 0.82,
+    "add": [
+     "strings",
+     "pulse",
+     "kick",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "grade warms one step per bank: tint lerps cold [0.95,1,1.07] -> warm [1.04,1,0.95] by 1/8 per shot, sat 0.75 -> 1.0; bloom 1.0",
+   "motif": "lights on (mirror of the Act II alarm banks)",
+   "shared": [
+    "lightBanks",
+    "lineStations",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 73,
+   "id": "iii-line-runs",
+   "act": "III",
+   "start": 79.7,
+   "dur": 1.6,
+   "bpm": 150,
+   "camera": "MIRROR of ii-line-waits-1: camReviewWorm, identical 18mm position, target and push; Dutch rights -8 -> 0 deg over 12 f (power3.out) from local 0, then level",
+   "visual": "THE TURN FRAME (hero). Same REVIEW station, same tower position, now lit warm (cardTowers lit state): the cards no longer pile, they flow up and out L->R (amber, 6u/s), and green check lamps replace the red pinpoints. On frame 0, all at once: the letterbox SNAPS OPEN to full frame (138 -> 0 px in 3 f), a 2 f white flash and +1.5 EV bloom decaying over 20 f, the Dutch tilt rights, BRAAM #2, and the refrain flips in its slot.",
+   "text": "THE LINE RUNS.",
+   "type": "refrainSlot flip: identical font, size and pixel position as THE LINE WAITS. (960, 820), now ivory with 'RUNS' in clay; K.slam 1.12 -> 1.0 in 5 f at local 0.05; K.cutOut at 1.55",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 138,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0.1
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "S"
+    },
+    {
+     "at": 0,
+     "kind": "flash",
+     "d": 0.067
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "braam",
+     "root": "D1",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.85,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; +1.5 EV bloom on frame 0 decaying over 20 f",
+   "motif": "M2 refrain flip (WAITS -> RUNS); MOOD CHANGE #3",
+   "shared": [
+    "camReviewWorm",
+    "cardTowers",
+    "refrainSlot",
+    "lightBanks"
+   ],
+   "transition": "smash cut"
+  },
+  {
+   "n": 74,
+   "id": "iii-factory-zoom",
+   "act": "III",
+   "start": 81.3,
+   "dur": 2.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN POWERS-OF-TEN log zoom, 35mm (fov 31.4): pos (1.4, d, 0.01) with d = 2 -> 520 on a log curve (d = 2 * 260^e, e power2.inOut over 0-1.4 s), then 2%/s drift; camera.up (0,0,-1) set once before the move (straight down throughout, no flip)",
+   "visual": "One amber work card on a rail fills the frame -> the REVIEW station flowing -> the whole lit line (7 stations, 8 banks, about 1,000 rails of railNetwork flowing L->R in a radial amber cascade) -> the whole hall with fog cleared to 0.002 (the payoff of the cold-open cascade). At the top edge of frame the foreman's footprint is still a DARK stepped square. The title type lands as the zoom settles.",
+   "text": "THE SOFTWARE FACTORY.",
+   "type": "Inter Tight 900 150px ivory, per-letter 3D flip cascade centre-out (K.letters, 1 f stagger) starting at local 0.5, centred (960, 540); hold to the cut (on screen 0.5-2.4)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "whoosh",
+     "gain": -6
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bbmaj",
+    "div": 16,
+    "energy": 0.85,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "scale shot (Powers of Ten); cold-open cascade paid off",
+   "shared": [
+    "railNetwork",
+    "lineStations",
+    "lightBanks",
+    "hallSet",
+    "foremanZiggurat"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 75,
+   "id": "iii-rail-macro",
+   "act": "III",
+   "start": 83.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO 85mm on the brass rail, tracking L->R at card speed",
+   "visual": "Cards ride the rails L->R in a steady stream through a lit station gate; etched brass glyph micro-detail on the rail edge (canvas texture).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bbmaj",
+    "div": 16,
+    "energy": 0.85,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "flow",
+   "shared": [
+    "railNetwork"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 76,
+   "id": "iii-graph",
+   "act": "III",
+   "start": 84.1,
+   "dur": 1.6,
+   "bpm": 150,
+   "camera": "TOP-DOWN 35mm, pos (0, 70, 0), camera.up (0,0,-1), yaw 4 deg/s",
+   "visual": "GRAPH: a deterministic node graph of 1 ivory hub + 12 worker nodes (orb r1, ivory k6) wired by 13 brass filaments (fatLine #E8B47A) in fixed order; light pulses travel each edge in sequence (4 f per hop) and nodes bloom on arrival. Neutral colors: this is architecture, not Claude.",
+   "text": "GRAPH: CONTROL.",
+   "type": "slam 150px ivory, K.slam at local 0.0, centred (960, 860); K.cutOut at 1.55",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "F",
+    "div": 16,
+    "energy": 0.85,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "structure tricolon 1/3",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 77,
+   "id": "iii-graph-pulse",
+   "act": "III",
+   "start": 85.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO 85mm, centred on one graph node",
+   "visual": "A pulse arrives at a node, which blooms (k6 -> 14 -> 6) and passes it on; etched ring detail on the node housing.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "F",
+    "div": 16,
+    "energy": 0.85,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "graph",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 78,
+   "id": "iii-hierarchy",
+   "act": "III",
+   "start": 86.1,
+   "dur": 1.6,
+   "bpm": 150,
+   "camera": "CRANE UP 2x from worm's-eye, 24mm, pos (0, 1, 40) -> (0, 30, 60), target (0, 20, 0), power2.inOut",
+   "visual": "HIERARCHY: a small stepped diagram (3 tiers of ivory nodes, 16 workers -> 4 leads -> 1 apex, on glowBox plinths), deliberately echoing the foreman's silhouette; beams descend from the apex to each tier and the cards on each tier square up into alignment.",
+   "text": "HIERARCHY: COHERENCE.",
+   "type": "slam 180px (+20%) ivory, K.slam at local 0.0 at (960, 860); CARRIES through iii-tier-snap and cuts out at its end (on screen 2.0 s)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -1
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.87,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "structure tricolon 2/3",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 79,
+   "id": "iii-tier-snap",
+   "act": "III",
+   "start": 87.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO 85mm, centred on one tier",
+   "visual": "A beam hits a tier and its cards snap into alignment (0.2u jitter -> 0 in 3 f).",
+   "text": "",
+   "type": "CARRY: 'HIERARCHY: COHERENCE.' from iii-hierarchy stays on screen in the same position (not a new card; counted once); K.cutOut at local 0.4",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.87,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "hierarchy",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 80,
+   "id": "iii-swarm",
+   "act": "III",
+   "start": 88.1,
+   "dur": 2.0,
+   "bpm": 150,
+   "camera": "TELEPHOTO 200mm (fov 5.6), slow 30 deg orbit around (20, 2, 0) at radius 120, height 30",
+   "visual": "SWARM: 300 small ivory orbs fan out to READ a field of 24 document planes (canvasPlane + drawCode, ivory) in parallel, drawn as thin read-beams (one LineSegments, 300 segments, ivory at 30%); at local 1.2 they converge on ONE writer orb, which draws the single write line to the card. Disorder snaps to order on the beat.",
+   "text": "SWARM: PARALLEL WORK.",
+   "type": "slam 210px (+40%) ivory, K.slam at local 0.0 at (960, 860); K.cutOut at 1.95",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -6
+    },
+    {
+     "at": 0.2,
+     "kind": "chirps",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Gm",
+    "div": 16,
+    "energy": 0.88,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "parallelize reading, one writer per change; tricolon 3/3",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 81,
+   "id": "iii-one-writer",
+   "act": "III",
+   "start": 90.1,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-two-writers: camWriterMacro, identical framing and light rig",
+   "visual": "Same card, same framing: ONE ivory writer orb enters from frame left at 0.1 and stamps; the card edge turns green (#6EE7A0 k4). No crack.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.15,
+     "kind": "tick",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Gm",
+    "div": 16,
+    "energy": 0.88,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "one writer (mirror)",
+   "shared": [
+    "camWriterMacro"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 82,
+   "id": "iii-coord-44",
+   "act": "III",
+   "start": 90.5,
+   "dur": 2.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-errors-172: camErrorTop, identical static top-down 85mm",
+   "visual": "Same 300 orbs at the same seeded positions. The same red error spark appears and starts to branch, but a NEUTRAL IVORY coordinator node (orb r1.2, #FAF9F5 k8, never clay) at the centre links the orbs with ivory hub filaments and intercepts it: the tendrils retract from 17 to exactly 4, which REMAIN red and keep pulsing (errors reduced, not gone). The counter rolls 17.2 -> 4.4 and lands at local 0.4.",
+   "text": "WITH A COORDINATOR: ×4.4 / SAME STUDY",
+   "type": "statSlam: label 'WITH A COORDINATOR:' slam 90px ivory at local 0.0; '×4.4' mega 300px ICE #CFE3F2 (never clay) K.roll 17.2 -> 4.4 over 15 f landing at local 0.4; kicker 'SAME STUDY' 24px ice decodes at local 0.2 in the GOOGLE RESEARCH slot; K.cutOut at 2.2 (the 4 residual red tendrils hold alone for the last 0.2 s)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0.4,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -10
+    },
+    {
+     "at": 0.4,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Dm",
+    "div": 16,
+    "energy": 0.86,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; the 4 residual tendrils stay #FF453A",
+   "motif": "x17.2 -> x4.4 (mirror; Google's result, neutral)",
+   "shared": [
+    "camErrorTop",
+    "statSlam",
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 83,
+   "id": "iii-review-mirror",
+   "act": "III",
+   "start": 92.9,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-review-slam: camReviewSide, now tracking L->R (x -8 -> -4)",
+   "visual": "The REVIEW wall is gone: cards flow through the gate, entering ice and leaving amber.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.86,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "mirror tour 1/3",
+   "shared": [
+    "camReviewSide"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 84,
+   "id": "iii-test-mirror",
+   "act": "III",
+   "start": 93.3,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-test-tower: camTestWorm, Dutch 0 (level)",
+   "visual": "The TEST tower is now a lit column of green check lamps; level horizon.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.87,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "mirror tour 2/3",
+   "shared": [
+    "camTestWorm",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 85,
+   "id": "iii-deploy-mirror",
+   "act": "III",
+   "start": 93.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-deploy-maze: camDeployTop, same yaw",
+   "visual": "Red stops become amber flow; rails move L->R; the floor where DEPLOY. lay is clean.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.88,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "mirror tour 3/3",
+   "shared": [
+    "camDeployTop",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 86,
+   "id": "iii-lock-mirror",
+   "act": "III",
+   "start": 94.1,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-lock-gate: same 18mm worm's-eye, pos (-9.6, 0.5, 4), target (-8.4, 5, 0), level",
+   "visual": "The same narrow gate now passes ivory orbs single-file in order, one per 8th; nothing piles.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.88,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "mirror tour 4/5",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 87,
+   "id": "iii-funnel-mirror",
+   "act": "III",
+   "start": 94.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-funnel-top: same static top-down 50mm, pos (-6, 60, 0), camera.up (0,0,-1)",
+   "visual": "The same river of cards from CODE now splits into 12 parallel lit lanes at REVIEW and passes at full speed: no delta, no pile (parallelize reading).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.88,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "mirror tour 5/5",
+   "shared": [
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 88,
+   "id": "iii-still",
+   "act": "III",
+   "start": 94.9,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "Locked low 35mm at (0, 1.5, -60) facing -z toward (0, 40, -200), creeping linearly 1u (no ease)",
+   "visual": "STILLNESS: the lit hall behind camera throws amber across an empty, drained floor running to the dark centre-back, where the foreman stands as a black stepped silhouette against fog, still unlit, filling the upper frame. Nothing moves except the creep.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 4,
+    "energy": 0.3,
+    "add": [
+     "pad"
+    ],
+    "drop": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "strings"
+    ]
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; exposure 0.85",
+   "motif": "stillness before the reveal",
+   "shared": [
+    "foremanZiggurat",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 89,
+   "id": "iii-sweep",
+   "act": "III",
+   "start": 95.3,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO 85mm on the foreman's T4 front-left bevelled edge, pos (-20, 71, -160), target (-27, 70, -173)",
+   "visual": "LIGHT BEFORE SOUND: a clay specular sweep strip (k14) runs along the bevelled tier edge (fragment 1), with a 2 f clay-tinted flash. No sound at all.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "flash",
+     "d": 0.067
+    }
+   ],
+   "sfx": [],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 4,
+    "energy": 0.3,
+    "add": [
+     "pad"
+    ],
+    "drop": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "strings"
+    ]
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "light before sound",
+   "shared": [
+    "foremanZiggurat"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 90,
+   "id": "iii-five-five",
+   "act": "III",
+   "start": 95.7,
+   "dur": 0.8,
+   "bpm": 150,
+   "camera": "MACRO 85mm on the engraving at (0, 64, -172.8), pos (3, 65, -160), 2% push",
+   "visual": "Fragment 2: the brass engraved numerals catch the sweep, half lit, on the delayed boom.",
+   "text": "5.5",
+   "type": "diegetic engraving (foremanZiggurat textPlane, brass emissive 1.2), lit by the sweep at local 0.1; on screen 0.1-0.8",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "S"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "braam",
+     "root": "A1",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.9,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "the delayed boom; motif statement #2",
+   "shared": [
+    "foremanZiggurat"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 91,
+   "id": "iii-core-ignite",
+   "act": "III",
+   "start": 96.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO 50mm at (0, 150, -170) looking at (0, 150, -195): the c-core-tease framing, now clear (fog 0.004)",
+   "visual": "Fragment 3: the clay core ignites (k 0 -> 26 -> 20, 1.3x overshoot) and the first of the 12 threads leaves the slot.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "reverse_swell",
+     "dur": 0.4,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.92,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "M1 becomes the core",
+   "shared": [
+    "foremanZiggurat",
+    "foremanThreads"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 92,
+   "id": "iii-foreman-hero",
+   "act": "III",
+   "start": 96.9,
+   "dur": 2.4,
+   "bpm": 150,
+   "camera": "LOW-ANGLE HERO 14mm (fov 70.2): pos (0, 2, -40) (camera height = 1% of the 196u monument), target (0, 98, -200), dead-centre symmetry; verticals kept parallel by lens shift (camera pitched only +8 deg, camera.setViewOffset shifts the image up 22% of frame height); 3% push + 12 deg orbit, linear, zero handheld",
+   "visual": "THE FOREMAN (#1 hero frame). The full foremanZiggurat stands dead-centre. From local 0.0 its brass seams light RADIALLY from the clay core outward and downward (120u/s: obelisk corner seams first, then the T4 -> T1 perimeters; the whole 196u silhouette is traced in about 1.6 s); the 4 crest beams descend onto the tiers at 0.8; the 12 primary threads (foremanThreads) unfurl from the core to the 12 clay sub-lead nodes hovering over the lit line, with particle flow streaming from each sub-lead down to the stations. At its foot the human (humanAnchor, amber rim, 1:109) raises one small light-card brief; at 1.2 it lifts off and rides the centre thread up into the core as a single bright mote, and the core pulses when it arrives. Clay about 20% of frame; 65% of frame still near-black.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.95,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; bloom 1.4 thr 0.7 on the seams",
+   "motif": "M4 plant paid off / M1 core / M5 one human brief",
+   "shared": [
+    "foremanZiggurat",
+    "foremanThreads",
+    "humanAnchor",
+    "hallSet",
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 93,
+   "id": "iii-brief-macro",
+   "act": "III",
+   "start": 99.3,
+   "dur": 0.8,
+   "bpm": 150,
+   "camera": "MACRO 85mm on the core slot, pos (0, 150, -176), target (0, 150, -195), 2% push",
+   "visual": "The human's brief arrives: the single bright mote rides the centre thread into the core slot; the core pulses (k20 -> 28 -> 20) and all 12 primary threads flare once in sequence, one per 32nd. One human brief -> the foreman -> the line.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    },
+    {
+     "at": 0.4,
+     "kind": "impact",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.95,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "M5 the brief arrives / M1 core",
+   "shared": [
+    "foremanZiggurat",
+    "foremanThreads"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 94,
+   "id": "iii-foreman-top",
+   "act": "III",
+   "start": 100.1,
+   "dur": 1.6,
+   "bpm": 150,
+   "camera": "TOP-DOWN 35mm, pos (0, 320, -110), camera.up (0,0,-1), yaw 3 deg/s",
+   "visual": "The understanding angle: the lit foreman's stepped square at the top of frame, its 12 primary threads fanning to the 12 clay sub-leads in a row over the line, each sub-lead's particle flow branching down to the stations; the line flows L->R. Exactly 12 lines: one session -> a dozen; everything finer is particle flow, never more lines.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.9,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "one session -> a dozen",
+   "shared": [
+    "foremanZiggurat",
+    "foremanThreads",
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 95,
+   "id": "iii-teams-a",
+   "act": "III",
+   "start": 101.7,
+   "dur": 2.0,
+   "bpm": 150,
+   "camera": "HIGH -70 deg 35mm, pos (0, 60, 22), target (0, 0, 0), slow orbit 10 deg/s",
+   "visual": "Exactly 100 clay orbs (agentOrbs; an Opus 5.5 team) start as noise and on the hit at local 0.0 snap (6 f) into 12 sub-lead clusters (12 brighter lead orbs, each ringed by 7 workers; the 4 left over merge into clusters): the structure the team picked for proofs.",
+   "text": "100-AGENT TEAMS PICKED THEIR OWN STRUCTURE. / SYSTEM CARD",
+   "type": "slam 110px ivory with '100' in clay, K.maskUp at local 0.0 at (960, 860); kicker 'SYSTEM CARD' 24px ice at local 0.2 at (960, 940); CARRIES into iii-teams-b (same position): on screen 3.4 s total",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "F",
+    "div": 16,
+    "energy": 0.9,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "proof 1 (structure)",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 96,
+   "id": "iii-teams-b",
+   "act": "III",
+   "start": 103.7,
+   "dur": 1.6,
+   "bpm": 150,
+   "camera": "LOW PROFILE 24mm, pos (0, 1.5, 30), target (0, 4, 0)",
+   "visual": "The SAME 100 orbs re-snap flat into one even 10x10 sheet (the knowledge-base structure): the team's second, different structure.",
+   "text": "",
+   "type": "CARRY: the 100-AGENT TEAMS card and SYSTEM CARD kicker from iii-teams-a stay on screen in the same position; K.cutOut at local 1.4 (counted once)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "F",
+    "div": 16,
+    "energy": 0.9,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "proof 1 (second structure)",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 97,
+   "id": "iii-stripe",
+   "act": "III",
+   "start": 105.3,
+   "dur": 2.0,
+   "bpm": 150,
+   "camera": "LOW ANGLE 24mm, pos (0, 2, 26), target (0, 10, 0), centred, 3% push",
+   "visual": "One clay session orb (r1.2, k14) sends exactly 12 clay threads (fatLines) to exactly 12 clay orbs on an arc; each thread pulses once on 16ths as it connects.",
+   "text": "ONE SESSION DIRECTED A DOZEN. / STRIPE",
+   "type": "slam 120px ivory, K.maskUp at local 0.0 at (960, 860); kicker 'STRIPE' 24px ice at local 0.2; CARRIES into iii-pr-tower (same position): on screen 2.5 s total",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.92,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "proof 2 (one session -> a dozen)",
+   "shared": [
+    "agentOrbs"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 98,
+   "id": "iii-pr-tower",
+   "act": "III",
+   "start": 107.3,
+   "dur": 0.8,
+   "bpm": 150,
+   "camera": "LOW 24mm tilting up 10 deg, pos (0, 1, 18), target (0, 14, -10)",
+   "visual": "Behind the 12 orbs, 40 stacked PR slabs (glowBox 6 x 0.6 x 3, ivory) rise into a tower and flip green (#6EE7A0 k4) in a bottom-to-top cascade over 0.6 s until all 40 are green (visual only, no card).",
+   "text": "",
+   "type": "CARRY: 'ONE SESSION DIRECTED A DOZEN.' + STRIPE from iii-stripe, same position; K.cutOut at local 0.5 (counted once)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -8
+    },
+    {
+     "at": 0.1,
+     "kind": "chirps",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.92,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "proof 2 (40 stacked PRs green)",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 99,
+   "id": "iii-orbit-a",
+   "act": "III",
+   "start": 108.1,
+   "dur": 0.8,
+   "bpm": 150,
+   "camera": "LOW 24mm ORBIT around the foreman at radius 140, height 6, 25 deg/s, target (0, 90, -200)",
+   "visual": "Grand wide (wordless): the lit foreman and its 12 threads over the whole flowing line, banks blazing, pillars brass-edged; the brief's mote still pulsing in the core.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.95,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "the factory runs",
+   "shared": [
+    "foremanZiggurat",
+    "foremanThreads",
+    "hallSet",
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 100,
+   "id": "iii-orbit-b",
+   "act": "III",
+   "start": 108.9,
+   "dur": 0.8,
+   "bpm": 150,
+   "camera": "HIGH 35mm three-quarter, pos (-120, 140, 80), target (0, 60, -100), slow push",
+   "visual": "The foreman, the 12 threads and the line read as one machine; particle flow streams down every thread to the stations.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -8
+    }
+   ],
+   "music": {
+    "section": "act3",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.97,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "the factory runs",
+   "shared": [
+    "foremanZiggurat",
+    "foremanThreads",
+    "hallSet"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 101,
+   "id": "p-line-flow",
+   "act": "III",
+   "start": 109.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN 135mm: camLineTop rotated 90 deg",
+   "visual": "The whole line flowing, every segment lit (the 16% composition, now 100% lit).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.95,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "M2 paid off",
+   "shared": [
+    "camLineTop",
+    "lineStations"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 102,
+   "id": "p-hall-mirror",
+   "act": "III",
+   "start": 110.1,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "camHallWide framing, no handheld (BOOKEND of i-hall-wide)",
+   "visual": "The lone Act I station is now one of hundreds of lit points down the hall, banks blazing, the clay cursor still blinking.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.95,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "M1 bookend",
+   "shared": [
+    "camHallWide",
+    "hallSet",
+    "cursorBlock"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 103,
+   "id": "p-bookend-rail",
+   "act": "III",
+   "start": 110.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "BOOKEND: camColdRail, frame-identical to c-rail-streak",
+   "visual": "The macro clay streak along the brass rail, now clear (fog 0.004) and warm.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.96,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "cold-open bookend 1",
+   "shared": [
+    "coldOpenCams",
+    "railNetwork"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 104,
+   "id": "p-bookend-cascade",
+   "act": "III",
+   "start": 110.9,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "BOOKEND: camColdCascade, frame-identical to c-rail-cascade",
+   "visual": "The 1,000-rail cascade fully lit, no fog: the circuit board is the factory.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    },
+    {
+     "at": 0,
+     "kind": "riser",
+     "dur": 4.0,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.96,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "cold-open bookend 2",
+   "shared": [
+    "coldOpenCams",
+    "railNetwork"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 105,
+   "id": "p-bookend-foreman",
+   "act": "III",
+   "start": 111.3,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "BOOKEND: camForemanWorm, frame-identical to c-foreman-worm",
+   "visual": "The worm's-eye colossus, now known: the foreman lit, seams blazing, the same specular sweep climbing the same seam.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.97,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "cold-open bookend 3 / M4",
+   "shared": [
+    "coldOpenCams",
+    "foremanZiggurat"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 106,
+   "id": "p-human-lit",
+   "act": "III",
+   "start": 111.7,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MIRROR of ii-line-waits-2: camHumanUnderTower, identical",
+   "visual": "The human under the REVIEW tower, which is now lit amber and flowing (cards streaming up and out L->R, green check lamps instead of red).",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 16,
+    "energy": 0.97,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "M5 mirror",
+   "shared": [
+    "camHumanUnderTower",
+    "humanAnchor",
+    "cardTowers"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 107,
+   "id": "p-tri-1",
+   "act": "III",
+   "start": 112.1,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN 85mm over REVIEW, pos (1.4, 160, 0), camera.up (0,0,-1)",
+   "visual": "Wordless tricolon 1: REVIEW's sub-lead node ignites clay and its thread snaps taut.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -2
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "Bb",
+    "div": 16,
+    "energy": 0.98,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "tricolon",
+   "shared": [
+    "foremanThreads"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 108,
+   "id": "p-tri-2",
+   "act": "III",
+   "start": 112.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN 85mm over TEST, pos (21, 160, 0), camera.up (0,0,-1)",
+   "visual": "Tricolon 2: TEST's sub-lead ignites, brighter.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": -1
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "C",
+    "div": 16,
+    "energy": 0.99,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "tricolon",
+   "shared": [
+    "foremanThreads"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 109,
+   "id": "p-tri-3",
+   "act": "III",
+   "start": 112.9,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "TOP-DOWN 85mm over DEPLOY, pos (40.6, 160, 0), camera.up (0,0,-1)",
+   "visual": "Tricolon 3: DEPLOY's sub-lead ignites brightest; all three threads pulse together.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "A"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "boom",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -2
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -4
+    },
+    {
+     "at": 0,
+     "kind": "roll",
+     "dur": 2.0,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "tricolon (peak hit)",
+   "shared": [
+    "foremanThreads"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 110,
+   "id": "p-recall-1",
+   "act": "III",
+   "start": 113.3,
+   "dur": 0.2,
+   "bpm": 150,
+   "camera": "Recall, centred (recallFlurry)",
+   "visual": "Clay cursor block, centred.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; luminance matched +-8%",
+   "motif": "recall flurry",
+   "shared": [
+    "recallFlurry",
+    "cursorBlock"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 111,
+   "id": "p-recall-2",
+   "act": "III",
+   "start": 113.5,
+   "dur": 0.2,
+   "bpm": 150,
+   "camera": "Recall, centred (recallFlurry)",
+   "visual": "A brass gate with all 5 pips lit (no numerals), centred.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; luminance matched +-8%",
+   "motif": "recall flurry",
+   "shared": [
+    "recallFlurry",
+    "monthGates"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 112,
+   "id": "p-recall-3",
+   "act": "III",
+   "start": 113.7,
+   "dur": 0.2,
+   "bpm": 150,
+   "camera": "Recall, centred (recallFlurry)",
+   "visual": "The 1,000-orb code tower, centred.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; luminance matched +-8%",
+   "motif": "recall flurry",
+   "shared": [
+    "recallFlurry",
+    "codeTower"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 113,
+   "id": "p-recall-4",
+   "act": "III",
+   "start": 113.9,
+   "dur": 0.2,
+   "bpm": 150,
+   "camera": "Recall, centred (recallFlurry)",
+   "visual": "The 16% line, now every segment lit, centred.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; luminance matched +-8%",
+   "motif": "recall flurry",
+   "shared": [
+    "recallFlurry",
+    "camLineTop"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 114,
+   "id": "p-recall-5",
+   "act": "III",
+   "start": 114.1,
+   "dur": 0.2,
+   "bpm": 150,
+   "camera": "Recall, centred (recallFlurry)",
+   "visual": "The REVIEW tower lit and flowing (camReviewWorm, level), centred.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; luminance matched +-8%",
+   "motif": "recall flurry",
+   "shared": [
+    "recallFlurry",
+    "camReviewWorm"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 115,
+   "id": "p-recall-6",
+   "act": "III",
+   "start": 114.3,
+   "dur": 0.2,
+   "bpm": 150,
+   "camera": "Recall, centred (recallFlurry)",
+   "visual": "One graph node blooming, centred.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon; luminance matched +-8%",
+   "motif": "recall flurry",
+   "shared": [
+    "recallFlurry"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 116,
+   "id": "p-core-stutter",
+   "act": "III",
+   "start": 114.5,
+   "dur": 0.4,
+   "bpm": 150,
+   "camera": "MACRO on the foreman core (iii-core-ignite framing), zoom stutter +3% every 2 f",
+   "visual": "The clay core fills the centre, stuttering; on the last 8th the image holds while the music winds down.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.2,
+     "kind": "tape_stop",
+     "dur": 0.2,
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "reverse_swell",
+     "dur": 0.4,
+     "gain": -4
+    }
+   ],
+   "music": {
+    "section": "peak",
+    "chord": "D",
+    "div": 32,
+    "energy": 1.0,
+    "add": [
+     "pad",
+     "strings",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "hats",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "bloom 1.1 thr 0.75, sat 1.05, tint warm [1.04,1.0,0.95], exposure 1.0, vignette 0.4, ca 0.0006; zero handheld, level horizon",
+   "motif": "M1 core (shape-matches the title light line)",
+   "shared": [
+    "foremanZiggurat"
+   ],
+   "transition": "HARD CUT TO BLACK"
+  },
+  {
+   "n": 117,
+   "id": "t-false-stop",
+   "act": "TITLE",
+   "start": 114.9,
+   "dur": 0.8,
+   "bpm": 150,
+   "camera": "Black",
+   "visual": "Pure black: the false stop.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "silence",
+     "dur": 0.8,
+     "gain": 0
+    }
+   ],
+   "music": {
+    "section": "end",
+    "chord": "Dsus",
+    "div": 4,
+    "energy": 0.0,
+    "add": [],
+    "drop": [
+     "drone",
+     "pad",
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "strings",
+     "piano",
+     "hats",
+     "heart",
+     "ticks"
+    ]
+   },
+   "grade": "black",
+   "motif": "false stop",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 118,
+   "id": "t-title",
+   "act": "TITLE",
+   "start": 115.7,
+   "dur": 4.8,
+   "bpm": 150,
+   "camera": "2D type + 3D embers (particles 600, clay/ivory, drifting up 0.4u/s); 2% push over 4.8 s",
+   "visual": "Light-line forge: a 2px clay -> ivory HDR line (k12) grows from centre to 70% width in 8 f (expo.out) with an anamorphic streak, exactly where the foreman core sat in p-core-stutter (shape match); it splits vertically at local 0.3 to reveal the title; a brass metallic mask-band sweep crosses the letterforms over 24 f from 0.5; embers drift up; +1.5 EV bloom on the hit decaying over 20 f. Nothing else on screen.",
+   "text": "CLAUDE OPUS 5.5",
+   "type": "title lockup: 'CLAUDE' Inter Tight 300 caps 80px tracked +0.3em at (960, 470); 'OPUS 5.5' Inter Tight 900 200px ivory with '5.5' in clay at (960, 590); revealed by the forge split at local 0.3; K.cutOut at 4.3 (embers alone for the last 0.5 s)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0,
+     "kind": "hit",
+     "tier": "S"
+    },
+    {
+     "at": 0,
+     "kind": "flash",
+     "d": 0.067
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "braam",
+     "root": "D1",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "impact",
+     "gain": 0
+    },
+    {
+     "at": 0,
+     "kind": "sub_drop",
+     "gain": -4
+    },
+    {
+     "at": 0.1,
+     "kind": "shimmer",
+     "gain": -6
+    }
+   ],
+   "music": {
+    "section": "end",
+    "chord": "Dsus",
+    "div": 4,
+    "energy": 0.8,
+    "add": [
+     "pad",
+     "strings",
+     "drone"
+    ],
+    "drop": []
+   },
+   "grade": "black ground; clay at most 20%; bloom 1.5 on the hit",
+   "motif": "title (88% of runtime)",
+   "shared": [],
+   "transition": "hard cut"
+  },
+  {
+   "n": 119,
+   "id": "b-month-one",
+   "act": "BUTTON",
+   "start": 120.5,
+   "dur": 3.0,
+   "bpm": 120,
+   "camera": "camHallWide framing, static with 1%/s push, no handheld",
+   "visual": "The Act I hall composition returns, calm: one station at 160u with the clay cursor blinking on the returned quarter-note tick; the rest of the hall dark. Gate 1's lintel hangs above the station with all 5 pips OFF; on the 1.0 beat the counter rolls and the first pip lights.",
+   "text": "MONTH 0 / 1",
+   "type": "one mono counter (JetBrains Mono 500, tabular, ivory 120px) at (960, 300): 'MONTH 0' fades in at local 0.75 (primed recall of the Act I counter); only the digit rolls 0 -> 1 in place at local 1.0 (K.roll, 6 f); K.cutOut at 2.25 (3 words on screen)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 1.0,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -20
+    },
+    {
+     "at": 1.0,
+     "kind": "bell",
+     "gain": -10
+    }
+   ],
+   "music": {
+    "section": "end",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.15,
+    "add": [
+     "ticks",
+     "piano",
+     "drone"
+    ],
+    "drop": [
+     "pulse",
+     "ostinato",
+     "kick",
+     "drums",
+     "strings",
+     "hats"
+    ]
+   },
+   "grade": "void + clay; sat 0.9; exposure 0.9",
+   "motif": "M3 the clock restarts / M1 bookend",
+   "shared": [
+    "camHallWide",
+    "hallSet",
+    "cursorBlock",
+    "monthGates"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 120,
+   "id": "b-projection",
+   "act": "BUTTON",
+   "start": 123.5,
+   "dur": 3.0,
+   "bpm": 120,
+   "camera": "TOP-ANGLE pull-up from the station, crane x10: pos (-19.6, 8, 4) -> (-19.6, 80, 40), target (-19.6, 0, 0), power2.inOut",
+   "visual": "Every station in the dark hall ignites outward in a radial amber wave from the lone cursor (railNetwork cascade + stations + banks at 160u/s); the foreman's seams catch it last at the top edge of frame.",
+   "text": "IF THE PATTERN HOLDS: / BUDGETS IN EARLY 2027. / PROJECTION",
+   "type": "card A 'IF THE PATTERN HOLDS:' title 90px ivory blur-to-sharp at local 0.0 at (960, 420); card B 'BUDGETS IN EARLY 2027.' cond 160px ivory with '2027' in clay, K.slam at local 0.5 at (960, 560); kicker 'PROJECTION' 24px ice decodes at local 0.6 at (960, 650); all K.cutOut at 2.5 (A 2.5 s, B 2.0 s); the last 0.5 s is the ignition alone",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 0.5,
+     "kind": "hit",
+     "tier": "B"
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0.5,
+     "kind": "chirps",
+     "gain": -8
+    },
+    {
+     "at": 0.5,
+     "kind": "impact",
+     "gain": -12
+    },
+    {
+     "at": 0.5,
+     "kind": "bell",
+     "gain": -12
+    }
+   ],
+   "music": {
+    "section": "end",
+    "chord": "Dm",
+    "div": 4,
+    "energy": 0.3,
+    "add": [
+     "ticks",
+     "piano",
+     "pad"
+    ],
+    "drop": []
+   },
+   "grade": "void -> warm radial ignition",
+   "motif": "L4 left open (labelled projection)",
+   "shared": [
+    "railNetwork",
+    "hallSet",
+    "lineStations",
+    "lightBanks"
+   ],
+   "transition": "hard cut"
+  },
+  {
+   "n": 121,
+   "id": "b-cursor-on",
+   "act": "BUTTON",
+   "start": 126.5,
+   "dur": 4.0,
+   "bpm": 120,
+   "camera": "EYE-LEVEL 85mm locked: pos (-19.6, 2.6, 9), target (-19.6, 2.5, 5.2) (the i-karpathy cursor framing, now static)",
+   "visual": "One clay cursor on the dark screen, the lit hall glowing softly through fog behind it. It blinks 3 times on the tick (local 0.0, 0.5, 1.0); at 1.5 it STOPS BLINKING and stays ON (k14) with a localized clay flare (sprite r3u, 4 f decay). Held on the steady cursor to the cut. FINAL IMAGE.",
+   "text": "",
+   "type": "",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    }
+   ],
+   "sfx": [
+    {
+     "at": 0,
+     "kind": "tick",
+     "gain": -14
+    },
+    {
+     "at": 0.5,
+     "kind": "tick",
+     "gain": -14
+    },
+    {
+     "at": 1.0,
+     "kind": "tick",
+     "gain": -14
+    },
+    {
+     "at": 1.5,
+     "kind": "sting",
+     "gain": -6
+    },
+    {
+     "at": 1.5,
+     "kind": "chirps",
+     "gain": -14
+    }
+   ],
+   "music": {
+    "section": "end",
+    "chord": "Dsus",
+    "div": 4,
+    "energy": 0.12,
+    "add": [
+     "pad",
+     "piano"
+    ],
+    "drop": [
+     "ticks",
+     "drone"
+    ]
+   },
+   "grade": "void + one clay cursor and its flare",
+   "motif": "M1: the cursor stays ON",
+   "shared": [
+    "cursorBlock"
+   ],
+   "transition": "hard cut to black"
+  },
+  {
+   "n": 122,
+   "id": "e-credit",
+   "act": "END",
+   "start": 130.5,
+   "dur": 3.0,
+   "bpm": 120,
+   "camera": "2D on black",
+   "visual": "A true credit in whisper mono, centred; the last 15 f fade (the only fade in the film).",
+   "text": "MADE WITH CLAUDE OPUS 5.5 AGENTS / FROM ONE HUMAN BRIEF",
+   "type": "mono 30px ivory caps +0.15em: line 1 decodes at local 0.0 at (960, 520) with '5.5' in clay; line 2 decodes at local 0.5 at (960, 570); both hold; fade to black over the last 0.5 s (15 f)",
+   "fx": [
+    {
+     "at": 0,
+     "kind": "bars",
+     "px": 0,
+     "d": 0
+    },
+    {
+     "at": 2.5,
+     "kind": "fade",
+     "d": 0.5
+    }
+   ],
+   "sfx": [],
+   "music": {
+    "section": "end",
+    "chord": "Dsus",
+    "div": 4,
+    "energy": 0.05,
+    "add": [
+     "pad"
+    ],
+    "drop": [
+     "ticks",
+     "drone",
+     "piano",
+     "strings"
+    ]
+   },
+   "grade": "black; ivory mono",
+   "motif": "true credit",
+   "shared": [],
+   "transition": "hard cut"
+  }
+ ],
+ "runtime": 133.5,
+ "checks": "CHECKER: python3 docs/check_shotlist.py -> 0 problems. runtime 133.5 s (2:13.5), 122 shots.\n\nWORDS: 114 on-screen words including source tags (126 checker tokens, which count the '/' card separators); every card is 7 words or fewer.\n\nTEXT ON SCREEN: 53.35 s = 40.0% of runtime (must-read card visibility, carry-overs included).\n\nHOLDS: 28 must-read cards checked, 0 short; each must-read card is visible >= chars/15 + 0.5 s (e.g. x17.2 card 2.65 >= 2.63, 100-AGENT 3.4 >= 3.37, ONE SESSION 2.5 >= 2.43, x4.4 2.2 >= 2.1). The only primed/short cards are MONTH 5 (0.5 s, primed by MONTH 1 and the pips) and MONTH 0 (the counter state before the roll).\n\nASL BY ACT: COLD 1.000s x8 (8.00s), I 1.273s x22 (28.00s), MID 3.250s x2 (6.50s), II 0.968s x31 (30.00s), DROP 4.000s x1 (4.00s), III 0.738s x52 (38.40s), TITLE 2.800s x2 (5.60s), BUTTON 3.333s x3 (10.00s), END 3.000s x1 (3.00s). Act III vs Act I: 0.738 < 0.6 x 1.273 = 0.764: True.\n\nPEAK: 109.7-114.9 s = 82.2%-86.1% of 133.5 s; title at 86.7% (target 80-88%).\n\nBUDGETS: braams ['2.0', '79.7', '95.7', '115.7'] (4); silences ['36.0+0.5', '72.5+1.0', '114.9+0.8'] (3); flashes 4; glitch fx 4; S/A hits 13 (cap 14).\n\nRISERS / SWELLS: c-rail-cascade riser 0.50->2.00 hit; c-foreman-worm reverse_swell 1.50->2.00 hit; c-core-tease reverse_swell 5.50->6.00 hit; i-human-plant reverse_swell 13.00->14.00 hit; i-ledger-rise riser 28.00->30.00 hit; i-dive-core reverse_swell 35.50->36.00 silence; m-sixteen riser 41.50->42.50 hit; ii-jam-test riser 66.50->72.50 silence; d-who-runs reverse_swell 75.75->76.50 hit; iii-bank-1 riser 76.50->79.70 hit; iii-core-ignite reverse_swell 96.50->96.90 hit; p-bookend-cascade riser 110.90->114.90 silence; p-core-stutter reverse_swell 114.50->114.90 silence. All end on a hit or a silence.\n\nCLAIMS VS facts.md (word by word):\n- WAVE ONE / ≈5 MONTHS.: facts 'Wave 1' + '≈5 months from capability to budget' (shortened)\n- THE NEXT ONE?: a question, not a claim (never 'the next wave has started')\n- they just don't work. / KARPATHY, OCT 2025: Oct 17 2025 Karpathy, 'They just don't work.' (verbatim, V1 lowercase)\n- OPUS 4.5 SHIPS. / NOV 2025: 'Nov 24 2025: Claude Opus 4.5 ships.' (date shortened)\n- MONTH 1 ... MONTH 5: schematic clock for '≈5 months from capability to budget'\n- CAPABILITY → BUDGET.: '≈5 months from capability to budget' (shortened); the budget is shown as a ledger stamp, no figure\n- CODE: 16% OF DEV TIME. / ATLASSIAN: Atlassian (2025): developers spend 16% of their time writing code (shortened); drawn as 16% of line LENGTH, lit in place\n- INDEPENDENT AGENTS: ERRORS ×17.2 / GOOGLE RESEARCH: Google Research: independent agents amplify errors 17.2x\n- WITH A COORDINATOR: ×4.4 / SAME STUDY: same study: with a central coordinator, 4.4x (shortened); neutral ivory node, 4 residual red tendrils, no healing chime\n- 100-AGENT TEAMS PICKED THEIR OWN STRUCTURE. / SYSTEM CARD: '100-agent teams ran 24 hours and picked their own structure' (verbatim phrase, shortened); visual = 12 sub-leads, then flat\n- ONE SESSION DIRECTED A DOZEN. / STRIPE: Stripe: 'one session directed a dozen more; 40 stacked PRs, all green in CI' (shortened); visual = exactly 12 threads + 40 green PR slabs\n- IF THE PATTERN HOLDS: / BUDGETS IN EARLY 2027. / PROJECTION: the projection, verbatim, labelled PROJECTION\n- MADE WITH CLAUDE OPUS 5.5 AGENTS / FROM ONE HUMAN BRIEF: credits line (exact wording required by the director)\n- THE LINE WAITS. x2 / REVIEW. / TEST. / DEPLOY. / just add more agents. / who runs the line? / THE LINE RUNS. / THE SOFTWARE FACTORY. / GRAPH: CONTROL. / HIERARCHY: COHERENCE. / SWARM: PARALLEL WORK. / 5.5 / CLAUDE OPUS 5.5 / MONTH 0 / 1: narrative, labels, questions and names; no factual assertion. GRAPH / HIERARCHY / SWARM are design labels from the brief, shown as labels with no number or 'proven' wording\n\nMIRRORS REUSE SHARED SPECS:\n- ii-line-waits-1 -> iii-line-runs (camReviewWorm + refrainSlot: identical camera, Dutch rights -8 -> 0, WAITS -> RUNS in the same slot)\n- ii-line-waits-2 -> ii-max-push -> p-human-lit (camHumanUnderTower)\n- ii-review-slam / ii-review-stamp -> iii-review-mirror (camReviewSide, R->L becomes L->R)\n- ii-test-tower -> iii-test-mirror (camTestWorm, Dutch +10 -> 0)\n- ii-deploy-maze -> iii-deploy-mirror (camDeployTop)\n- ii-lock-gate -> iii-lock-mirror; ii-funnel-top -> iii-funnel-mirror (same camera numbers written in both shots)\n- ii-two-writers -> iii-one-writer (camWriterMacro)\n- ii-errors-172 -> iii-coord-44 (camErrorTop + statSlam, same 300 seeded orbs)\n- ii-alarm-a..d (banks go red) -> iii-bank-1..8 (the same lightBanks go warm)\n- c-rail-streak / c-rail-cascade / c-foreman-worm -> p-bookend-rail / p-bookend-cascade / p-bookend-foreman (coldOpenCams, frame-identical)\n- i-hall-wide -> p-hall-mirror -> b-month-one (camHallWide)\n- m-sixteen -> p-line-flow + p-recall-4 (camLineTop)\n- c-core-tease -> iii-core-ignite -> p-core-stutter -> t-title light line (core framing / shape match)\n- c-rewind cursor -> i-hall-wide far cursor -> d-who-runs cursor -> iii-bank-1 panel (rectangle match chain); i-gate-5 opening -> i-ledger-rise slot (shape match)\n\nDIRECTOR'S NOTES:\n- 1 Base = machine: spine, refrain, human anchor, lights-on cascade (8 banks, one per 150-BPM beat), the turn frame (mirror + refrain flip + Dutch righting + letterbox snap + BRAAM #2 + 2 f flash on one frame, iii-line-runs), light before sound (iii-sweep -> iii-five-five), MONTH clock button: kept.\n- 2a Act II = 30.0 s (42.5-72.5), 31 shots. Every visual line opens with the NEW information it adds. The 9.5 s chaos plateau and the 8-shot recall flurry are replaced by backpressure climbing the line station by station, then 4 alarm-bank shots (each new).\n- 2b Pulse + ostinato + kick enter at 14.0 on the OPUS 4.5 SHIPS slab (i-slab-rise), and the cursor breaks into double time.\n- 2c 16% card: the CODE strip (x -30.8..-8.4 = 22.4u of the 140u line = 16.0%) draws from its own left edge, in place; it never sweeps from the line start.\n- 3 x4.4: ivory coordinator, ice numerals, 4 residual red tendrils, no chime. 'PICKED THEIR OWN STRUCTURE' is verbatim. The foreman has exactly 12 fatLine threads; sub-threads are flow() particles. The end credit is exact. No 'best', no 'next wave has started', no claim outside facts.md.\n- 4a Plants: i-human-plant, i-tower-plant, ii-plant-3 (telephoto, fog 1.27/distance), plus the unexplained cold-open colossus; the foreman lights radially from its core in iii-foreman-hero. 4b The cursor stops blinking and stays ON in b-cursor-on (final image). 4c 'THAT WAS WAVE ONE.' is used compressed as the kicker WAVE ONE over ≈5 MONTHS. on BRAAM #1. 4d foremanZiggurat is spec'd in detail in shared and is the #1 hero frame.\n- 5 No glass or transmission; no DOF or rack focus (the old #7 and #40 are restaged with fog); top-down moves approach -89.5 deg and never flip camera.up; crowds over 2,000 are particles; threads are 12 fatLines + flow().\n- 6 Type: every card is 7 words or fewer; lowercase is used only for the three V1 lines; all claims are in caps.\n- 7 Grid: every dur is a multiple of 0.25 s (120 BPM) or 0.2 s (150 BPM); starts are contiguous to 3 decimals; every Act III cut lands on a 150-BPM beat except the six 0.2 s recall 8ths.\n- 8 Music uses only the arranger vocabulary. Every riser and reverse swell ends exactly on a hit or a silence (list below).\n\nDEVIATIONS:\n- Three cards are cut to keep text on screen at the 40% cap (and words at the 140 cap): RUN-RATE ~$9B -> $30B+ (all three verdicts flagged it as company-wide revenue sitting inside the coding beat; the beat is carried by the bold facts.md line '≈5 months from capability to budget' and a diegetic ledger stamp), FABLE 5.1-LEVEL WORK / 40% LOWER COST, and CLIO 18+ HOURS. The remaining proofs are the two that answer 'who runs the line': picked their own structure, and one session directed a dozen.\n- The cold open uses WAVE ONE as a kicker over ≈5 MONTHS. rather than the full 'THAT WAS WAVE ONE.' card: 2 fewer words and 1.7 s less text, same meaning.\n- MONTH numerals appear only on gates 1 and 5. Gates 2-4 count with lit lintel pips (type built from light). The 7 midpoint station labels are dropped; the stations are named only when they jam (REVIEW. TEST. DEPLOY.).\n- Braams: 4 (the extra one is on the 5.5 engraving, the delayed boom). This is within the 3-5 budget.\n- The human at the foreman's foot hands up one light-card brief (exec steal) instead of standing dwarfed. The 1:109 scale read is kept, and it pays off FROM ONE HUMAN BRIEF.\n- Text-on-screen time counts every must-read card, including the title and the end credit; it lands exactly on the 40% cap."
+}

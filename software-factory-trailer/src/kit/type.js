@@ -99,6 +99,41 @@
       return el;
     },
 
+    // Decode: scrambled glyphs resolve left→right into the final text (tech-thriller title/label reveal).
+    decode(tl, el, at, { d = 0.6, glyphs = '▮▯#%&@$*+=<>/\\|01', seed = 7 } = {}) {
+      const full = el.textContent;
+      let s = seed;
+      const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+      const table = Array.from({ length: 64 }, () => Array.from(full, () => glyphs[Math.floor(rnd() * glyphs.length)]));
+      const o = { u: 0 };
+      gsap.set(el, { autoAlpha: 0 });
+      tl.set(el, { autoAlpha: 1 }, at);
+      tl.fromTo(o, { u: 0 }, { u: 1, duration: d, ease: 'none', immediateRender: false, onUpdate: () => {
+        const k = Math.floor(o.u * full.length * 1.0001), row = table[Math.floor(o.u * 63)];
+        el.textContent = full.slice(0, k) + Array.from(full.slice(k), (c, i) => (c === ' ' ? ' ' : row[k + i])).join('');
+      } }, at);
+      return el;
+    },
+    // Stamp: hard cut-in at 1.18× that snaps to 1× in ~3 frames (punch on a hit; no blur).
+    stamp(tl, el, at, { from = 1.18, d = 0.1 } = {}) {
+      gsap.set(el, { autoAlpha: 0 });
+      tl.set(el, { autoAlpha: 1, scale: from }, at);
+      tl.to(el, { scale: 1, duration: d, ease: 'power3.out' }, at);
+      return el;
+    },
+    // Wipe: hard-edged clip reveal (dir 'right' = left→right), optional light edge (glow line riding the wipe).
+    wipe(tl, el, at, { d = 0.45, dir = 'right', ease = 'expo.out' } = {}) {
+      const from = { right: 'inset(0 100% 0 0)', left: 'inset(0 0 0 100%)', up: 'inset(100% 0 0 0)', down: 'inset(0 0 100% 0)', center: 'inset(0 50% 0 50%)' }[dir];
+      gsap.set(el, { clipPath: from });
+      tl.fromTo(el, { clipPath: from }, { clipPath: 'inset(0 0% 0 0%)', duration: d, ease, immediateRender: false }, at);
+      return el;
+    },
+    // Exit: fast scale-up + fade (card blows past camera) — use sparingly, hard cuts are the default.
+    blowOut(tl, el, at, { to = 1.6, d = 0.18 } = {}) {
+      tl.to(el, { scale: to, autoAlpha: 0, filter: 'blur(12px)', duration: d, ease: 'power2.in' }, at);
+      return el;
+    },
+
     // ---------- internals
     _chars(el) {
       if (el._chars) return el._chars;

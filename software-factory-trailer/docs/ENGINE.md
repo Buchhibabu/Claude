@@ -58,6 +58,10 @@ shot({
   - `K.fadeIn` is a plain fade.
   - `K.cutIn` / `K.cutOut` are hard cuts.
   - `K.push` adds a slow scale drift while held.
+  - `K.decode(tl, el, at, {d})` resolves scrambled glyphs left to right (a tech label or title reveal).
+  - `K.stamp(tl, el, at)` is a hard cut-in at 1.18× that snaps to 1× in 3 frames, for punching a card on a hit.
+  - `K.wipe(tl, el, at, {d, dir:'right'|'left'|'up'|'down'|'center'})` is a hard-edged clip reveal; `center` suits the light-line title.
+  - `K.blowOut(tl, el, at)` makes the card blow past the camera on exit. Use it rarely; hard cuts are the default.
 - **Data:**
   - `K.roll` is a rolling counter.
   - `K.typewriter` types text out.

@@ -67,10 +67,18 @@ const FINAL_SCHEMA = {
   required: ['title', 'logline', 'world', 'motifs', 'music_plan', 'acts', 'shots', 'runtime', 'checks'],
 }
 
+// args: { lenses: ['editor'] } -> run only those judges and return their verdicts
+//       { verdicts: [...] }      -> skip judging, synthesize from the given verdicts
+const A = args && typeof args === 'object' && !Array.isArray(args) ? args : {}
+if (A.lenses) {
+  phase('Judge')
+  const v = await parallel(A.lenses.map((k) => () => agent(`${CTX}\n\n${LENSES[k]}\n\nRead all treatments in full, then score each (0–100) with a candid breakdown, pick a winner, and list concrete shots/ideas to STEAL from any treatment and things to CUT.`, { label: `judge:${k}`, phase: 'Judge', schema: JUDGE_SCHEMA }).then((r) => r && { lens: k, ...r })))
+  return v.filter(Boolean)
+}
 phase('Judge')
-const judges = await parallel(Object.entries(LENSES).map(([k, lens]) => () =>
-  agent(`${CTX}\n\n${lens}\n\nRead all treatments in full, then score each (0–100) with a candid breakdown, pick a winner, and list concrete shots/ideas to STEAL from any treatment and things to CUT.`, { label: `judge:${k}`, phase: 'Judge', schema: JUDGE_SCHEMA }).then((r) => r && { lens: k, ...r })))
-const verdicts = judges.filter(Boolean)
+const judges = A.verdicts ? A.verdicts.map((v) => () => Promise.resolve(v)) : Object.entries(LENSES).map(([k, lens]) => () =>
+  agent(`${CTX}\n\n${lens}\n\nRead all treatments in full, then score each (0–100) with a candid breakdown, pick a winner, and list concrete shots/ideas to STEAL from any treatment and things to CUT.`, { label: `judge:${k}`, phase: 'Judge', schema: JUDGE_SCHEMA }).then((r) => r && { lens: k, ...r }))
+const verdicts = (await parallel(judges)).filter(Boolean)
 
 phase('Synthesize')
 const final = await agent(`${CTX}

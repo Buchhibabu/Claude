@@ -53,8 +53,8 @@ shot({
         const jolt = Math.exp(-w / 0.03);
         const hr = grow(lt, 300, 600), ht = grow(lt - STEP / 2, 160, 320);
         // extrusion: the full mass is built, the group sinks into the station by (max - h): content rises as the stack doubles
-        rev.update(lt, { h: RMAX, t, pinDiv: 2, shake: 0.12 * jolt, k: 1.3 + 0.9 * jolt, body: 1.1 });
-        test.update(lt, { h: TMAX, t, pinDiv: 2, shake: 0.08 * jolt, k: 1.25 + 0.7 * jolt, body: 1.0 });
+        rev.update(lt, { h: RMAX, t, pinDiv: 2, red: 1.9, shake: 0.12 * jolt, k: 1.3 + 0.9 * jolt, body: 1.1 });
+        test.update(lt, { h: TMAX, t, pinDiv: 2, red: 1.9, shake: 0.08 * jolt, k: 1.25 + 0.7 * jolt, body: 1.0 });
         rev.group.position.y = -(RMAX - hr); test.group.position.y = -(TMAX - ht);
         heat(rev, RMAX, hr); heat(test, TMAX, ht);
         const frac = lerp(0.35, 1, clamp(lt / 0.9));

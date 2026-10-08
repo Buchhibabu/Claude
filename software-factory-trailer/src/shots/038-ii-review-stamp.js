@@ -31,11 +31,11 @@ shot({
     const Q = W.cards({ count: qs.length }); scene.add(Q.mesh);
     // dead work on the floor in front of the face (fills the low band of the telephoto frame)
     const FLN = 46, FL = W.cards({ count: FLN }); scene.add(FL.mesh);
-    for (let i = 0; i < FLN; i++) FL.set(i, { p: [-21 + r() * 30, 0.26 + (r() < 0.2 ? 0.45 : 0), 6.4 + r() * 7], r: [(r() - 0.5) * 0.5, (r() - 0.5) * 1.4, (r() - 0.5) * 0.4], edge: W.CARD.edge(0.9), body: W.CARD.body(0.5) });
+    for (let i = 0; i < FLN; i++) FL.set(i, { p: [-21 + r() * 30, 0.26, 9 + r() * 9], r: [(r() - 0.5) * 0.12, (r() - 0.5) * 1.4, (r() - 0.5) * 0.08], edge: W.CARD.edge(0.9), body: W.CARD.body(0.5) });
     FL.commit();
     // the stamp on the station face (z 5.06), framed in the camera's left-of-centre third at the hit
     const ST = B.stamp3D('REVIEW.', { height: 1.42, k: 2.3, glow: 0.42, peak: 3.4 });
-    ST.group.position.set(-4.3, 1.42, 5.08); scene.add(ST.group);
+    ST.group.position.set(-4.3, 1.62, 5.08); scene.add(ST.group);
     // shock: red light flash up the wall + sparks thrown off the face
     const shock = new THREE.PointLight(C.red, 0, 26, 1.4); shock.position.set(-4.3, 2.0, 8); scene.add(shock);
     const SP = B.sparks({ count: 420, color: C.red, size: 0.11, k: 7 }); scene.add(SP.points);

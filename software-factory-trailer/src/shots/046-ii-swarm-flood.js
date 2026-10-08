@@ -19,7 +19,7 @@ shot({
     const test = B.towerMass({ name: 'test', nx: 3, nz: 3, maxH: 320, seed: 5, bundle: 16, pinsPerLevel: 2, pinEvery: 8 });
     scene.add(rev.group, test.group);
     // the flood: 700 orbs on a wide front racing +z toward the lens (camera at z 30), low over the floor, weaving
-    const N = 700, r = rand(4601);
+    const N = 560, r = rand(4601);
     const O = [];
     for (let i = 0; i < N; i++) O.push({ x: -26 + r() * 46, y: 0.4 + Math.pow(r(), 2) * 3.2, z0: -12 + r() * 40 - 40 * r() * r(), v: 26 + r() * 22, w: (r() - 0.5) * 4, ph: r() * 6.28 });
     const A = W.orbs({ count: N, r: 0.2, seg: 8, ref: 0.12, min: 0.6 }); scene.add(A.mesh);

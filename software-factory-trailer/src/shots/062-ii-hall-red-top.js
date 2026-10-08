@@ -24,7 +24,7 @@ shot({
     // the line and thinning toward the foreman — from 700u it reads as a night city's street grid
     const r = rand(624);
     const NH = 14000;
-    const haze = W.swarmHaze({ count: NH, spread: [1, 1, 1], center: [0, 3.4, 0], color: W.C.ice, size: 0.75, k: 1.8, seed: 623 }); scene.add(haze.points);
+    const haze = W.swarmHaze({ count: NH, spread: [1, 1, 1], center: [0, 3.4, 0], color: W.C.ice, size: 0.8, k: 2.5, seed: 623 }); scene.add(haze.points);
     const laneZ = []; for (let z = -146; z <= 44; z += 7) laneZ.push(z);
     const dens = (z) => 0.25 + 0.75 * Math.exp(-Math.abs(z) / 45);
     const spot = () => {
@@ -46,7 +46,7 @@ shot({
     haze.geometry.attributes.position.needsUpdate = true; haze.points.frustumCulled = false;
     // red error pinpoints in the same lanes, blinking on 8ths / 16ths
     const NE = 800, E = W.orbs({ count: NE, r: 0.55, seg: 6 }); scene.add(E.mesh);
-    const err = Array.from({ length: NE }, () => { const [x, z] = spot(); return { p: [x, 3.6, z], ph: r(), div: r() < 0.5 ? 2 : 4, k: 5 + r() * 6 }; });
+    const err = Array.from({ length: NE }, () => { const [x, z] = spot(); return { p: [x, 3.6, z], ph: r(), div: r() < 0.5 ? 2 : 4, k: 6 + r() * 3.5 }; });
     // the human: one dot at the foot of the scree (HUMAN_C), red-rimmed since ii-human-red
     const hu = W.humanAnchor({ act: 'II', pos: M.HUMAN_C, facing: Math.PI }); scene.add(hu.group);
     const huDot = W.orbs({ count: 1, r: 0.9, seg: 8 }); scene.add(huDot.mesh);

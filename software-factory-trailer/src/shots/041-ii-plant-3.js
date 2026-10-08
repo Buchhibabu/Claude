@@ -28,6 +28,8 @@ shot({
     // haze layers between the towers and the foreman (atmospheric separation of the two planes)
     const hz1 = B.glowCard({ w: 260, h: 70, color: 0x2a3a4a, k: 0.16, falloff: 1.4 }); hz1.position.set(20, 20, -60); scene.add(hz1);
     const redAir = B.glowCard({ w: 240, h: 40, color: C.red, k: 0.05, falloff: 1.6 }); redAir.position.set(20, 26, -100); scene.add(redAir);
+    // alarm air: a low red haze hanging around the jammed crowns (the pinpoints' light in the fog)
+    const crownAir = B.glowCard({ w: 90, h: 34, color: C.red, k: 0.07, falloff: 1.8 }); crownAir.position.set(21, 40, -6); scene.add(crownAir);
     const hz2 = B.glowCard({ w: 300, h: 120, color: 0x1c2733, k: 0.14, falloff: 1.2 }); hz2.position.set(10, 60, -120); scene.add(hz2);
 
     const CAM = [60, 25, 500], TG = [10, 50, -200];
@@ -39,8 +41,9 @@ shot({
         test.update(lt, { h: 37, t, pinDiv: 2, k: 2.0, body: 1.4 });
         dep.update(lt, { h: 28, t, pinDiv: 2, k: 2.0, body: 1.4 });
         const pulse = W.beatPulse(t, { div: 2, decay: 5 });
-        H.foreman.update(lt, { lit: 0, rimColor: C.red, rimK: 0.32 + 0.16 * pulse, bounce: 1.6 });
+        H.foreman.update(lt, { lit: 0, rimColor: C.red, rimK: 0.2 + 0.12 * pulse, bounce: 1.6 });
         courses.userData.set(0.9 + 0.35 * pulse);
+        crownAir.userData.set(0.06 + 0.035 * pulse, C.red);
         H.line.update(lt, { lit: 0, dim: 0.5, red: [0, 0, 0, 0.8, 0.8, 0.8, 0] });
         H.extra.length = 0;
         H.extra.push(...rev.sources(), ...test.sources(), ...dep.sources());

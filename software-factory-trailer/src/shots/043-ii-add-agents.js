@@ -45,9 +45,9 @@ shot({
     const wash = B.glowCard({ w: 9, h: 3.4, color: 0x9ab8d0, k: 0.12, falloff: 1.8 }); wash.position.set(-0.6, 0.9, 6.5); wash.rotation.x = -0.35; scene.add(wash);
     const BK = [];
     const br = rand(4302);
-    for (let i = 0; i < 30; i++) {
-      const red = i < 11;
-      const s = bokeh({ color: red ? C.red : C.ice, k: red ? 0.9 : 0.35, size: red ? 0.22 + br() * 0.22 : 0.2 + br() * 0.35 });
+    for (let i = 0; i < 26; i++) {
+      const red = i < 6;
+      const s = bokeh({ color: red ? C.red : C.ice, k: red ? 0.9 : 0.35, size: red ? 0.12 + br() * 0.1 : 0.18 + br() * 0.3 });
       s.position.set(-3.6 + br() * 6, 0.25 + br() * 1.6, 3.5 + br() * 5);
       s.userData.red = red; s.userData.ph = br(); scene.add(s); BK.push(s);
     }

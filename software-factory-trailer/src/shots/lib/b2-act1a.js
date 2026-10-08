@@ -288,3 +288,69 @@ export function gateRun(scene, { pips = [1, 0, 0, 0, 0], sign = null, tower = 10
     },
   };
 }
+
+// ===================================================================================================== appended (shots 15/16/18/19)
+// ----------------------------------------------------------------------------------------- card writer schedule
+/** Build-time schedule of work cards written by orbs onto lanes: one write per `step` s from t0 to t1; each card holds `hold` s at its
+ *  spawn x, then slides +x at `speed` u/s. Spawn x is chosen (seeded) among `xs` so no two cards in a lane ever overlap (width `w`).
+ *  writeSchedule({ xs, lanes, t0, t1, step, speed, hold, w, seed }) -> [{ te, x0, z, lane, src (index into xs) }] ; cardX(c, lt) */
+export function writeSchedule({ xs, lanes, t0 = -1.5, t1 = 1, step = 0.125, speed = 8, hold = 0.1, w = 3, gap = 0.25, seed = 15 } = {}) {
+  const r = rand(seed);
+  const out = [];
+  const xAt = (c, t) => c.x0 + speed * Math.max(0, t - c.te - hold);
+  for (let e = 0, te = t0; te < t1 - 1e-6; e++, te = t0 + e * step) {
+    const order = xs.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    const lo = lanes.map((_, i) => (i + e) % lanes.length);
+    let placed = false;
+    for (const L of lo) {
+      for (const i of order) {
+        const cand = { te, x0: xs[i], z: lanes[L], lane: L, src: i };
+        let ok = true;
+        for (const c of out) {
+          if (c.lane !== L) continue;
+          for (let t = te; t < te + 3; t += 0.02) if (Math.abs(xAt(cand, t) - xAt(c, t)) < w + gap) { ok = false; break; }
+          if (!ok) break;
+        }
+        if (ok) { out.push(cand); placed = true; break; }
+      }
+      if (placed) break;
+    }
+  }
+  return { cards: out, x: xAt };
+}
+// Card body/edge triples for a freshly written card: green edge for `flash` s (k4), then ivory/ice; k scales the settled card.
+export function cardLook(dt, { k = 1.2, flash = 0.1 } = {}) {
+  const g = dt < flash ? 1 : Math.exp(-(dt - flash) / 0.06);
+  const ge = W.CARD.greenEdge(4), ie = W.CARD.edge(k), ib = W.CARD.body(k);
+  return { edge: ie.map((v, i) => lerp(v, ge[i], g)), body: ib.map((v, i) => v + W.lin(W.C.green, 0.06)[i] * g), g };
+}
+// ----------------------------------------------------------------------------------------- dark work cards + light spill
+/** Work cards with a dark graphite body so the glowing edges + faint ivory inner glow carry the read (W.cards' ivory albedo goes
+ *  flat grey under scene lights). Same boxes API (I.set(i,{p,r,s,edge,body})). */
+export function darkCards({ count = 100, size = [3, 0.5, 2], color = 0x16171b } = {}) {
+  return W.boxes({ count, size, color, metal: 0.45, rough: 0.3, edgeW: 1.35, crowd: 0.4 });
+}
+/** Additive light-spill decal on a horizontal surface (a station top, the floor): up to 24 soft gaussian pools.
+ *  spill({ w, d, y, center:[x,z] }) -> mesh; mesh.userData.set([{ x, z, r, k, c: hex }...]) each frame. Fogged. */
+export function spill({ w = 40, d = 16, y = 3.02, center = [-19.6, 0], max = 24 } = {}) {
+  const P = Array.from({ length: max }, () => new THREE.Vector4(0, 0, 1, 0)), Cc = Array.from({ length: max }, () => new THREE.Vector3());
+  const mat = addBlend(new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, fog: true,
+    uniforms: withFog({ uP: { value: P }, uC: { value: Cc }, uN: { value: 0 } }),
+    vertexShader: `varying vec3 vW; ${FOG_V} void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; vec4 mv = viewMatrix * w; vFogDepth = -mv.z; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform vec4 uP[${max}]; uniform vec3 uC[${max}]; uniform int uN; varying vec3 vW; ${FOG_F}
+      void main(){ vec3 c = vec3(0.0);
+        for (int i = 0; i < ${max}; i++) { if (i >= uN) break; vec2 q = (vW.xz - uP[i].xy) / uP[i].z; c += uC[i] * uP[i].w * exp(-dot(q, q)); }
+        gl_FragColor = vec4(c * (1.0 - fogF()), 1.0); }`,
+  }));
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), mat);
+  m.rotation.x = -Math.PI / 2; m.position.set(center[0], y, center[1]); m.renderOrder = 2;
+  const tmp = new THREE.Color();
+  m.userData.set = (list) => {
+    let n = 0;
+    for (const s of list) { if (n >= max || !(s.k > 0.001)) continue; P[n].set(s.x, s.z, s.r, W.ko(s.k)); tmp.set(s.c ?? W.C.clay); Cc[n].set(tmp.r, tmp.g, tmp.b); n++; }
+    mat.uniforms.uN.value = n;
+  };
+  return m;
+}

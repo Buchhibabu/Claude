@@ -340,3 +340,280 @@ export function relayHero({ pos = [0, 0, 0] } = {}) {
   api.update(0);
   return api;
 }
+
+// =====================================================================================================
+// b6 part 2 (shots 78-83: iii-hierarchy, iii-tier-snap, iii-swarm, iii-one-writer, iii-coord-44, iii-review-mirror).
+// Appended exports only.
+// =====================================================================================================
+const qbez = (a, c, b, u) => [0, 1, 2].map((k) => (1 - u) * (1 - u) * a[k] + 2 * u * (1 - u) * c[k] + u * u * b[k]);
+
+/** HIERARCHY rig: the stepped 16 -> 4 -> 1 diagram that echoes the foreman's silhouette. Obsidian tiers with brass seams, standing on a
+ *  dark dais; ivory nodes on etched brass housings; a stack of 3 work cards in front of every node (jittered, slowly drifting) that
+ *  squares up (jitter -> 0 in 3 f) when its tier's beam strikes. Light runs DOWN the tree: a sky shaft onto the apex, pulses along the
+ *  ivory apex->lead arcs, then along the brass lead->worker arcs; each arrival = beam strike + node flare + seam ignite + card snap.
+ *  hierarchyRig({ center:[x,0,z] (dais foot), scale, dais (height u) }) ->
+ *    { group, nodes:[{p, tier, j}] (world), cardsAt(i) world, groupCenter(j), update(lt, { t, snaps:[apex, leads, workers] (local s), lock }) , sources() } */
+export function hierarchyRig({ center = [0, 0, -14], scale = 1.25, dais = 7, seed = 781 } = {}) {
+  const group = new THREE.Group();
+  const s = scale, [cx, cy, cz] = center;
+  const P = (x, y, z) => [cx + x * s, cy + dais + y * s, cz + z * s];
+  const obs = W.edgeStd({ color: 0x0b0a09, metal: 0.6, rough: 0.38, edge: C.brass, edgeK: W.kl(1.1), edgeW: 1.3 });
+  const daisMat = W.edgeStd({ color: 0x080807, metal: 0.5, rough: 0.45, edge: C.brassMid, edgeK: W.kl(0.6), edgeW: 1.2 });
+  const box = (mat, [x, y, z], [w, h, d]) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.position.set(x, y, z); group.add(m); return m; };
+  // dais + three tiers (local units x scale)
+  const TI = [{ w: 50, d: 22, h: 4, y: 0 }, { w: 30, d: 13, h: 4, y: 4 }, { w: 12, d: 6, h: 4, y: 8 }];
+  box(daisMat, [cx, cy + dais / 2, cz], [58 * s, dais, 30 * s]);
+  TI.forEach((T) => box(obs, P(0, T.y + T.h / 2, 0), [T.w * s, T.h * s, T.d * s]));
+  // seams: top perimeter of each tier (+ dais) as soft glow segments
+  const rim = (T, yy) => { const hw = (T.w / 2) * s, hd = (T.d / 2) * s; const y = cy + dais + yy * s + 0.02; const a = [cx - hw, y, cz + hd], b = [cx + hw, y, cz + hd], c2 = [cx + hw, y, cz - hd], d2 = [cx - hw, y, cz - hd]; return [[a, b], [b, c2], [c2, d2], [d2, a]]; };
+  const seams = TI.map((T) => { const g = W.glowSegs(rim(T, T.y + T.h), { color: C.amber, k: 1, width: 2.2 }); group.add(g); return g; });
+  const faceSeams = TI.map((T) => { const hw = (T.w / 2) * s; const y0 = cy + dais + T.y * s + 0.5 * s, z = cz + (T.d / 2) * s + 0.03;
+    const g = W.glowSegs([[[cx - hw, y0, z], [cx + hw, y0, z]]], { color: C.brass, k: 0.6, width: 1.4 }); group.add(g); return g; });
+  const daisSeam = W.glowSegs(rim({ w: 58, d: 30 }, 0).map(([a, b]) => [[a[0], cy + dais + 0.02, a[2]], [b[0], cy + dais + 0.02, b[2]]]), { color: C.brassMid, k: 1.2, width: 1.8 }); group.add(daisSeam);
+  // nodes
+  const nodes = [];
+  nodes.push({ p: P(0, 13.7, -0.5), tier: 2, j: 0, r: 0.95, top: 12, cz: 1.9, card: [2.8, 0.22, 1.5] });
+  const LX = [-10.5, -3.5, 3.5, 10.5];
+  LX.forEach((x, j) => nodes.push({ p: P(x, 8.95, 4.0), tier: 1, j, r: 0.62, top: 8, cz: 5.6, card: [2.2, 0.2, 1.1], lx: x }));
+  const GX = [-18, -6, 6, 18], OFF = [-4.05, -1.35, 1.35, 4.05];
+  GX.forEach((g, j) => OFF.forEach((o) => nodes.push({ p: P(g + o, 4.8, 7.6), tier: 0, j, r: 0.46, top: 4, cz: 9.6, card: [1.6, 0.17, 1.0], lx: g + o })));
+  const N = W.orbs({ count: nodes.length, r: 1, seg: 18 }); group.add(N.mesh);
+  const rings = nodes.map((n) => { const g = G.ring({ r: n.r * 1.75 * s, tube: 0.05 * s, color: C.brass, k: W.kl(1.4) }); g.rotation.x = Math.PI / 2;
+    g.position.set(n.p[0], cy + dais + n.top * s + 0.06, n.p[2]); group.add(g); return g; });
+  const discs = nodes.map((n) => { const d = etchedDisc({ r: n.r * 2.6 * s, k: 0.35 }); d.position.set(n.p[0], cy + dais + n.top * s + 0.04, n.p[2]); group.add(d); return d; });
+  const flares = nodes.map((n) => { const f = W.flare({ color: C.ivory, k: 0, size: n.r * 9 * s }); f.position.set(...n.p); group.add(f); return f; });
+  const crest = G.ring({ r: 1.9 * s, tube: 0.06 * s, color: C.ivory, k: W.kl(2.5) }); crest.rotation.x = Math.PI / 2; crest.position.set(nodes[0].p[0], nodes[0].p[1] + 0.2, nodes[0].p[2]); group.add(crest);
+  // cards: 3 per node
+  const nC = nodes.length * 3;
+  const Cd = W.cards({ count: nC, size: [1, 1, 1] }); group.add(Cd.mesh);
+  const r = rand(seed);
+  const jit = Array.from({ length: nC }, () => ({ x: (r() - 0.5) * 0.5, z: (r() - 0.5) * 0.45, ry: (r() - 0.5) * 0.6, rz: (r() - 0.5) * 0.12, ph: r() * 6.28 }));
+  // links: circuit traces routed over the tier tops and diagonally down the tier faces (stone-course circuitry, like the foreman's):
+  // apex -> leads (ivory), lead -> its 4 workers (brass)
+  const resample = (poly, n = 24) => { const L = [0]; for (let i = 1; i < poly.length; i++) L.push(L[i - 1] + Math.hypot(poly[i][0] - poly[i - 1][0], poly[i][1] - poly[i - 1][1], poly[i][2] - poly[i - 1][2]));
+    const out = []; for (let q = 0; q <= n; q++) { const d = (q / n) * L[L.length - 1]; let i = 1; while (i < L.length - 1 && L[i] < d) i++; const u = (d - L[i - 1]) / Math.max(1e-6, L[i] - L[i - 1]);
+      out.push([lerp(poly[i - 1][0], poly[i][0], u), lerp(poly[i - 1][1], poly[i][1], u), lerp(poly[i - 1][2], poly[i][2], u)]); } return out; };
+  const links = [], linkCurves = [];
+  for (let j = 0; j < 4; j++) { const lx = LX[j];
+    const pts = resample([nodes[0].p, P(lx * 0.22, 12.06, -0.5), P(lx * 0.22, 12.06, 3.06), P(lx, 8.06, 3.06), P(lx, 8.06, 3.6), nodes[1 + j].p]);
+    linkCurves.push(pts); const l = W.fat(pts, { color: C.ivory, k: 1.2, width: 1.6 }); group.add(l); links.push(l); }
+  for (let w = 0; w < 16; w++) { const n = nodes[5 + w], L = nodes[1 + n.j]; const lx = L.lx, wx = n.lx;
+    const pts = resample([L.p, P(lx, 8.06, 4.0), P(lx + (wx - lx) * 0.18, 8.06, 6.56), P(wx, 4.06, 6.56), P(wx, 4.06, 7.0), n.p]);
+    linkCurves.push(pts); const l = W.fat(pts, { color: C.brass, k: 1, width: 1.3 }); group.add(l); links.push(l); }
+  const pulses = W.orbs({ count: 20, r: 0.28 * s, seg: 10 }); group.add(pulses.mesh);
+  // beams: sky -> apex, apex -> each lead, lead -> its worker group
+  const beams = [];
+  const sky = W.shaft({ rTop: 0.6, rBot: 2.6 * s, h: 40, color: C.bankOn, k: 1, opacity: 0, apexFade: 0.02, bottom: 1.0, top: 0.4 });
+  W.aimShaft(sky, [nodes[0].p[0], nodes[0].p[1] + 60, nodes[0].p[2]], [nodes[0].p[0], nodes[0].p[1] - 1.2 * s, nodes[0].p[2]]); group.add(sky); beams.push({ m: sky, tier: 2 });
+  for (let j = 0; j < 4; j++) { const sh = W.shaft({ rTop: 0.25 * s, rBot: 1.9 * s, h: 10, color: C.bankOn, k: 1, opacity: 0, apexFade: 0.15 });
+    const L = nodes[1 + j].p; W.aimShaft(sh, nodes[0].p, [L[0], L[1] - 0.9 * s, L[2] + 0.6 * s]); group.add(sh); beams.push({ m: sh, tier: 1 }); }
+  for (let j = 0; j < 4; j++) { const sh = W.shaft({ rTop: 0.25 * s, rBot: 5.0 * s, h: 10, color: C.amber, k: 1, opacity: 0, apexFade: 0.15 });
+    const L = nodes[1 + j].p, gC = P(GX[j], 4.0, 8.6); W.aimShaft(sh, L, gC); group.add(sh); beams.push({ m: sh, tier: 0 }); }
+  const floorDisc = etchedDisc({ r: 46 * s, k: 0.06 }); floorDisc.position.set(cx, cy + 0.03, cz); group.add(floorDisc);
+  const cardWorld = (n, k) => [n.p[0], cy + dais + (n.top + n.card[1] / 2 + k * (n.card[1] + 0.03)) * s, cz + n.cz * s];
+  const st = { snapsA: [0, 0, 0], lt: 0 };
+  const api = {
+    group, nodes, links, beams, P, scale: s, dais, N,
+    groupCenter: (j) => P(GX[j], 4.6, 8.4), cardWorld,
+    update(lt, { t = lt, snaps = [0, 0.4, 0.8], lock = 99, drift = 1, flash = 1, beamOp = 1 } = {}) {
+      st.lt = lt;
+      const fx = (tier) => flash * (tier === 0 ? 0.32 : 1);
+      const since = (tier) => lt - snaps[2 - tier];          // tier 2 = apex = snaps[0]
+      const lockS = lt - lock;
+      const lockF = lockS >= 0 ? Math.exp(-lockS / 0.25) : 0;
+      nodes.forEach((n, i) => {
+        const d = since(n.tier);
+        const k = d >= 0 ? 4 + 8 * fx(n.tier) * Math.exp(-d / 0.1) + 3 * lockF : 1.5;
+        N.set(i, { p: n.p, s: n.r * s, c: W.lin(C.ivory), k: n.tier === 2 ? k * 1.2 : k });
+        flares[i].userData.set(d >= 0 ? (n.tier === 2 ? 1.6 : 0.8) * (0.3 + 1.4 * Math.exp(-d / 0.1)) + 0.5 * lockF : 0, C.ivory);
+        rings[i].material.color.set(C.brass).multiplyScalar(W.kl(d >= 0 ? 1.6 + 3 * Math.exp(-d / 0.15) : 0.7));
+        discs[i].userData.set(d >= 0 ? 0.5 + 1.0 * Math.exp(-d / 0.2) : 0.25, C.brass);
+        for (let k2 = 0; k2 < 3; k2++) {
+          const ci = i * 3 + k2, J = jit[ci];
+          const snapU = d >= 0 ? clamp(d / 0.1) : 0;
+          const a = d >= 0 ? Math.pow(1 - snapU, 2) : 1;                  // 1 = full jitter, 0 = squared (3 f)
+          const wob = a * drift * Math.sin(t * 2.3 + J.ph) * 0.35;
+          const cw = cardWorld(n, k2);
+          const gap = a * 0.1 * s * k2;
+          const fl = d >= 0 ? fx(n.tier) * Math.exp(-d / 0.08) : 0;
+          Cd.set(ci, { p: [cw[0] + (J.x + wob * 0.2) * a * s, cw[1] + gap, cw[2] + J.z * a * s], r: [0, (J.ry + wob * 0.3) * a, J.rz * a],
+            s: [n.card[0] * s, n.card[1] * s, n.card[2] * s],
+            edge: d >= 0 ? W.CARD.amberEdge(2.6 + 4 * fl + 1.5 * lockF) : W.CARD.edge(1.2), body: d >= 0 ? W.CARD.amberBody(1.4 + 3 * fl) : W.CARD.body(0.7) });
+        }
+      });
+      N.commit(); Cd.commit();
+      crest.material.color.set(C.ivory).multiplyScalar(W.kl(since(2) >= 0 ? 2 + 4 * Math.exp(-since(2) / 0.2) + 3 * lockF : 0.8));
+      // seams ignite with their tier
+      seams.forEach((g, ti) => { const d = since(ti); g.userData.set(d >= 0 ? 1.5 + 3.5 * fx(ti) * Math.exp(-d / 0.15) + 1.2 * lockF : 0.4); });
+      faceSeams.forEach((g, ti) => { const d = since(ti); g.userData.set(d >= 0 ? 1.4 + 3 * Math.exp(-d / 0.2) : 0.35); });
+      daisSeam.userData.set(1.0 + 2.5 * lockF);
+      // links draw as the light travels down: apex->lead arcs during [leads-0.24, leads], lead->worker arcs during [workers-0.24, workers]
+      const TRAVEL = 0.24;
+      links.forEach((l, q) => {
+        const tier = q < 4 ? 1 : 0; const d = since(tier); const u = clamp((d + TRAVEL) / TRAVEL);
+        l.userData.reveal(u);
+        l.userData.set(q < 4 ? (d >= 0 ? 1.3 + 1.5 * lockF : 2.4) : (d >= 0 ? 0.9 + 1.2 * lockF : 2));
+        const pq = q;
+        if (u > 0 && u < 1) { const pts = linkCurves[q]; const f = u * 24; const i0 = Math.min(23, Math.floor(f)); const uu = f - i0; const a = pts[i0], b = pts[i0 + 1];
+          pulses.set(pq, { p: [lerp(a[0], b[0], uu), lerp(a[1], b[1], uu), lerp(a[2], b[2], uu)], c: W.lin(q < 4 ? C.ivory : C.bankOn), k: 14 }); }
+        else pulses.hide(pq);
+      });
+      pulses.commit();
+      beams.forEach((b) => { const d = since(b.tier); const on = d >= -0.03 ? 1 : 0; const fl = d >= 0 ? Math.exp(-d / 0.18) : 0;
+        b.m.userData.set(on * (b.tier === 2 ? 1.2 + 2 * fl : b.tier === 1 ? 1.0 + 2 * fl : 0.9 + 0.8 * fl), beamOp * on * (b.tier === 2 ? 0.28 : 0.2) * (0.8 + 0.2 * Math.sin(t * 9 + b.tier))); });
+      floorDisc.userData.set(0.05 + 0.08 * clamp(since(0) + 0.5) + 0.12 * lockF, C.brass);
+    },
+    sources() {
+      const out = [];
+      const d0 = st.lt;
+      out.push({ p: nodes[0].p, c: C.ivory, k: 2, pool: 10 * s, poolK: 0.3, refl: 0.6, size: 2 });
+      for (let j = 0; j < 4; j++) out.push({ p: P(GX[j], 6, 9), c: C.amber, k: 1.4, pool: 8 * s, poolK: 0.4, refl: 0.5, size: 3 });
+      out.push({ p: [cx, cy + dais, cz + 15 * s], c: C.amber, k: 1.2, pool: 22 * s, poolK: 0.5, refl: 0.0, size: 10 });
+      return out;
+    },
+  };
+  api.update(0, { snaps: [9, 9, 9] });
+  return api;
+}
+
+/** SWARM field (iii-swarm): 24 ivory document planes in a shallow two-row amphitheatre, 300 small ivory reader orbs that burst out of a
+ *  tight cluster and fan to READ them in parallel (hovering, scanning down each page; read-beams = ONE LineSegments, 300 segments,
+ *  ivory at 30%), then snap on the beat into ONE writer orb, which fires the single write line down to the card (card edge -> green).
+ *  swarmField({ center }) -> { group, writerW, cardW, update(lt, { t, fan (s since burst), converge (s since snap; <0 none), write (s since
+ *  strike; <0 none) }), sources() } */
+export function swarmField({ center = [20, 2, 0], seed = 801 } = {}) {
+  const group = new THREE.Group(); group.position.set(...center);
+  const r = rand(seed);
+  const NDOC = 24, N = 300;
+  // document textures: dark page, ivory/ice/brass token bars, ivory header rule + margin tick
+  const texs = [0, 1, 2, 3, 4, 5].map((q) => {
+    const c = document.createElement('canvas'); c.width = 192; c.height = 256; const g = c.getContext('2d');
+    g.fillStyle = 'rgba(16,15,13,0.96)'; g.fillRect(0, 0, 192, 256);
+    G.drawCode(g, 192, 256, { seed: 60 + q, lines: 15, palette: ['#faf9f5', '#faf9f5', '#cfe3f2', '#8d8a83', '#e8b47a'], cursor: false });
+    g.fillStyle = '#faf9f5'; g.fillRect(12, 10, 70, 6); g.globalAlpha = 0.5; g.fillRect(90, 10, 30, 6); g.globalAlpha = 1;
+    g.strokeStyle = 'rgba(250,249,245,0.75)'; g.lineWidth = 3; g.strokeRect(2, 2, 188, 252);
+    const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4; return tx;
+  });
+  const docs = [];
+  const docGeo = new THREE.PlaneGeometry(1.5, 2.0);
+  for (let i = 0; i < NDOC; i++) {
+    const row = Math.floor(i / 12), c = i % 12; const a = -1.05 + (c / 11) * 2.1;
+    const mat = new THREE.MeshBasicMaterial({ map: texs[i % 6], color: W.hcol(0xffffff, 0.5), transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+    const m = new THREE.Mesh(docGeo, mat);
+    const y = 2.4 + row * 2.2, rad = 10 - row * 0.3;
+    m.position.set(Math.sin(a) * rad, y, -Math.cos(a) * rad * 0.45 - 1.0);
+    group.add(m); m.lookAt(center[0], center[1] + y - 0.4, center[2] + 9);
+    docs.push(m);
+  }
+  group.updateMatrixWorld(true);
+  const docN = docs.map((m) => new THREE.Vector3(0, 0, 1).applyQuaternion(m.quaternion));
+  const docR = docs.map((m) => new THREE.Vector3(1, 0, 0).applyQuaternion(m.quaternion));
+  const docU = docs.map((m) => new THREE.Vector3(0, 1, 0).applyQuaternion(m.quaternion));
+  const O = W.orbs({ count: N, r: 0.1, seg: 8 }); group.add(O.mesh);
+  const writer = [0, 3.4, 1.0];
+  const cardP = [0, 1.0, -1.5];
+  const home = [], rd = [];
+  for (let i = 0; i < N; i++) {
+    home.push([writer[0] + (r() - 0.5) * 1.4, writer[1] - 0.3 + (r() - 0.5) * 1.0, writer[2] + 0.6 + (r() - 0.5) * 1.0]);
+    rd.push({ d: i % NDOC, u: (r() - 0.5) * 1.2, v: r(), hov: 0.5 + r() * 0.7, ph: r() * 6.28, sp: 0.7 + r() * 0.8, del: r() * 0.12, cdel: r() * 0.07 });
+  }
+  // read-beams: ONE LineSegments, 300 segments, ivory at 30%
+  const segGeo = new THREE.BufferGeometry(); const sp = new Float32Array(N * 6); segGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+  const segMat = new THREE.LineBasicMaterial({ color: W.hcol(C.ivory, 0.9), transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
+  const seg = new THREE.LineSegments(segGeo, segMat); seg.frustumCulled = false; group.add(seg);
+  // the writer, its write line and the card
+  const Wr = W.glowMesh(new THREE.SphereGeometry(1, 24, 16), C.ivory, 8, { radius: 1 }); Wr.scale.setScalar(0.32); Wr.position.set(...writer); group.add(Wr);
+  const WrF = W.flare({ color: C.ivory, k: 0, size: 5 }); WrF.position.set(...writer); group.add(WrF);
+  const wpts = Array.from({ length: 17 }, (_, q) => [lerp(writer[0], cardP[0], q / 16), lerp(writer[1] - 0.3, cardP[1] + 0.27, q / 16), lerp(writer[2] - 0.2, cardP[2] + 0.3, q / 16)]);
+  const ped = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1, 1.1), W.edgeStd({ color: 0x0b0a09, metal: 0.6, rough: 0.4, edge: C.brass, edgeK: W.kl(1.2), edgeW: 1.3 }));
+  ped.scale.y = center[1] + cardP[1] - 0.25; ped.position.set(cardP[0], -center[1] + ped.scale.y / 2, cardP[2]); group.add(ped);
+  const wl = W.fat(wpts, { color: C.ivory, k: 6, width: 2.6 }); group.add(wl);
+  const cardMat = W.edgeStd({ color: C.card, metal: 0.1, rough: 0.5, edge: C.ice, edgeK: W.kl(2), body: C.card, bodyK: 0.06, edgeW: 1.4 });
+  const card = new THREE.Mesh(new THREE.BoxGeometry(3, 0.5, 2), cardMat); card.position.set(...cardP); group.add(card);
+  const circ = Array.from({ length: 65 }, (_, i) => { const a = (i / 64) * Math.PI * 2; return [Math.cos(a), 0, Math.sin(a)]; });
+  const ring = W.fat(circ, { color: C.green, k: 4, width: 2.4 }); ring.position.set(cardP[0], cardP[1] - 0.2, cardP[2]); group.add(ring);
+  const cardF = W.flare({ color: C.green, k: 0, size: 4 }); cardF.position.set(cardP[0], cardP[1] + 0.3, cardP[2]); group.add(cardF);
+  const tmp = new THREE.Vector3();
+  const docPt = (i, t, scan) => { const q = rd[i]; const m = docs[q.d]; const v = 0.95 - ((q.v + scan * q.sp) % 1) * 1.9;
+    return tmp.copy(m.position).addScaledVector(docR[q.d], q.u * 0.6 + Math.sin(t * 9 + q.ph) * 0.18).addScaledVector(docU[q.d], v * 0.95); };
+  const st = { write: -1, cv: 0 };
+  const api = {
+    group, docs,
+    writerW: [center[0] + writer[0], center[1] + writer[1], center[2] + writer[2]], cardW: [center[0] + cardP[0], center[1] + cardP[1], center[2] + cardP[2]],
+    update(lt, { t = lt, fan = lt, converge = -1, write = -1 } = {}) {
+      const ic = W.lin(C.ivory);
+      const act = new Float32Array(NDOC);
+      let cvAll = 0;
+      for (let i = 0; i < N; i++) {
+        const q = rd[i];
+        const f = ease.expoOut(clamp((fan - q.del) / 0.42));
+        const cvu = converge >= 0 ? clamp((converge - q.cdel) / 0.13) : 0;
+        const cv = cvu * cvu * cvu;                                 // accelerate into the writer: snap
+        cvAll += cv;
+        const scan = Math.max(0, fan - 0.25) * 0.55;
+        const dp = docPt(i, t, scan);
+        const nrm = docN[q.d];
+        // reading position: hovering in front of its page
+        const rx = dp.x + nrm.x * q.hov, ry = dp.y + nrm.y * q.hov, rz = dp.z + nrm.z * q.hov;
+        const h = home[i];
+        // fan path bows outward/up so the burst reads as a bloom, not a slide
+        const bow = Math.sin(f * Math.PI) * 1.4;
+        let x = lerp(h[0], rx, f), y = lerp(h[1], ry, f) + bow * 0.6, z = lerp(h[2], rz, f) + bow * 0.4;
+        x = lerp(x, writer[0], cv); y = lerp(y, writer[1], cv); z = lerp(z, writer[2], cv);
+        if (cv > 0.985) { O.hide(i); sp.fill(0, i * 6, i * 6 + 6); continue; }
+        O.set(i, { p: [x, y, z], c: ic, k: 2.4 + 1.0 * cvu });
+        const vis = f * (1 - cvu) * (0.55 + 0.45 * Math.sin(t * 23 + q.ph * 3));
+        act[q.d] += vis;
+        sp[i * 6] = x; sp[i * 6 + 1] = y; sp[i * 6 + 2] = z;
+        sp[i * 6 + 3] = lerp(x, dp.x, vis > 0.05 ? 1 : 0); sp[i * 6 + 4] = lerp(y, dp.y, vis > 0.05 ? 1 : 0); sp[i * 6 + 5] = lerp(z, dp.z, vis > 0.05 ? 1 : 0);
+      }
+      O.commit(); segGeo.attributes.position.needsUpdate = true;
+      const cvm = cvAll / N;
+      segMat.opacity = 0.3 * clamp(fan / 0.2) * (1 - clamp(cvm * 1.5));
+      docs.forEach((m, d) => { const a = clamp(act[d] / (N / NDOC)); m.material.color.setScalar(0.35 + 0.75 * a + 0.1 * (1 - cvm)); });
+      st.cv = cvm; st.write = write;
+      const won = converge >= 0;
+      Wr.visible = won; WrF.visible = won;
+      if (won) { const p = clamp(converge / 0.15); const sc = 0.12 + 0.26 * p + 0.12 * Math.exp(-Math.max(0, converge - 0.15) / 0.08) * (converge > 0.15 ? 1 : 0);
+        Wr.scale.setScalar(sc); Wr.userData.setGlow(4 + 8 * p + (write >= 0 ? 4 * Math.exp(-write / 0.1) : 0)); WrF.userData.set(1.2 + 2.2 * p, C.ivory); }
+      wl.userData.reveal(write >= 0 ? ease.out(clamp(write / 0.08)) : 0); wl.visible = write >= 0;
+      if (write >= 0) wl.userData.set(3 + 5 * Math.exp(-write / 0.15));
+      const done = write >= 0.08 ? write - 0.08 : -1;
+      cardMat.setEdge(done >= 0 ? C.green : C.ice, W.kl(done >= 0 ? 4 + 5 * Math.exp(-done / 0.12) : 1.6));
+      cardMat.setBody(done >= 0 ? C.green : C.card, done >= 0 ? 0.05 + 0.25 * Math.exp(-done / 0.12) : 0.05);
+      ring.visible = done >= 0 && done < 0.45;
+      if (ring.visible) { const rr = lerp(1.6, 7, ease.expoOut(done / 0.45)); ring.scale.set(rr, 1, rr * 0.75); ring.userData.set(4 * Math.pow(1 - done / 0.45, 1.5)); }
+      cardF.userData.set(done >= 0 ? 0.6 + 2.4 * Math.exp(-done / 0.1) : 0, C.green);
+    },
+    sources() {
+      const out = [{ p: [center[0], center[1] + 4, center[2] - 4], c: C.ivory, k: 1.0 * (1 - st.cv), pool: 12, poolK: 0.4, refl: 0.3, size: 8 }];
+      if (st.write >= 0.08) out.push({ p: api.cardW, c: C.green, k: 2.5, pool: 4, poolK: 0.9, refl: 0.8, size: 1.5 });
+      out.push({ p: api.writerW, c: C.ivory, k: 2.5 * st.cv, pool: 4, poolK: 0.6, refl: 0.8, size: 0.5 });
+      return out;
+    },
+  };
+  api.update(0, { fan: 0 });
+  return api;
+}
+
+/** WRITER MACRO card (camWriterMacro: 85mm (-9,3.2,6) -> (-9,2.6,0)), shared by ii-two-writers (master) and iii-one-writer (mirror):
+ *  the stock 3 x 0.5 x 2 card over-fills this 85mm frame (2.5u wide), so the macro card is 1.5 x 0.22 x 1.0, centred at (-9, 2.6, 0),
+ *  with a code-strip label on its front face. Hide H.line.group (the card sits in the CODE/REVIEW gap, inside the boxes' depth). */
+export const WRITER_CARD = { p: [-9, 2.6, 0], size: [1.5, 0.22, 1.0] };
+let _stripTex = null;
+export function writerCard(scene) {
+  const { p, size } = WRITER_CARD;
+  const I = W.cards({ count: 1, size }); scene.add(I.mesh);
+  if (!_stripTex) {
+    const c = document.createElement('canvas'); c.width = 512; c.height = 76; const g = c.getContext('2d');
+    g.fillStyle = 'rgba(10,10,10,0.0)'; g.fillRect(0, 0, 512, 76);
+    const r = rand(812); let x = 18;
+    g.fillStyle = 'rgba(250,249,245,0.9)'; g.fillRect(x, 30, 46, 14); x += 58;
+    while (x < 470) { const w = 8 + r() * 46; g.fillStyle = ['rgba(250,249,245,0.55)', 'rgba(255,210,160,0.7)', 'rgba(207,227,242,0.5)'][Math.floor(r() * 3)]; g.fillRect(x, 32, w, 10); x += w + 7; }
+    g.fillStyle = 'rgba(250,249,245,0.8)'; g.fillRect(486, 22, 6, 32);
+    _stripTex = new THREE.CanvasTexture(c); _stripTex.colorSpace = THREE.SRGBColorSpace; _stripTex.anisotropy = 8;
+  }
+  const label = new THREE.Mesh(new THREE.PlaneGeometry(size[0] * 0.92, size[1] * 0.62), new THREE.MeshBasicMaterial({ map: _stripTex, transparent: true, depthWrite: false, toneMapped: false, color: W.hcol(0xffffff, 0.5) }));
+  label.position.set(p[0], p[1], p[2] + size[2] / 2 + 0.003); scene.add(label);
+  return { I, label, p, size, top: p[1] + size[1] / 2, front: p[2] + size[2] / 2, back: p[2] - size[2] / 2 };
+}

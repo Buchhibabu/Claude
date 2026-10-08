@@ -188,3 +188,67 @@ export function lensWash(camera, scene, { color = 0xffd8c0, dist = 1 } = {}) {
   };
 }
 export { clamp, lerp, ease, kf, rand };
+
+// ================================================================================================ appended for shots 26..32
+/** Soft dark scrim behind type (radial ellipse, the "-0.8 stop" rule). */
+export function scrim(K, root, { x = 960, y = 540, w = 1500, h = 420, a = 0.55 } = {}) {
+  return K.el('div', { style: { position: 'absolute', left: x - w / 2 + 'px', top: y - h / 2 + 'px', width: w + 'px', height: h + 'px', background: `radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,${a}) 0%, rgba(0,0,0,${a * 0.6}) 45%, rgba(0,0,0,0) 100%)`, pointerEvents: 'none' } }, root);
+}
+
+let _bokehTex = null;
+function bokehTexture() {
+  if (_bokehTex) return _bokehTex;
+  const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(64, 64, 0, 64, 64, 60);
+  gr.addColorStop(0, 'rgba(255,255,255,0.42)'); gr.addColorStop(0.7, 'rgba(255,255,255,0.55)'); gr.addColorStop(0.9, 'rgba(255,255,255,0.85)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(64, 64, 60, 0, Math.PI * 2); g.fill();
+  _bokehTex = new THREE.CanvasTexture(c);
+  return _bokehTex;
+}
+/**
+ * Fake out-of-focus bokeh discs (additive sprites) for macro shots: bokeh({ pts:[[x,y,z,size]...], color, k }) ->
+ * { group, update(t, { k, pulse }) } — each disc breathes on 8ths with its own phase (pass GLOBAL t).
+ */
+export function bokeh({ pts, color = W.C.clay, k = 1, seed = 3 } = {}) {
+  const group = new THREE.Group(); const r = rand(seed);
+  const items = pts.map(([x, y, z, s]) => {
+    const mat = new THREE.SpriteMaterial({ map: bokehTexture(), color: W.hcol(color, k), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, fog: false, toneMapped: false });
+    const sp = new THREE.Sprite(mat); sp.position.set(x, y, z); sp.scale.set(s, s, 1); group.add(sp);
+    return { sp, mat, ph: r(), b: 0.6 + 0.4 * r() };
+  });
+  return {
+    group, items,
+    update(t, { k: kk = k, pulse = 0.25, hex = color } = {}) {
+      for (const it of items) it.mat.color.set(hex).multiplyScalar(kk * it.b * (1 + pulse * Math.sin((t * 4 + it.ph) * Math.PI * 2)));
+    },
+  };
+}
+
+/**
+ * The CODE station as ONE lit box: soft clay outline around station 2's box + a clay glow skin (for the midpoint).
+ * codeBox() -> { group, update({ edge (nominal k), body (0..1) }) }
+ */
+export function codeBox() {
+  const s = W.STATIONS[W.ST.CODE];
+  const group = new THREE.Group();
+  const out = W.glowSegs(W.boxEdgePairs([s.cx, 1.5, 0], [s.w - 1.2 + 0.08, 3.04, 10.08]), { color: W.C.clay, k: 0, width: 1.6 });
+  group.add(out);
+  const skin = W.glowMesh(new THREE.BoxGeometry(1, 1, 1), W.C.clay, 0, { shade: 'box', radius: 6 });
+  skin.scale.set(s.w - 1.25, 2.9, 9.9); skin.position.set(s.cx, 1.48, 0); group.add(skin);
+  return {
+    group, outline: out, skin,
+    update({ edge = 0, body = 0 } = {}) {
+      out.userData.set(edge); out.visible = edge > 0.001;
+      skin.userData.setGlow(body); skin.visible = body > 0.001;
+    },
+  };
+}
+
+/** swap a (cached, low-poly) instanced orb mesh's sphere for a smooth one on THIS shot only (close-up towers). */
+export function smoothOrbs(I, seg = 24) { I.mesh.geometry = new THREE.SphereGeometry(1, seg, Math.round(seg * 0.66)); return I; }
+
+/** hide individual hall pillars by [x, z] (rows z = +-30, x = -285 + 30k) — e.g. the one a crane move would pass through. */
+export function hidePillars(H, list) {
+  for (const [x, z] of list) { const k = Math.round((x + 285) / 30), i = (z > 0 ? 0 : 20) + k; if (k >= 0 && k < 20) H.pillars.I.hide(i); }
+  H.pillars.I.commit();
+}

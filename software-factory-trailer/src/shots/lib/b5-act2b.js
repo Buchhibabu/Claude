@@ -365,3 +365,76 @@ export function camScrim(scene, camera, { x = 960, y = 540, w = 1500, h = 560, a
 export function scrim(K, root, { x = 960, y = 540, w = 1500, h = 560, a = 0.7 } = {}) {
   return K.el('div', { style: { position: 'absolute', left: (x - w / 2) + 'px', top: (y - h / 2) + 'px', width: w + 'px', height: h + 'px', background: `radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,${a}) 0%, rgba(0,0,0,${(a * 0.75).toFixed(2)}) 45%, rgba(0,0,0,0) 100%)` } }, root);
 }
+
+// =====================================================================================================
+// Appended for shots 54-64 (backpressure climbs the line -> the alarm -> the drop). New exports only.
+// =====================================================================================================
+
+/**
+ * Dense red pinpoints on the faces of a box footprint (a b4 towerMass: pass its base / halfW / halfD), for "pinpoints at their
+ * densest". massPins({ base, halfW, halfD, height, every, seed, r }) -> orbs API + update(t, { k, h (visible height), shake, div, bias })
+ * Each pin blinks on 8ths or 16ths (seeded phase); `bias` 0..1 adds an always-on fraction.
+ */
+export function massPins({ base = W.POS.reviewBase, halfW = 8.1, halfD = 3.35, height = 600, every = 4, seed = 63, r = 0.26 } = {}) {
+  const n = Math.floor(height / every);
+  const P = W.orbs({ count: n, r, seg: 6 });
+  const rr = rand(seed);
+  const slots = Array.from({ length: n }, (_, k) => {
+    const face = Math.floor(rr() * 4);
+    const u = rr() * 2 - 1;
+    const p = face === 0 ? [u * (halfW - 0.4), halfD + 0.06] : face === 1 ? [u * (halfW - 0.4), -halfD - 0.06] : [(face === 2 ? 1 : -1) * (halfW + 0.06), u * (halfD - 0.3)];
+    return { y: 4 + k * every + rr() * every, p, ph: rr(), div: rr() < 0.6 ? 2 : 4, on: rr() };
+  });
+  const red = W.lin(W.C.red);
+  P.update = (t, { k = 7, h = height, shake = 0, div = null, bias = 0 } = {}) => {
+    for (let i = 0; i < n; i++) {
+      const s = slots[i];
+      if (s.y > h) { P.hide(i); continue; }
+      const on = s.on < bias ? 1 : W.blink(t, { bpm: 120, div: div ?? s.div, origin: s.ph * 0.25, duty: 0.5 });
+      if (!on) { P.hide(i); continue; }
+      const sx = shake ? Math.sin(t * 47 + s.y * 0.37) * shake * (0.4 + 0.6 * clamp(s.y / 80)) : 0;
+      P.set(i, { p: [base[0] + s.p[0] + sx, base[1] + s.y, base[2] + s.p[1]], c: red, k });
+    }
+    P.commit();
+  };
+  return P;
+}
+
+/**
+ * Red alarm frames around the 8 bank housings as seen from ABOVE (the housing tops hide the lamp undersides in top-downs):
+ * one soft glow outline per bank (+ an inner inset outline). bankFrames({ y, k, width, inset }) -> { mesh, update(levels[8] 0..1, k) }
+ */
+export function bankFrames({ y = 60.45, k = 4, width = 2, inset = 1.4 } = {}) {
+  const pairs = [];
+  W.BANK_X.forEach((x) => {
+    pairs.push(...rectPairs(x, y, 0, 16, 12));
+    pairs.push(...rectPairs(x, y, 0, 16 - inset * 2, 12 - inset * 2));
+  });
+  const flat = pairs.flat(2);
+  const col = new Float32Array(flat.length);
+  const mesh = W.glowSegs(flat, { colors: col, k: 1, width, color: 0xffffff, offset: false });
+  mesh.material.color.setRGB(1, 1, 1);
+  const red = W.lin(W.C.red), cAttr = mesh.geometry.attributes.instanceColorStart.data;
+  const per = 8;   // segments per bank
+  return {
+    mesh,
+    update(levels, kk = k) {
+      const A = cAttr.array;
+      for (let b = 0; b < 8; b++) {
+        const L = clamp(levels[b] ?? 0);
+        for (let s = 0; s < per; s++) {
+          const m = W.kl(kk) * L * (s < 4 ? 1 : 0.45);
+          const o = (b * per + s) * 6;
+          for (let e = 0; e < 2; e++) { A[o + e * 3] = red[0] * m; A[o + e * 3 + 1] = red[1] * m; A[o + e * 3 + 2] = red[2] * m; }
+        }
+      }
+      cAttr.needsUpdate = true;
+    },
+  };
+}
+
+/** per-frame flicker table helper: value of `tab` at frame floor(lt*30) (clamped to the last entry). */
+export const frameTab = (lt, tab) => tab[Math.max(0, Math.min(tab.length - 1, Math.floor(lt * 30 + 1e-4)))];
+
+/** hard-brake easing for "everything stops": distance travelled (in seconds of full-speed motion) after a brake at t0 with time constant tau. */
+export const brake = (lt, t0 = 0, tau = 0.035) => (lt < t0 ? lt : t0 + tau * (1 - Math.exp(-(lt - t0) / tau)));

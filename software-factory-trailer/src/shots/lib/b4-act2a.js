@@ -371,3 +371,114 @@ export function lectern({ px = 1400, seed = 36 } = {}) {
     },
   };
 }
+
+// =====================================================================================================
+// Appended for shots 38-47 (tricolon stamps, plant 3, MASTER C, swarm, two writers). New exports only.
+// =====================================================================================================
+const _FOG_V = 'varying float vFogDepth;';
+const _FOG_F = `uniform vec3 fogColor; uniform float fogDensity; varying float vFogDepth;
+  float fogF(){ return 1.0 - exp(-fogDensity * fogDensity * vFogDepth * vFogDepth); }`;
+/** soft additive radial glow card (faces +z; fogged). glowCard({ w, h, color, k, falloff }) -> mesh; userData.set(k, hex?) */
+export function glowCard({ w = 4, h = 2, color = C.red, k = 0.5, falloff = 3.2, fog = true } = {}) {
+  const mat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, fog, side: THREE.DoubleSide,
+    uniforms: THREE.UniformsUtils.merge([THREE.UniformsLib.fog, { uCol: { value: new THREE.Color(color).multiplyScalar(k) }, uF: { value: falloff } }]),
+    vertexShader: `varying vec2 vUv; ${_FOG_V} void main(){ vUv = uv; vec4 mv = modelViewMatrix * vec4(position,1.0); vFogDepth = -mv.z; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform vec3 uCol; uniform float uF; varying vec2 vUv; ${_FOG_F}
+      void main(){ vec2 q = (vUv - 0.5) * 2.0; float r2 = dot(q, q); float a = exp(-r2 * uF) * (1.0 - smoothstep(0.6, 1.0, r2)); gl_FragColor = vec4(uCol * a * (1.0 - fogF()), 1.0); }`,
+  });
+  mat.blending = THREE.CustomBlending; mat.blendSrc = THREE.OneFactor; mat.blendDst = THREE.OneFactor; mat.blendEquation = THREE.AddEquation;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+  m.frustumCulled = false;
+  m.userData.set = (kk, hex = color) => { mat.uniforms.uCol.value.set(hex).multiplyScalar(kk); m.visible = kk > 1e-4; };
+  return m;
+}
+
+/**
+ * World-space STAMP for the REVIEW. / TEST. / DEPLOY. tricolon: a text3D word (danger red, RAW k) over an additive red under-glow,
+ * K.slam in world space (scale `from` -> 1 expo-out over d, k spikes to `peak` and settles), plus a hard ring of red light.
+ * stamp3D('REVIEW.', { height (cap u), k, glow }) -> { group, mesh, halo, size, update(dt) }   (dt = seconds since the stamp; < 0 hidden)
+ */
+export function stamp3D(text, { height = 1.4, color = C.red, k = 2.4, glow = 0.35, glowW = 1.3, glowH = 2.4, font = '800 160px "Inter Tight"', from = 1.35, d = 0.3, peak = 3.2 } = {}) {
+  const group = new THREE.Group();
+  const mesh = W.text3D(text, { height, color, k, font });
+  const [w, h] = mesh.userData.size;
+  const halo = glowCard({ w: w * glowW, h: h * glowH, color, k: glow, falloff: 2.6 });
+  halo.position.z = -0.03;
+  group.add(halo, mesh);
+  return {
+    group, mesh, halo, size: [w, h],
+    update(dt, { k: kk = k, glow: gk = glow } = {}) {
+      group.visible = dt >= 0;
+      if (dt < 0) return;
+      const s = stampScale(dt, { from, d });
+      group.scale.set(s, s, s);
+      const e = stampK(dt, { peak, d: d * 1.2 });
+      mesh.userData.set(kk * e, color);
+      halo.userData.set(gk * (0.6 + 0.4 * e) * (dt < 0.05 ? 2.2 : 1), color);
+    },
+  };
+}
+
+// ----------------------------------------------------------------------------------------- MASTER C, monumental variant (ii-line-waits-2)
+/** MASTER C camera as built: 14mm worm's-eye from (1.4, 0.3, z0) creeping `push` toward the mass, pitched so the floor horizon sits at
+ *  ~y 925 px (the tiny human stands on it, under the refrain card). Returns the fov for camFX. */
+export function camHumanUnderTowerC(camera, lt, { dur = 2, z0 = 58, push = 0.04, pitch = 26.9, t = lt, handheld: hh = 0, roll = 0 } = {}) {
+  const z = z0 * (1 - push * ease.out(clamp(lt / dur)));
+  const ty = 0.3 + z * Math.tan(THREE.MathUtils.degToRad(pitch));
+  W.camLook(camera, [1.4, 0.3, z], [1.4, ty, 0], W.FOV[14], { roll });
+  W.handheld(camera, t, hh, 7);
+  return W.FOV[14];
+}
+/**
+ * The MASTER C set, monumental: a 9 x 3 stepped REVIEW mass (16-card bundles, 300u) over a wide lit scree of spilled cards, the TEST mass
+ * at frame right, the human (back to camera, at HUMAN_C) in a hard cold top-light pool with a volumetric shaft, a haze glow behind the
+ * scree so his silhouette cuts black against light.  humanUnderSetC(scene, { review, test }) -> { H, rev, test, scree, human, shaft, update(lt, p) }
+ * update p: { t, review (u), test (u), red, pinDiv, rimK, poolK, sky, shake, lit, alarm }
+ */
+export function humanUnderSetC(scene, { reviewMax = 300, testMax = 170, state = 'dark', lit = 0 } = {}) {
+  const H = W.hall(scene, { state, parts: { banks: state === 'alarm', foreman: false } });
+  const rev = towerMass({ name: 'review', nx: 13, nz: 3, pitch: [3.25, 2.3], maxH: reviewMax, seed: 3, bundle: 16, taper: 0.42, pinsPerLevel: 4, pinEvery: 9 });
+  const test = towerMass({ base: [33, 3, -1], nx: 3, nz: 3, maxH: testMax, seed: 5, bundle: 16, taper: 0.25, pinsPerLevel: 2, pinEvery: 10 });
+  scene.add(rev.group, test.group);
+  const scree = spill({ x0: -22, x1: 25, n: 500, seed: 421, zTop: 4.2, zFoot: 10.6, yTop: 4.2, k: 1.05 });
+  scene.add(scree.mesh);
+  const human = W.humanAnchor({ act: 'II', pos: HUMAN_C, facing: Math.PI });
+  scene.add(human.group);
+  const shaft = W.shaft({ rTop: 0.7, rBot: 4.6, h: 60, color: C.ice, k: 1.0, opacity: 0.16, top: 0.2, bottom: 1.0, apexFade: 0.35 });
+  W.aimShaft(shaft, [HUMAN_C[0], 46, HUMAN_C[2] - 1.5], [HUMAN_C[0], 0, HUMAN_C[2]]);
+  scene.add(shaft);
+  const topL = new THREE.PointLight(C.ice, 0, 14, 1.4); topL.position.set(HUMAN_C[0], 4.2, HUMAN_C[2] - 3.4); scene.add(topL);
+  const behind = glowCard({ w: 14, h: 5, color: 0xa9c6de, k: 0.1, falloff: 2.4 }); behind.position.set(HUMAN_C[0], 1.3, HUMAN_C[2] - 3.0); scene.add(behind);
+  const sky = glowCard({ w: 150, h: 230, color: 0x8fb0c8, k: 0.11, falloff: 2.0 }); sky.position.set(4, 95, -70); scene.add(sky);
+  const api = {
+    H, rev, test, scree, human, shaft, topL, behind,
+    update(lt, p = {}) {
+      const t = p.t ?? lt, red = p.red ?? 1, L = p.lit ?? lit;
+      rev.update(lt, { h: p.review ?? 300, t, red, lit: L, shake: p.shake ?? 0, pinDiv: p.pinDiv ?? 1, k: p.k ?? 1.3, body: p.body ?? 1.1 });
+      test.update(lt, { h: p.test ?? 165, t, red, lit: L, shake: (p.shake ?? 0) * 0.5, pinDiv: p.pinDiv ?? 1, k: (p.k ?? 1.3) * 0.9, body: 1.0 });
+      human.update(lt, { rim: p.rim ?? C.ice, rimK: p.rimK ?? 3.2 });
+      const pk = p.poolK ?? 1;
+      shaft.userData.set(0.8 * pk, 0.13 * pk);
+      topL.intensity = 30 * pk;
+      behind.userData.set(0.16 * pk, 0xa9c6de);
+      H.extra.length = 0;
+      H.extra.push({ p: [HUMAN_C[0], 9, HUMAN_C[2] - 0.6], c: p.rim ?? C.ice, k: 3.2 * pk, pool: 3.8, poolK: 1.6, refl: 1.0, size: 0.9 });
+      H.extra.push(...rev.sources(), ...test.sources());
+      if (H.line) H.line.update(lt, { lit: L, dim: 0.35, red: [0, 0, 0, 0.5 * red, 0.4 * red, 0, 0] });
+      if (H.banks) H.banks.update(lt, { on: 0, alarm: p.alarm ?? 0, t });
+      H.update(lt, { alarm: p.alarm ?? 0, sky: p.sky ?? 3, lit: L });
+    },
+  };
+  return api;
+}
+/** refrain card for MASTER C: identical type to refrain() (cond 220 px, ice, (960, 820), K.slam 1.12 -> 1 in 5 f) over a darkening band
+ *  that stops above the horizon so the tiny human below the card keeps his light. */
+export function refrainC(root, tl, K, { html = 'THE LINE WAITS.', at = 0.25, out = 1.75, color = ICE_CSS } = {}) {
+  const band = K.el('div', { style: { position: 'absolute', left: '0px', top: '650px', width: '1920px', height: '250px', background: 'radial-gradient(ellipse 50% 60% at 50% 62%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.4) 55%, rgba(0,0,0,0) 100%)' } }, root);
+  const el = K.text(root, { y: 820, w: 1900, cls: 'cond', html, style: { color, textShadow: '0 0 28px rgba(0,0,0,0.6)' } });
+  K.slam(tl, el, at, { from: 1.12, d: 5 / 30, blur: 10 });
+  gsap.set(band, { autoAlpha: 0 }); tl.set(band, { autoAlpha: 1 }, at);
+  if (out !== null) { K.cutOut(tl, el, out); tl.set(band, { autoAlpha: 0 }, out); }
+  return el;
+}

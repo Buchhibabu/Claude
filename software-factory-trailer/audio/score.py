@@ -65,7 +65,7 @@ SECTION_DB = {  # loudness arc: each act must beat the previous one (Act II < Ac
 }
 LAYER_DB = {  # static balance of the music layers before energy scaling
     'drone': -13, 'pad': -12, 'pulse': -10, 'ostinato': -13, 'kick': -7, 'drums': -6,
-    'strings': -15, 'piano': -9, 'hats': -20, 'heart': -8, 'ticks': -22, 'choir': -14,
+    'strings': -15, 'motif': -12, 'piano': -9, 'hats': -20, 'heart': -8, 'ticks': -22, 'choir': -14,
 }
 
 
@@ -203,10 +203,40 @@ def pad(chord, dur, seed=41, bright=2400):
     return T.reverb(x, rt60=4.0, wet_db=-6)[:, :len(t)]
 
 
-def strings_sustain(chord, dur, seed=51):
-    """Sustained high strings (crescendo inside the span: they swell into the next cut)."""
+def strings_sustain(chord, dur, seed=51, tremolo_hz=13.0):
+    """Sustained high string ensemble (bowed tremolo, gentle 3 dB rise over the run; level comes from the run envelope)."""
+    rng = np.random.default_rng(seed)
     _, up = CHORDS[chord]
-    return T.string_swell(tuple(m + 12 for m in up[1:]), dur=dur, voices=5, seed=seed)
+    t = T.tt(dur)
+    out = np.zeros((2, len(t)))
+    for m in (x + 12 for x in up[1:]):
+        for v in range(5):
+            vib = 0.12 * np.sin(2 * np.pi * rng.uniform(4.8, 6.2) * t + rng.uniform(0, 6.3))
+            f = T.note_hz(m) * 2 ** ((rng.uniform(-12, 12) / 100 + vib) / 12)
+            out += T.pan(T.polyblep_saw(f, rng.random()), rng.uniform(-0.8, 0.8)) / 5
+    out = T.filt(out, 'low', 5200)
+    trem = 1 - 0.25 * (0.5 + 0.5 * np.sin(2 * np.pi * tremolo_hz * t))
+    return out * trem * T.db(-3 + 3 * np.clip(t / max(dur, 1e-3), 0, 1))
+
+
+@lru_cache(None)
+def horn(midi, dur, seed=61):
+    """Synth brass note for the hero motif: detuned saws + octave below, opening filter, delayed vibrato, hall."""
+    rng = np.random.default_rng(seed + midi)
+    t = T.tt(dur + 1.2)
+    vib = 0.1 * np.clip((t - 0.25) / 0.3, 0, 1) * np.sin(2 * np.pi * 5.2 * t)
+    x = np.zeros((2, len(t)))
+    for c, g in ((-8, 1), (0, 1), (8, 1), (-1200, 0.6)):
+        f = T.note_hz(midi) * 2 ** ((c / 100 + vib) / 12)
+        x += T.pan(T.polyblep_saw(f, rng.random()), rng.uniform(-0.5, 0.5)) * g / 3.6
+    fc = 450 + 2000 * np.clip(t / 0.14, 0, 1) * np.exp(-np.clip(t - 0.14, 0, None) / 1.2)
+    x = np.vstack([T.tv_filter(x[c], fc, 'low', 0.9) for c in range(2)])
+    amp = np.clip(t / 0.06, 0, 1) * np.where(t < dur, 1.0, np.exp(-(t - dur) / 0.15))
+    y = T.reverb(T.sat(x * amp, 1.6), rt60=3.2, wet_db=-7, dark=2400)[:, :len(t)]
+    return T.norm(y, -1)
+
+
+MOTIF = [(0.0, 62, 1.5), (1.5, 65, 0.5), (2.0, 69, 2.0), (4.0, 67, 1.0), (5.0, 65, 1.0)]  # D F A G F over 8 beats
 
 
 def grid(dur, bpm, steps_per_beat):
@@ -219,84 +249,67 @@ def render_shot_layers(bus, t0, dur, bpm, chord, layers, div, energy, seg_t0, sh
     beat = 60 / bpm
     root, up = CHORDS[chord]
     g = lambda name: LAYER_DB.get(name, -12) + 20 * np.log10(max(energy, 0.05)) + SECTION_DB.get(sec, 0)  # noqa: E731
-    # phase: beats counted from the segment start (segments start on a beat)
-    off = (t0 - seg_t0) % beat
+    # Every rhythmic layer sits on an absolute grid counted from the segment start (segments start on a
+    # downbeat), so patterns keep their bar phase across cuts. steps(spb) -> [(i, rel)] grid points inside the shot.
+    def steps(spb):
+        st_ = beat / spb
+        i = int(np.ceil((t0 - seg_t0) / st_ - 1e-6))
+        out = []
+        while seg_t0 + i * st_ < t0 + dur - 1e-6:
+            out.append((i, seg_t0 + i * st_ - t0))
+            i += 1
+        return out
 
-    def at(rel):  # absolute time for a grid position relative to the shot start
-        return t0 + rel - off if rel - off >= -1e-6 else None
+    def put(name, snd, rel, gain=0.0):
+        T.place(bus.setdefault(name, np.zeros_like(bus['_'])), snd, t0 + rel, g(name) + gain)
 
-    fade = int(0.012 * SR)
-
-    def bed(name, x):
-        x = x[:, :int(dur * SR)].copy()
-        x[:, :fade] *= np.linspace(0, 1, fade)
-        x[:, -fade:] *= np.linspace(1, 0, fade)
-        T.place(bus.setdefault(name, np.zeros_like(bus['_'])), x, t0, g(name))
-
-    def hits(name, snd, times, gains=None):
-        b = bus.setdefault(name, np.zeros_like(bus['_']))
-        for k, tt_ in enumerate(times):
-            if tt_ is None or tt_ >= dur - 1e-6:
-                continue
-            T.place(b, snd if not callable(snd) else snd(k), t0 + tt_, g(name) + (gains[k] if gains else 0))
-
-    if 'drone' in layers:
-        bed('drone', drone(chord, dur + 0.05, bright=500 + 700 * energy, seed=31 + shot_i))
-    if 'pad' in layers:
-        bed('pad', pad(chord, dur + 0.05, seed=41 + shot_i))
-    if 'strings' in layers:
-        bed('strings', strings_sustain(chord, dur + 0.05, seed=51 + shot_i))
-    if 'pulse' in layers:  # 16ths, accented downbeats, root/octave alternation
+    # drone / pad / strings are sustained: rendered per run of shots in arrange() (no chop at cuts)
+    if 'motif' in layers:  # hero motif on the segment's 2-bar phrase grid; notes ring past the cut
+        third = 66 if chord in ('D', 'Dsus') else 65
+        for i, rel in steps(2):  # 8th-note grid; phrase = 16 eighths
+            for mo, mn, ln in MOTIF:
+                if i % 16 == int(round(mo * 2)):
+                    mn = third if mn == 65 else mn
+                    for mm, gg in ((mn, 0), (mn - 12, -5)):
+                        put('motif', horn(mm, round(ln * beat, 3)), rel, gg)
+    if 'pulse' in layers:  # 16ths, accented downbeats, octave jumps
         pat = 'x.xxx.xxx.xxx.xx' if energy > 0.8 else 'x..x..x.x..x..x.'
-        ts = grid(dur + beat, bpm, 4)
-        times, snds = [], []
-        for k, tt_ in enumerate(ts):
-            if pat[k % 16] == 'x':
-                times.append(tt_ - off if tt_ - off >= 0 else None)
-                snds.append(pulse_note(root + (12 if (k % 8 == 6 and energy > 0.7) else 0), k % 4 == 0))
-        hits('pulse', lambda k: snds[k], times)
+        for i, rel in steps(4):
+            if pat[i % 16] == 'x':
+                put('pulse', pulse_note(root + (12 if (i % 8 == 6 and energy > 0.7) else 0), i % 4 == 0), rel)
     if 'ostinato' in layers:  # spiccato strings: chord tones in a rolling 16th figure
         fig = [up[1], up[2], up[3], up[2], up[1], up[2], up[4], up[2]]
-        ts = grid(dur + beat, bpm, 4)
-        times = [tt_ - off if tt_ - off >= 0 else None for tt_ in ts]
-        hits('ostinato', lambda k: spiccato(fig[(k + int(round((t0 - seg_t0) / (beat / 4)))) % 8] + 12),
-             times, [(-2 if k % 4 else 1) for k in range(len(ts))])
+        for i, rel in steps(4):
+            put('ostinato', spiccato(fig[i % 8] + 12), rel, 1 if i % 4 == 0 else -2)
     if 'piano' in layers:  # one ping per bar, falling minor line
         line = [86, 84, 81, 77]
-        ts = grid(dur + beat, bpm, 0.25)
-        hits('piano', lambda k: ping_c(line[k % 4]), [x - off if x - off >= 0 else None for x in ts])
-    if 'kick' in layers:  # four on the floor-ish: beats 1 and 3 + taiko on bar downbeats
-        ts = grid(dur + beat, bpm, 1)
-        hits('kick', lambda k: taiko() if (k % 4 == 0) else kick(), [x - off if x - off >= 0 else None for x in ts],
-             [0 if k % 4 == 0 else -3 for k in range(len(ts))])
-    if 'drums' in layers:  # trailer drum kit with the subdivision ladder (div = notes per bar: 4/8/16/32)
+        for i, rel in steps(1):
+            if i % 4 == 0:
+                put('piano', ping_c(line[(i // 4) % 4]), rel)
+    if 'kick' in layers:  # quarters, taiko on the bar downbeat
+        for i, rel in steps(1):
+            put('kick', taiko() if i % 4 == 0 else kick(), rel, 0 if i % 4 == 0 else -3)
+    if 'drums' in layers:  # trailer kit with the subdivision ladder (div = notes per bar: 4/8/16/32)
         spb = max(1, div // 4)
-        ts = grid(dur + beat, bpm, spb)
-        times, snd, gains = [], [], []
-        for k, tt_ in enumerate(ts):
-            rel = tt_ - off
-            if rel < 0:
-                continue
-            pos = k % (4 * spb)  # position in bar
+        for i, rel in steps(spb):
+            pos = i % (4 * spb)
             if pos == 0:
-                snd.append(taiko()); gains.append(2)
+                put('drums', taiko(), rel, 2)
             elif pos == 2 * spb:
-                snd.append(snare()); gains.append(0)
-            elif k % spb == 0:
-                snd.append(kick()); gains.append(-2)
-            else:  # subdivision fill: toms/snare ghosting louder as div rises
-                snd.append(snare() if div >= 16 else kick()); gains.append(-10 + 1.5 * np.log2(spb) - (3 if spb >= 8 else 0))
-            times.append(rel)
-        hits('drums', lambda k: snd[k], times, gains)
+                put('drums', snare(), rel, 0)
+            elif i % spb == 0:
+                put('drums', kick(), rel, -2)
+            else:  # fills louden as the ladder climbs, but stay under the backbeat
+                put('drums', snare() if div >= 16 else kick(), rel, -10 + 1.5 * np.log2(spb) - (3 if spb >= 8 else 0))
     if 'hats' in layers:
-        ts = grid(dur + beat, bpm, 4)
-        hits('hats', hat(), [x - off if x - off >= 0 else None for x in ts])
+        for i, rel in steps(4):
+            put('hats', hat(), rel, 0 if i % 2 else -4)
     if 'heart' in layers:
-        hb = T.heartbeat(bpm=bpm / 2, beats=max(1, int(dur / (120 / bpm))))
-        hits('heart', hb, [0.0])
+        for i, rel in steps(0.5):  # one lub-dub per 2 beats
+            put('heart', T.heartbeat(bpm=bpm / 2, beats=1), rel)
     if 'ticks' in layers:
-        ts = grid(dur + beat, bpm, 1)
-        hits('ticks', lambda k: tick_c(k % 2 == 1), [x - off if x - off >= 0 else None for x in ts])
+        for i, rel in steps(1):
+            put('ticks', tick_c(i % 2 == 1), rel)
 
 
 # ------------------------------------------------------------------ SFX one-shots
@@ -435,6 +448,8 @@ def arrange(cues, stems_dir=None):
             seg_t0 = s['start']
         layers = list(m['layers']) if 'layers' in m else list(sdef['layers'])
         layers = [l for l in dict.fromkeys(layers + m.get('add', [])) if l not in m.get('drop', [])]
+        if (sec in ('act3', 'peak') and m.get('energy', sdef['energy']) >= 0.9 and 'drums' in layers) and 'motif' not in m.get('drop', []):
+            layers.append('motif')
         chord = m.get('chord', prev[2] if prev else 'Dm')
         energy = m.get('energy', sdef['energy'])
         div = m.get('div', sdef.get('div', 8))
@@ -444,6 +459,39 @@ def arrange(cues, stems_dir=None):
         if layers:
             render_shot_layers(bus, s['start'], s['dur'], bpm, chord, layers, div, energy, st0, i, sec)
         print(f"  {s['start']:7.2f}s {s['id']:<22} {sec:<5} {bpm:>3} {chord:<5} div{div:<2} e{energy:.2f} {'+'.join(layers)}")
+
+    # sustained layers: one continuous render per run of consecutive shots sharing the layer + chord;
+    # level follows each shot's energy (40 ms ramps); chord changes crossfade over 30 ms (legato)
+    SUS = {'drone': lambda ch, d, e, i: drone(ch, d, bright=500 + 700 * e, seed=31 + i),
+           'pad': lambda ch, d, e, i: pad(ch, d, seed=41 + i),
+           'strings': lambda ch, d, e, i: strings_sustain(ch, d, seed=51 + i)}
+    xf = int(0.03 * SR)
+    for name, gen in SUS.items():
+        runs = []
+        for (s, sec, bpm, chord, layers, div, energy, st0) in plan:
+            if name not in layers:
+                continue
+            gdb = LAYER_DB[name] + 20 * np.log10(max(energy, 0.05)) + SECTION_DB.get(sec, 0)
+            r = runs[-1] if runs else None
+            if r and r['chord'] == chord and abs(r['t1'] - s['start']) < 1e-4:
+                r['t1'] = s['start'] + s['dur']; r['pts'].append((s['start'], gdb))
+            else:
+                runs.append({'t0': s['start'], 't1': s['start'] + s['dur'], 'chord': chord, 'pts': [(s['start'], gdb)], 'e': energy})
+        for ri, r in enumerate(runs):
+            d = r['t1'] - r['t0'] + 0.03
+            x = gen(r['chord'], d, r['e'], ri)[:, :int(d * SR)]
+            n_ = x.shape[1]
+            env = np.zeros(n_)
+            tt_ = np.arange(n_) / SR + r['t0']
+            for k, (ts, gdb) in enumerate(r['pts']):
+                env[tt_ >= ts] = T.db(gdb)
+            ramp = int(0.04 * SR)
+            env = np.convolve(np.pad(env, (ramp, 0), mode='edge'), np.ones(ramp) / ramp, mode='valid')[:n_]
+            fi = int((0.15 if name == 'pad' else 0.03) * SR) if (ri == 0 or runs[ri - 1]['t1'] < r['t0'] - 1e-4) else xf
+            env[:fi] *= np.linspace(0, 1, fi)
+            env[-xf:] *= np.linspace(1, 0, xf)
+            T.place(bus.setdefault(name, np.zeros_like(bus['_'])), x * env, r['t0'])
+        print(f'  {name}: {len(runs)} runs')
 
     music = sum(v for k, v in bus.items() if k != '_')
     sfx = np.zeros((2, n))

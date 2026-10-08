@@ -7,3 +7,4 @@ dist/*_silent.mp4
 dist/draft*.mp4
 dist/*.wav
 dist/*.log
+dist/cues.shotlist.json

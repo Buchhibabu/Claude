@@ -114,7 +114,7 @@ shot({
     K.roll(tl, num, 0, 17.2, 4.4, 0.4, (v) => '×' + v.toFixed(1), 'power2.in');
     tl.fromTo(num, { scale: 1.14 }, { scale: 1, duration: 0.14, ease: 'power3.out', immediateRender: false }, 0.4);
     K.push(tl, num, 0.54, 1.66, { from: 1, to: 1.035 });
-    const lab = K.text(root, { y: 652, cls: 'slam', html: 'WITH A COORDINATOR:', style: { fontSize: '90px', color: '#FAF9F5', letterSpacing: '-0.02em' } });
+    const lab = K.text(root, { y: 652, cls: 'slam', html: 'WITH A COORDINATOR: ERRORS', style: { fontSize: '90px', color: '#FAF9F5', letterSpacing: '-0.02em' } });
     K.slam(tl, lab, 0.0, { from: 1.2, d: 0.26 });
     const src = K.text(root, { y: 722, cls: 'kicker', html: 'SAME STUDY', style: { fontSize: '24px', color: '#CFE3F2' } });
     K.decode(tl, src, 0.2, { d: 0.4, seed: 44 });

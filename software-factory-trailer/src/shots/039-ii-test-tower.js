@@ -21,7 +21,7 @@ shot({
     const rev = B.towerMass({ name: 'review', nx: 5, nz: 3, maxH: 84, seed: 3, pinsPerLevel: 2, pinEvery: 8 });
     scene.add(test.group, rev.group);
     // the stamp: on the TEST mass's +z face, low (the station face itself sits below this lens's frame)
-    const ST = B.stamp3D('TEST.', { height: 3.0, k: 2.5, glow: 0.5, peak: 3.6 });
+    const ST = B.stamp3D('TEST.', { height: 3.0, k: 2.3, glow: 0.32, peak: 1.7 });
     ST.group.rotation.x = 0.5; ST.group.position.set(21.1, 13.9, test.halfD + 1.1); scene.add(ST.group);
     // hot band flares riding the pin chase
     const FL = []; for (let i = 0; i < 4; i++) { const f = W.flare({ color: C.red, k: 0, size: 7 }); scene.add(f); FL.push(f); }

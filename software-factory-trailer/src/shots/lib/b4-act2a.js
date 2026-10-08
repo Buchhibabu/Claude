@@ -415,7 +415,7 @@ export function stamp3D(text, { height = 1.4, color = C.red, k = 2.4, glow = 0.3
       group.scale.set(s, s, s);
       const e = stampK(dt, { peak, d: d * 1.2 });
       mesh.userData.set(kk * e, color);
-      halo.userData.set(gk * (0.6 + 0.4 * e) * (dt < 0.05 ? 2.2 : 1), color);
+      halo.userData.set(gk * (0.6 + 0.4 * e) * (dt < 0.05 ? 1.3 : 1), color);
     },
   };
 }

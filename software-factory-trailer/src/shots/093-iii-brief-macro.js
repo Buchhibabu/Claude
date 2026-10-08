@@ -27,7 +27,7 @@ shot({
         const t = ctx.shot.start + lt;
         const a = lt - HIT;
         // core: 20 -> 28 peaking on the impact (0.4) -> 20
-        const core = a < 0 ? 20 : 20 + 8 * (a < 0.15 ? ease.out(a / 0.15) : Math.exp(-(a - 0.15) * 6));
+        const core = a < 0 ? 8 : 8 + 6 * (a < 0.15 ? ease.out(a / 0.15) : Math.exp(-(a - 0.15) * 6));
         B.litUpdate(H, lt, t, { foreman: 5, foremanOpts: { core, slotGlow: 0.25 } });
         // macro: keep the hall-scale core light / flare from flooding a 4u frame
         H.foreman.coreLight.intensity = core * 7; H.foreman.coreLight.distance = 20;
@@ -37,8 +37,8 @@ shot({
         ring.visible = a > 0 && a < 0.5;
         if (ring.visible) { const s = 1 + a * 26; ring.scale.setScalar(s); ring.material.color.set(W.C.ember).multiplyScalar(W.ko(9) * Math.exp(-a * 5)); }
         H.update(lt, { sky: 1 });
-        const d = 19 * (1 - 0.02 * clamp(lt / ctx.T));
-        camFX(camera, t, W.camLook(camera, [0, 150, -195 + d], [0, 150, -195], W.FOV[85]));
+        const d = 60 * (1 - 0.04 * clamp(lt / ctx.T));
+        camFX(camera, t, W.camLook(camera, [0, 150, -195 + d], [0, 150, -195], W.FOV[50]));
       },
     };
   },

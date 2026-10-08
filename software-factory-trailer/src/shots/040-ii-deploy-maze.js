@@ -20,7 +20,7 @@ shot({
     const H = W.hall(scene, { state: 'dark', parts: { banks: false, foreman: false, pillars: false } });
     const D = W.deployMaze({}); scene.add(D.group);
     // the word, laid flat: a floor stamp just above the jam's card tops so nothing occludes it
-    const ST = B.stamp3D('DEPLOY.', { height: 3.15, k: 2.8, glow: 0.38, glowW: 1.15, glowH: 1.9, peak: 3.8, from: 1.5 });
+    const ST = B.stamp3D('DEPLOY.', { height: 3.15, k: 2.4, glow: 0.26, glowW: 1.15, glowH: 1.9, peak: 1.8, from: 1.5 });
     ST.group.rotation.x = -Math.PI / 2; ST.group.position.set(40.6, 0.95, 0.6); scene.add(ST.group);
     // red shock ring on the floor
     const ringPts = Array.from({ length: 97 }, (_, i) => { const a = (i / 96) * Math.PI * 2; return [Math.cos(a), 0, Math.sin(a)]; });

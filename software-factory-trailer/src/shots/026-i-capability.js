@@ -82,14 +82,14 @@ shot({
   },
   ui(root, tl, K, ctx) {
     scrim(K, root, { x: 960, y: 820, w: 1800, h: 300, a: 0.6 });
-    const arrow = `<span style="position:relative;display:inline-block;width:0.72em;color:transparent;margin:0 0.1em">→` +
-      `<svg viewBox="0 0 100 40" preserveAspectRatio="none" style="position:absolute;left:0;top:50%;width:100%;height:0.42em;transform:translateY(-62%);overflow:visible">` +
-      `<path class="arw" d="M2 20 H96 M78 4 L97 20 L78 36" pathLength="1" fill="none" stroke="#D97757" stroke-width="4.5" stroke-linecap="square" vector-effect="non-scaling-stroke" ` +
-      `style="stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 6px rgba(217,119,87,0.9))"/></svg></span>`;
+    const arrow = `<span class="arw" style="position:relative;display:inline-block;width:0.72em;color:transparent;margin:0 0.1em">→` +
+      `<svg viewBox="0 0 100 58" style="position:absolute;left:0;top:50%;width:100%;height:0.42em;transform:translateY(-62%);overflow:visible">` +
+      `<path d="M4 29 H92 M70 8 L94 29 L70 50" fill="none" stroke="#D97757" stroke-width="11" stroke-linecap="square" stroke-linejoin="miter" ` +
+      `style="filter:drop-shadow(0 0 6px rgba(217,119,87,0.9))"/></svg></span>`;
     const h = K.text(root, { x: 960, y: 820, w: 1900, cls: 'cond', html: `CAPABILITY${arrow}BUDGET.`, style: { color: '#FAF9F5', fontSize: '182px', whiteSpace: 'nowrap', textShadow: '0 0 40px rgba(0,0,0,0.6)' } });
     K.slam(tl, h, 0.0, { from: 1.22, d: 0.3, blur: 16 });
-    const p = h.querySelector('.arw');
-    tl.fromTo(p, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 6 / 30, ease: 'power2.out', immediateRender: false }, 0.06);
+    // the arrow draws left -> right over 6 frames (clip wipe; the transparent glyph keeps the text exactly 'CAPABILITY → BUDGET.')
+    K.wipe(tl, h.querySelector('.arw'), 0.06, { d: 6 / 30, dir: 'right', ease: 'power2.out' });
     K.push(tl, h, 0.3, 1.6, { from: 1, to: 1.03 });
     K.cutOut(tl, h, 1.9);
   },

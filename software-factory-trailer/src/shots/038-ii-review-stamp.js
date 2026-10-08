@@ -34,7 +34,7 @@ shot({
     for (let i = 0; i < FLN; i++) FL.set(i, { p: [-21 + r() * 30, 0.26, 9 + r() * 9], r: [(r() - 0.5) * 0.12, (r() - 0.5) * 1.4, (r() - 0.5) * 0.08], edge: W.CARD.edge(0.9), body: W.CARD.body(0.5) });
     FL.commit();
     // the stamp on the station face (z 5.06), framed in the camera's left-of-centre third at the hit
-    const ST = B.stamp3D('REVIEW.', { height: 1.42, k: 2.3, glow: 0.42, peak: 3.4 });
+    const ST = B.stamp3D('REVIEW.', { height: 1.42, k: 2.3, glow: 0.3, peak: 1.7 });
     ST.group.position.set(-4.3, 1.62, 5.08); scene.add(ST.group);
     // shock: red light flash up the wall + sparks thrown off the face
     const shock = new THREE.PointLight(C.red, 0, 26, 1.4); shock.position.set(-4.3, 2.0, 8); scene.add(shock);

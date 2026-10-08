@@ -83,7 +83,7 @@ shot({
     const PH = Math.round(PX * DEV.h / DEV.w);
     const card = K.el('div', { style: { position: 'absolute', left: '0px', top: '0px', width: PX + 'px', height: PH + 'px', transformOrigin: '0 0' } }, root);
     ctx.pinEl = card;
-    const line = K.el('div', { style: { position: 'absolute', left: '0px', top: PH * 0.54 + 'px', width: PX + 'px', textAlign: 'center', transform: 'translateY(-50%)', whiteSpace: 'pre', fontFamily: 'var(--mono)', fontWeight: 500, fontSize: '48px', letterSpacing: '0.01em', color: '#FAF9F5', textShadow: '0 0 14px rgba(207,227,242,0.35)' } }, card);
+    const line = K.el('div', { style: { position: 'absolute', left: '0px', top: PH * 0.54 + 'px', width: PX + 'px', textAlign: 'center', transform: 'translateY(-50%)', whiteSpace: 'pre', fontFamily: 'var(--mono)', fontWeight: 500, fontSize: '62px', letterSpacing: '0.01em', color: '#FAF9F5', textShadow: '0 0 14px rgba(207,227,242,0.35)' } }, card);
     const txt = K.el('span', { text: 'just add more agents.' }, line);
     const cur = K.el('span', { style: { display: 'inline-block', width: '0.6em', height: '1.05em', marginLeft: '0.08em', verticalAlign: '-0.18em', background: '#CFE3F2', boxShadow: '0 0 16px rgba(207,227,242,0.8)' } }, line);
     const full = txt.textContent;

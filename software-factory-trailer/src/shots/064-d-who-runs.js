@@ -23,8 +23,8 @@ shot({
     K.el('div', { style: { position: 'absolute', left: '0px', top: '0px', width: '1920px', height: '1080px', background: '#000' } }, root);
     // a centred line: [text][gap][cursor]; flex keeps text + cursor centred as it grows
     const line = K.el('div', { style: { position: 'absolute', left: '0px', top: '540px', width: '1920px', height: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center', lineHeight: '1' } }, root);
-    const txt = K.el('span', { class: 'mono', text: TEXT, style: { fontSize: '48px', color: IVORY, whiteSpace: 'pre', letterSpacing: '0.01em', marginRight: '6px', transform: 'translateY(-1px)' } }, line);
-    const cur = K.el('span', { style: { display: 'inline-block', width: '29px', height: '48px', background: IVORY, flex: '0 0 auto' } }, line);
+    const txt = K.el('span', { class: 'mono', text: TEXT, style: { fontSize: '76px', color: IVORY, whiteSpace: 'pre', letterSpacing: '0.01em', marginRight: '10px', transform: 'translateY(-1px)' } }, line);
+    const cur = K.el('span', { style: { display: 'inline-block', width: '46px', height: '76px', background: IVORY, flex: '0 0 auto' } }, line);
     const TYPE_AT = 1.2, TYPE_D = TEXT.length / 30, OUT = 3.2;
     // text: absent from layout until typing starts (cursor alone is dead centre), types at 1 char/frame, cut at 3.2 (cursor recentres)
     gsap.set(txt, { display: 'none' });

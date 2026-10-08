@@ -157,8 +157,8 @@ export function pinToPlane(el, camera, w, h, origin, ax, ay) {
 export function scrim(K, root, { x = 960, y = 540, w = 1500, h = 420, a = 0.55 } = {}) {
   return K.el('div', { style: { position: 'absolute', left: x - w / 2 + 'px', top: y - h / 2 + 'px', width: w + 'px', height: h + 'px', background: `radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,${a}) 0%, rgba(0,0,0,${a * 0.6}) 45%, rgba(0,0,0,0) 100%)`, pointerEvents: 'none' } }, root);
 }
-// Whisper / source tag style (JetBrains Mono caps 24px, +0.18em, ice at 80%).
-export const WHISPER = { fontFamily: 'var(--mono)', fontWeight: 500, fontSize: '24px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(207,227,242,0.85)' };
+// Whisper / source tag style (JetBrains Mono caps 30px, +0.18em, ice at 80%).
+export const WHISPER = { fontFamily: 'var(--mono)', fontWeight: 500, fontSize: '30px', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(207,227,242,0.85)' };
 export const MONO = { fontFamily: 'var(--mono)', fontWeight: 500, letterSpacing: '0', color: '#FAF9F5' };
 
 // ----------------------------------------------------------------------------------------- props

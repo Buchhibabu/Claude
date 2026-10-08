@@ -43,7 +43,7 @@ body { font-family: var(--display); color: var(--paper); -webkit-font-smoothing:
 .mega { font-family: var(--display); font-weight: 900; font-size: 300px; letter-spacing: -0.05em; line-height: 0.85; }
 .cond { font-family: var(--cond); font-size: 220px; letter-spacing: 0.01em; line-height: 0.9; text-transform: uppercase; }
 .title { font-family: var(--display); font-weight: 300; font-size: 64px; letter-spacing: 0.5em; text-transform: uppercase; }
-.kicker { font-family: var(--display); font-weight: 600; font-size: 26px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--clay); }
+.kicker { font-family: var(--display); font-weight: 600; font-size: 30px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--clay); }
 .line { font-family: var(--display); font-weight: 500; font-size: 56px; letter-spacing: -0.015em; line-height: 1.1; }
 .serif { font-family: var(--serif); font-style: italic; font-weight: 400; }
 .mono { font-family: var(--mono); font-weight: 500; }

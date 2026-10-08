@@ -34,8 +34,8 @@ export function scrim(root, K, { x = 960, y = 540, w = 1500, h = 420, a = 0.55 }
   return K.el('div', { style: { position: 'absolute', left: (x - w / 2) + 'px', top: (y - h / 2) + 'px', width: w + 'px', height: h + 'px', background: `radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,${a}) 0%, rgba(0,0,0,${a * 0.75}) 45%, rgba(0,0,0,0) 100%)`, pointerEvents: 'none' } }, root);
 }
 
-/** Kicker / whisper style (JetBrains Mono 500 caps 24px, +0.18em, ice at 80%). */
-export const WHISPER = { fontFamily: "'JetBrains Mono', monospace", fontWeight: 500, fontSize: '24px', letterSpacing: '0.18em', color: 'rgba(207,227,242,0.8)', textTransform: 'uppercase' };
+/** Kicker / whisper style (JetBrains Mono 500 caps 30px, +0.18em, ice at 80%). */
+export const WHISPER = { fontFamily: "'JetBrains Mono', monospace", fontWeight: 500, fontSize: '30px', letterSpacing: '0.18em', color: 'rgba(207,227,242,0.8)', textTransform: 'uppercase' };
 
 /**
  * Rich decode: scrambled glyphs resolve left -> right across ALL text nodes of el (keeps coloured spans, e.g. '5.5' in clay).

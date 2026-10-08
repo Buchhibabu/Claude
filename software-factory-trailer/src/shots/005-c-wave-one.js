@@ -44,10 +44,10 @@ shot({
     ctx.sfx(0, 'sub_drop', { gain: -2 });
     const sc = B.scrim(K, root, { x: 960, y: 500, w: 2100, h: 640, a: 0.62 });
     K.cutIn(tl, sc, 0); K.cutOut(tl, sc, 1.9);
-    const kick = K.text(root, { x: 960, y: 380, w: 1200, cls: 'mono', html: 'WAVE ONE', style: { fontSize: '26px', letterSpacing: '0.18em', color: 'rgba(207,227,242,0.85)' } });
+    const kick = K.text(root, { x: 960, y: 372, w: 1200, cls: 'mono', html: 'WAVE ONE', style: { fontSize: '40px', letterSpacing: '0.32em', color: 'rgba(207,227,242,0.92)' } });
     K.decode(tl, kick, 0, { d: 6 / 30 });
     const mega = K.text(root, { x: 960, y: 540, w: 1900, cls: 'mega', html: '<span class="hot">≈5</span> MONTHS.',
-      style: { color: '#FAF9F5', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', textShadow: '0 0 60px rgba(0,0,0,0.55)' } });
+      style: { color: '#FAF9F5', fontSize: '250px', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', textShadow: '0 0 60px rgba(0,0,0,0.55)' } });
     K.slam(tl, mega, 0, { from: 1.6, blur: 14, d: 4 / 30 });
     K.cutOut(tl, kick, 1.9); K.cutOut(tl, mega, 1.9);
   },

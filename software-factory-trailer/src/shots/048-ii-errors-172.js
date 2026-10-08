@@ -76,7 +76,7 @@ shot({
     K.push(tl, num, 0.64, 2.1, { from: 1, to: 1.035 });
     const lab = K.text(root, { y: 652, cls: 'slam', html: 'INDEPENDENT AGENTS: ERRORS', style: { fontSize: '90px', color: '#FAF9F5', letterSpacing: '-0.02em' } });
     K.maskUp(tl, lab, 0.1, { d: 0.4 });
-    const src = K.text(root, { y: 722, cls: 'kicker', html: 'GOOGLE RESEARCH', style: { fontSize: '24px', color: '#CFE3F2' } });
+    const src = K.text(root, { y: 722, cls: 'kicker', html: 'GOOGLE RESEARCH', style: { fontSize: '30px', color: '#CFE3F2' } });
     K.decode(tl, src, 0.3, { d: 0.45, seed: 17 });
   },
 });

@@ -16,7 +16,7 @@ export const still = () => ({ section: 'act3', chord: 'Bb', div: 4, energy: 0.3,
 export function proofCard(root, tl, K, { html, kicker, size = 112, y = 818, ky = 968, enter = true, cutOut = null, kAt = 0.2, push = null } = {}) {
   const scrim = K.el('div', { style: { position: 'absolute', left: '0px', right: '0px', bottom: '0px', height: '470px', background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.55) 42%, rgba(0,0,0,0) 100%)' } }, root);
   const t = K.text(root, { y, cls: 'slam', html, w: 1840, style: { fontSize: size + 'px', lineHeight: '1.0', letterSpacing: '-0.028em', color: '#FAF9F5', textShadow: '0 6px 40px rgba(0,0,0,0.65)' } });
-  const k = K.text(root, { y: ky, cls: 'mono', html: kicker, w: 1200, style: { fontSize: '24px', letterSpacing: '0.18em', color: 'rgba(207,227,242,0.85)', textTransform: 'uppercase', textShadow: '0 2px 14px rgba(0,0,0,0.8)' } });
+  const k = K.text(root, { y: ky, cls: 'mono', html: kicker, w: 1200, style: { fontSize: '30px', letterSpacing: '0.18em', color: 'rgba(207,227,242,0.85)', textTransform: 'uppercase', textShadow: '0 2px 14px rgba(0,0,0,0.8)' } });
   if (enter) { K.maskUp(tl, t, 0.0, { d: 0.42, stagger: 0.07 }); K.decode(tl, k, kAt, { d: 0.4 }); }
   if (push) K.push(tl, t, 0, push.d, { from: push.from, to: push.to });
   if (cutOut !== null) { K.cutOut(tl, t, cutOut); K.cutOut(tl, k, cutOut); K.cutOut(tl, scrim, cutOut); }

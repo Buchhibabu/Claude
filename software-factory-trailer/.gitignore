@@ -14,3 +14,5 @@ dist/trailer_silent.mp4
 dist/parts.txt
 dist/cues*.json
 dist/*.log
+dist/master*.mp4
+dist/*_preview.mp4

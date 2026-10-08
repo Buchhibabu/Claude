@@ -435,6 +435,15 @@ def arrange(cues, stems_dir=None):
     bus = {'_': np.zeros((2, n))}
     shots = cues['shots']
     default_bpm = cues.get('bpm', 120)
+    # Per-shot tempo lives on the locked shot list (the engine's music field may not carry it): fill it in by shot id,
+    # so a 150 BPM section is scored at 150 BPM even when the cue sheet comes straight from the rendered film.
+    import os
+    sl = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'docs', 'shotlist.json')
+    if os.path.exists(sl):
+        bpm_of = {x['id']: x.get('bpm') for x in json.load(open(sl))['shots']}
+        for s_ in shots:
+            if s_.get('music') is not None and 'bpm' not in s_['music'] and bpm_of.get(s_['id']):
+                s_['music']['bpm'] = bpm_of[s_['id']]
 
     # segments: runs of shots with identical section+bpm (beat phase resets at each segment start)
     seg_t0, prev = 0.0, None

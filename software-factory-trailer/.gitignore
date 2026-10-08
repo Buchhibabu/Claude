@@ -9,3 +9,8 @@ dist/*.wav
 dist/*.log
 dist/cues.shotlist.json
 dist/*/
+dist/part*.mp4
+dist/trailer_silent.mp4
+dist/parts.txt
+dist/cues*.json
+dist/*.log

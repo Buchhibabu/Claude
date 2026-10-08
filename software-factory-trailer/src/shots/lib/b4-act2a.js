@@ -450,7 +450,7 @@ export function humanUnderSetC(scene, { reviewMax = 300, testMax = 170, state = 
   W.aimShaft(shaft, [HUMAN_C[0], 46, HUMAN_C[2] - 1.5], [HUMAN_C[0], 0, HUMAN_C[2]]);
   scene.add(shaft);
   const topL = new THREE.PointLight(C.ice, 0, 14, 1.4); topL.position.set(HUMAN_C[0], 1.9, HUMAN_C[2] - 2.2); scene.add(topL);
-  const behind = glowCard({ w: 9, h: 3.2, color: 0xa9c6de, k: 0.1, falloff: 2.2 }); behind.position.set(HUMAN_C[0], 1.15, HUMAN_C[2] - 2.6); scene.add(behind);
+  const behind = glowCard({ w: 3.6, h: 4.4, color: 0xb8d2e6, k: 0.1, falloff: 2.0 }); behind.position.set(HUMAN_C[0], 1.5, HUMAN_C[2] - 1.4); scene.add(behind);
   const sky = glowCard({ w: 150, h: 230, color: 0x8fb0c8, k: 0.11, falloff: 2.0 }); sky.position.set(4, 95, -70); scene.add(sky);
   const api = {
     H, rev, test, scree, human, shaft, topL, behind,
@@ -461,8 +461,8 @@ export function humanUnderSetC(scene, { reviewMax = 300, testMax = 170, state = 
       human.update(lt, { rim: p.rim ?? C.ice, rimK: p.rimK ?? 3.2 });
       const pk = p.poolK ?? 1;
       shaft.userData.set(0.8 * pk, 0.13 * pk);
-      topL.intensity = 12 * pk;
-      behind.userData.set(0.17 * pk, 0xa9c6de);
+      topL.intensity = 5 * pk;
+      behind.userData.set(0.34 * pk, 0xb8d2e6);
       H.extra.length = 0;
       H.extra.push({ p: [HUMAN_C[0], 9, HUMAN_C[2] - 0.6], c: p.rim ?? C.ice, k: 3.2 * pk, pool: 3.8, poolK: 1.6, refl: 1.0, size: 0.9 });
       H.extra.push(...rev.sources(), ...test.sources());

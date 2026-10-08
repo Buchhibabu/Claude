@@ -37,9 +37,9 @@ shot({
     const RY = (i) => 3.4 + i * 1.6;
     const rings = [], dead = [], spokes = [];
     for (let i = 0; i < 10; i++) {
-      const dr = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.2, 10, 72), new THREE.MeshStandardMaterial({ color: W.C.brassDark, metalness: 0.9, roughness: 0.35 }));
+      const dr = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.1, 10, 72), new THREE.MeshStandardMaterial({ color: W.C.brassDark, metalness: 0.9, roughness: 0.35 }));
       dr.rotation.x = Math.PI / 2; dr.position.y = RY(i); G0.add(dr); dead.push(dr);
-      const gl = W.G.ring({ r: 2.2, tube: 0.13, color: W.C.clay, k: 1 }); gl.rotation.x = Math.PI / 2; gl.position.y = RY(i); G0.add(gl); rings.push(gl);
+      const gl = W.G.ring({ r: 2.2, tube: 0.24, color: W.C.clay, k: 1 }); gl.rotation.x = Math.PI / 2; gl.position.y = RY(i); G0.add(gl); rings.push(gl);
       for (let s = 0; s < 4; s++) { const a = s * Math.PI / 2 + Math.PI / 4; const sp = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.08, 0.08), brass); sp.position.set(Math.cos(a) * 1.25, RY(i), Math.sin(a) * 1.25); sp.rotation.y = -a; G0.add(sp); spokes.push(sp); }
     }
     const pop = W.flare({ color: W.C.ivory, k: 0, size: 7 }); G0.add(pop);
@@ -56,7 +56,7 @@ shot({
           if (!on) lit--;
           const flash = d >= 0 && d < 0.1 ? Math.exp(-d * 40) : 0;
           if (flash > popK) { popK = flash; popY = RY(i); }
-          const k = on ? 7 * (1 + 0.12 * W.beatPulse(t + i * 0.02, { bpm: 150, div: 4, decay: 6 })) : 0;
+          const k = on ? 9 * (1 + 0.12 * W.beatPulse(t + i * 0.02, { bpm: 150, div: 4, decay: 6 })) : 0;
           rings[i].material.color.set(on ? W.C.clay : W.C.ivory).multiplyScalar(W.ko(on ? k : 16 * flash));
           rings[i].visible = on || flash > 0.01;
           relay.set(i, { p: [GX + 2.75, RY(i), GZ + 0.2], c: W.lin(on ? W.C.green : W.C.red), k: on ? 3 : 2 });

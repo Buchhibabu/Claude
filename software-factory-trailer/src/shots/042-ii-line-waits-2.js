@@ -29,7 +29,7 @@ shot({
         motes.geometry.attributes.position.needsUpdate = true;
         S.update(lt, { t, review: 300, test: 165, red: 1, pinDiv: 1, rimK: 3.4, poolK: 1, sky: 3, k: 1.75, body: 0.45 });
         // the tiny human stands in the word gap of the refrain (between LINE and WAITS., ~x 1028 px), never under a glyph
-        camFX(camera, t, B.camHumanUnderTowerC(camera, lt, { dur: ctx.T, t, handheld: 0.3, x: -1.7, z0: 52 }));
+        camFX(camera, t, B.camHumanUnderTowerC(camera, lt, { dur: ctx.T, t, handheld: 0.3, x: -1.2, z0: 46, pitch: 26.5 }));
       },
     };
   },
